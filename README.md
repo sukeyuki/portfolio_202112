@@ -1,13 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+・what for
+Schedule management
 
-Things you may want to cover:
+・status
+under development
 
-* Ruby version
+・attributes
+ruby 3.0.2p107
+Rails 6.1.4.4
+rspec 
 
-* System dependencies
+
+to be continued
 
 * Configuration
 
