@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
     user = FactoryBot.build(:user, :user_with_blank_name_and_userid_email)
     user.valid?
     expect(user.errors[:name]).to include("can't be blank")
-    expect(user.errors[:user_id]).to include("can't be blank")
+    expect(user.errors[:search_name]).to include("can't be blank")
     expect(user.errors[:email]).to include("can't be blank")
   end
 

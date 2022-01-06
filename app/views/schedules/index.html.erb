@@ -1,0 +1,201 @@
+<h1>Schedules#index</h1>
+<p>Find me in app/views/schedules/index.html.erb</p>
+<p>here is main page</p>
+<p>now under development</p>
+
+
+<h2>group create form</h2>
+<%= form_with model:@new_group do |form|%>
+  <%=form.label :name, "name"%> 
+  <%=form.text_field :name%>
+  <br>
+  <%=form.label :overview, "contents"%>
+  <%=form.text_field :overview%>
+  <br>
+  <%=form.radio_button :personal, "true"%>
+  <%=form.label :personal, "private"%>
+  <br>
+  <%=form.radio_button :personal, "false"%>
+  <%=form.label :personal, "not private"%>
+  <br>
+  <%=form.submit "create"%>
+<%end%>
+
+<h2>group update form(user.group.first)</h2>
+<%= form_with model:@user.groups.first do |form|%>
+  <%=form.label :name, "name"%> 
+  <%=form.text_field :name%>
+  <br>
+  <%=form.label :overview, "contents"%>
+  <%=form.text_field :overview%>
+  <br>
+  <%=form.radio_button :personal, "true"%>
+  <%=form.label :personal, "private"%>
+  <br>
+  <%=form.radio_button :personal, "false"%>
+  <%=form.label :personal, "not private"%>
+  <br>
+  <%=form.submit "update"%>
+<%end%>
+
+
+
+<h2>schedule create form</h2>
+<%= form_with model:@new_schedule do |form|%>
+  <%= form.label :group_id, "group_id"%> 
+  <%= form.select :group_id, @user.groups.map{|group|group.id}%> 
+  <br>
+  <%=form.label :title, "title"%>
+  <%=form.text_field :title%>
+  <br>
+  <%=form.label :contents, "contents"%>
+  <%=form.text_field :contents%>
+  <br>
+  <%=form.label :start_at, "start_at"%>
+  <%=form.datetime_local_field :start_at%>
+  <br>
+  <%=form.label :end_at, "end_at"%>
+  <%=form.datetime_local_field :end_at%>
+  <br>
+  <%=form.submit "create"%>
+<%end%>
+
+
+<h2>schedule update form(user.group.first.schedule.first)</h2>
+<%= form_with model:@user.groups.first.schedules.first do |form|%>
+  <%= form.label :group_id, "group_id"%> 
+  <%= form.select :group_id, @user.groups.map{|group|group.id}%> 
+  <br>
+  <%=form.label :title, "title"%>
+  <%=form.text_field :title%>
+  <br>
+  <%=form.label :contents, "contents"%>
+  <%=form.text_field :contents%>
+  <br>
+  <%=form.label :start_at, "start_at"%>
+  <%=form.datetime_local_field :start_at%>
+  <br>
+  <%=form.label :end_at, "end_at"%>
+  <%=form.datetime_local_field :end_at%>
+  <br>
+  <%=form.submit "update"%>
+<%end%>
+
+
+<h2>group_user create form</h2>
+<%=form_with model:@group_user do |form|%>
+  <%=form.label :user_id, "user_id"%>
+  <%=form.select :user_id, @users_all.map{|user|user.id}%>
+  <br>
+  <%=form.label :group_id, "group_id"%> 
+  <%=form.select :group_id, @user.groups.map{|group|group.id}%> 
+  <br>
+  <%=form.radio_button :activated, "true"%>
+  <%=form.label :activated, "activated"%>
+  <br>
+  <%=form.radio_button :activated, "false"%>
+  <%=form.label :activated, "not activated"%>
+  <br>
+  <%=form.submit "create"%>
+<%end%>
+
+
+<h2>group_user update form</h2>
+<%=form_with model:@group_users_all.first do |form|%>
+  <%=form.label :user_id, "user_id"%>
+  <%=form.select :user_id, @users_all.map{|user|user.id}%>
+  <br>
+  <%=form.label :group_id, "group_id"%> 
+  <%=form.select :group_id, @user.groups.map{|group|group.id}%> 
+  <br>
+  <%=form.radio_button :activated, "true"%>
+  <%=form.label :activated, "activated"%>
+  <br>
+  <%=form.radio_button :activated, "false"%>
+  <%=form.label :activated, "not activated"%>
+  <br>
+  <%=form.submit "update"%>
+<%end%>
+
+<%
+=begin%>
+<%= form_with url: "/schedules", method: :post do |form|%>
+  <%=form.label :title, "title"%>
+  <%=form.text_field :title%>
+  <br>
+  <%=form.label :name, "name"%>
+  <%=form.text_field :name%>
+  <br>
+  <%=form.label :start_at, "start_at"%>
+  <%=form.datetime_local_field :start_at%>
+  <br>
+  <%=form.label :end_at, "end_at"%>
+  <%=form.datetime_local_field :end_at%>
+  <br>
+  <%=form.submit "create"%>
+<%end%>
+
+
+<%
+=end
+%>
+
+
+
+
+<h2>FLASH</h2>
+<% flash.each do |message_type, message| %>
+      <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
+<% end %>
+
+
+
+<h2>debug parameters</h2>
+
+<h3>Group and Schedules</h3>
+<%@user.groups.each do |group|%>
+  group:
+  <br>
+  <a>&ensp;</a>
+  name overview personal
+
+  <br>
+  <a>&ensp;</a>
+  <%=group.name%>
+  <%=group.overview%>
+  <%=group.personal%>
+  <br>
+
+  schedules:
+  <br>
+  <%if group.schedules.any? %>
+    <a>&ensp;</a>
+    title contents start_at end_at
+    <br>
+    <% group.schedules.each do |s|%>
+      <a>&ensp;</a>
+      <%=s.title%>
+      <%=s.contents%>
+      <%=s.start_at%>
+      <%=s.end_at%>
+      <br>
+    <% end%>
+  <% end%>
+  <br>
+<% end%>
+
+
+<h3>Group_Users</h3>
+user_id group_id activated
+<br>
+<%@group_users_all.each do |group_user|%>
+<%=group_user.user_id%>
+<%=group_user.group_id%>
+<%=group_user.activated%>
+<br>
+<%end%>
+
+<%
+=begin %>
+<%
+=end %>

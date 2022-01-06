@@ -9,12 +9,10 @@ FactoryBot.define do
     start_at {'2001-02-03T12:13:14Z'}
     end_at {'2001-02-03T12:13:14Z'}
     association :group
-    association :user
   end
 
   trait :schedule_with_blank_attributes do
     title {nil}
-    user_id {nil}
     group_id {nil}
     contents {nil}
     start_at {nil}

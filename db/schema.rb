@@ -23,15 +23,15 @@ ActiveRecord::Schema.define(version: 2021_12_25_112729) do
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.string "overview"
+    t.boolean "personal"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "schedules", force: :cascade do |t|
     t.string "title"
-    t.integer "user_id"
     t.integer "group_id"
-    t.string "contents"
+    t.text "contents"
     t.datetime "start_at"
     t.datetime "end_at"
     t.datetime "created_at", precision: 6, null: false
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_112729) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "user_id", null: false
+    t.string "search_name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "email", default: "", null: false

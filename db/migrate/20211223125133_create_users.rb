@@ -2,7 +2,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users do |t|
       t.string :name, null: false
-      t.string :user_id, null: false 
+      t.string :search_name, null: false 
 
       t.timestamps
     end

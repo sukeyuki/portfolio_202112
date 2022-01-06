@@ -10,8 +10,7 @@ RSpec.describe Schedule, type: :model do
     schedule = FactoryBot.build(:schedule, :schedule_with_blank_attributes)
     schedule.valid?
     expect(schedule.errors[:title]).to include("can't be blank")
-    expect(schedule.errors[:user_id]).to include("can't be blank")
-    expect(schedule.errors[:group_id]).to include("can't be blank")
+    expect(schedule.errors[:group]).to include("must exist")
     expect(schedule.errors[:contents]).to include("can't be blank")
     expect(schedule.errors[:start_at]).to include("can't be blank")
     expect(schedule.errors[:end_at]).to include("can't be blank")

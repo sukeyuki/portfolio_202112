@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user do
     name {"tarou"}
-    user_id {"tarou"}
+    search_name {"tarou"}
     sequence(:email) {|n|"tarou#{n}@tarou.com"}
     # email {"tarou@tarou.com"}
     password {"123456"}
@@ -9,7 +9,7 @@ FactoryBot.define do
 
     trait :user_with_blank_name_and_userid_email do
       name {nil}
-      user_id {nil}
+      search_name {nil}
       email {nil}
     end
 
@@ -21,7 +21,7 @@ FactoryBot.define do
 
   factory :other_user,class: User do
     name {"jirou"}
-    user_id {"jirou"}
+    search_name {"jirou"}
     email {"jirou@jirou.com"}
     password {"123456"}
     password_confirmation {"123456"}

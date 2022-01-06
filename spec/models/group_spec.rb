@@ -10,6 +10,7 @@ RSpec.describe Group, type: :model do
     group.valid?
     expect(group.errors[:name]).to include("can't be blank")
     expect(group.errors[:overview]).to include("can't be blank")
+    expect(group.errors[:personal]).to include("is not included in the list")
   end
 
   it "is invalid with long attributes" do
