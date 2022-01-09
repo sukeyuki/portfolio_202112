@@ -6,7 +6,7 @@ RSpec.describe Group, type: :model do
   end
 
   it "is invalid with blank attributes" do
-    group = FactoryBot.build(:group, :group_with_blank_attributesa)
+    group = FactoryBot.build(:group, :group_with_blank_attributes)
     group.valid?
     expect(group.errors[:name]).to include("can't be blank")
     expect(group.errors[:overview]).to include("can't be blank")

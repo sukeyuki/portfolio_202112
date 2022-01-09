@@ -1,22 +1,27 @@
 class GroupsController < ApplicationController
   def create
     @group = current_user.groups.new(group_params)
-    if @group.valid?
-      @group.users << current_user
-      @group.save
-    else
-      flash[:errors] = @group.errors.messages
+    @group_user = GroupUser.new(user:current_user, group:@group,role:10)
+    ActiveRecord::Base.transaction do
+      @group.save!
+      @group_user.save!
     end
-    redirect_to controller: :schedules, action: :index
+
+    rescue
+      flash[:errors] = []
+      flash[:errors] << @group.errors.messages
+      flash[:errors] << @group_user.errors.messages
+
+    ensure
+      redirect_to root_path
   end
 
   def update
     @group = Group.find(params[:id])
-    debugger
     unless @group.update(group_params)
       flash[:errors] = @group.errors.messages
     end
-    redirect_to controller: :schedules, action: :index
+    redirect_to root_path
   end
 end
 

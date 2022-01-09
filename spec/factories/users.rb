@@ -3,7 +3,6 @@ FactoryBot.define do
     name {"tarou"}
     search_name {"tarou"}
     sequence(:email) {|n|"tarou#{n}@tarou.com"}
-    # email {"tarou@tarou.com"}
     password {"123456"}
     password_confirmation {"123456"}
 

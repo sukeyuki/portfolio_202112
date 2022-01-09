@@ -12,12 +12,11 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = Schedule.new(schedule_params)
-    if @schedule.valid?
-      @schedule.save
-    else
+    unless @schedule.save
       flash[:errors] = @schedule.errors.messages
     end
-    redirect_to action: :index
+    # redirect_to action: :index
+    redirect_to root_path
   end
 
   def update

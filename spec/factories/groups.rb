@@ -5,7 +5,14 @@ FactoryBot.define do
     personal {false}
   end
 
-  trait :group_with_blank_attributesa do
+  trait :other_valid_group do
+    name {"company"}
+    overview{"good company"}
+    personal {false}
+  end
+
+
+  trait :group_with_blank_attributes do
     name {nil}
     overview {nil}
     personal {nil}

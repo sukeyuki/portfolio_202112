@@ -11,6 +11,19 @@ FactoryBot.define do
     association :group
   end
 
+  trait :other_valid_schedule do
+    title {"plan_name2"}
+    contents {
+      "first:go to company
+      second:work
+      third:go home"
+    }
+    start_at {'2001-03-03T12:13:14Z'}
+    end_at {'2001-03-03T12:13:14Z'}
+    association :group
+  end
+
+
   trait :schedule_with_blank_attributes do
     title {nil}
     group_id {nil}

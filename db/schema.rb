@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_112729) do
     t.integer "user_id"
     t.integer "group_id"
     t.boolean "activated", default: false
+    t.integer "role", default: 30
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

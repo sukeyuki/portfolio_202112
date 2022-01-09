@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   # end
 
   root 'schedules#index'
-  # get '/users/:id', to: "schedule#index" 
   resources :schedules, only: [:index, :create, :update]
   resources :groups, only: [:create, :update]
   resources :group_users, only: [:create, :update]

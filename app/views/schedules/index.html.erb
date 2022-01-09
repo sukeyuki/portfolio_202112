@@ -5,7 +5,7 @@
 
 
 <h2>group create form</h2>
-<%= form_with model:@new_group do |form|%>
+<%= form_with model:@new_group do |form| %>
   <%=form.label :name, "name"%> 
   <%=form.text_field :name%>
   <br>
@@ -22,6 +22,7 @@
 <%end%>
 
 <h2>group update form(user.group.first)</h2>
+
 <%= form_with model:@user.groups.first do |form|%>
   <%=form.label :name, "name"%> 
   <%=form.text_field :name%>
@@ -62,7 +63,7 @@
 
 
 <h2>schedule update form(user.group.first.schedule.first)</h2>
-<%= form_with model:@user.groups.first.schedules.first do |form|%>
+<%= form_with model:@user&.groups&.first&.schedules&.first do |form|%>
   <%= form.label :group_id, "group_id"%> 
   <%= form.select :group_id, @user.groups.map{|group|group.id}%> 
   <br>
@@ -90,30 +91,44 @@
   <%=form.label :group_id, "group_id"%> 
   <%=form.select :group_id, @user.groups.map{|group|group.id}%> 
   <br>
+  <%=form.label :role, "role"%>
+  <%=form.select :role, GroupUser.roles.keys.to_a, {} %>
+  <br>
+  
+<%
+=begin%>
   <%=form.radio_button :activated, "true"%>
   <%=form.label :activated, "activated"%>
   <br>
   <%=form.radio_button :activated, "false"%>
   <%=form.label :activated, "not activated"%>
   <br>
+<%
+=end%>
+
   <%=form.submit "create"%>
 <%end%>
 
 
 <h2>group_user update form</h2>
 <%=form_with model:@group_users_all.first do |form|%>
+<%
+=begin%>
   <%=form.label :user_id, "user_id"%>
   <%=form.select :user_id, @users_all.map{|user|user.id}%>
   <br>
   <%=form.label :group_id, "group_id"%> 
   <%=form.select :group_id, @user.groups.map{|group|group.id}%> 
   <br>
+<%
+=end%>
   <%=form.radio_button :activated, "true"%>
   <%=form.label :activated, "activated"%>
   <br>
   <%=form.radio_button :activated, "false"%>
   <%=form.label :activated, "not activated"%>
   <br>
+
   <%=form.submit "update"%>
 <%end%>
 
@@ -157,10 +172,11 @@
   group:
   <br>
   <a>&ensp;</a>
-  name overview personal
+  id name overview personal
 
   <br>
   <a>&ensp;</a>
+  <%=group.id%>
   <%=group.name%>
   <%=group.overview%>
   <%=group.personal%>
@@ -170,10 +186,11 @@
   <br>
   <%if group.schedules.any? %>
     <a>&ensp;</a>
-    title contents start_at end_at
+    id title contents start_at end_at
     <br>
     <% group.schedules.each do |s|%>
       <a>&ensp;</a>
+      <%=s.id%>
       <%=s.title%>
       <%=s.contents%>
       <%=s.start_at%>
@@ -186,12 +203,13 @@
 
 
 <h3>Group_Users</h3>
-user_id group_id activated
+user_id group_id activated role
 <br>
 <%@group_users_all.each do |group_user|%>
 <%=group_user.user_id%>
 <%=group_user.group_id%>
 <%=group_user.activated%>
+<%=group_user.role%>
 <br>
 <%end%>
 
