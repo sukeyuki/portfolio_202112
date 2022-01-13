@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   root 'schedules#index'
   resources :schedules, only: [:index, :create, :update]
-  resources :groups, only: [:create, :update]
+  resources :groups, only: [:new, :edit, :create, :update]
   resources :group_users, only: [:create, :update]
 
 

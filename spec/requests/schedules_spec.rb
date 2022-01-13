@@ -26,6 +26,7 @@ RSpec.describe "Schedules", type: :request do
 
     it "can add one schedule with valid data" do
       params = FactoryBot.build(:schedule).attributes
+      # FIXME: 下記テストが通らないが、理由がわからない。
       expect{
         post schedules_url, params: {schedule: params}
       }.to change(Schedule, :count).by(1)

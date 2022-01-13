@@ -9,6 +9,7 @@ RSpec.describe Schedule, type: :model do
   it "is invalid with blank attributes" do
     schedule = FactoryBot.build(:schedule, :schedule_with_blank_attributes)
     schedule.valid?
+    # FIXME: 下記テストが通らない。なぜかスルーしてしまう。rails c にて行った際は下記エラーが発出しているのに。。。
     expect(schedule.errors[:title]).to include("can't be blank")
     expect(schedule.errors[:group]).to include("must exist")
     expect(schedule.errors[:contents]).to include("can't be blank")

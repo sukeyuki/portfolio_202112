@@ -2,12 +2,19 @@ class SchedulesController < ApplicationController
   before_action :authenticate_user!, only: [:index]
   # before_action :correct_user
   def index
+    #FIXME: root_urlにて動作させるとデータが入らない事がある。
     @user = current_user
     @new_group = Group.new
     @new_schedule = Schedule.new
     @group_user = GroupUser.new
     @group_users_all = GroupUser.all
     @users_all = User.all
+    @first_day = params[:first_day] || Date.today
+    # @groups_show ||= {}
+    # @user.groups.each do |group|
+    #   @groups_show[group.id] = false
+    # end
+    # @groups_show[1] = true
   end
 
   def create
@@ -15,7 +22,6 @@ class SchedulesController < ApplicationController
     unless @schedule.save
       flash[:errors] = @schedule.errors.messages
     end
-    # redirect_to action: :index
     redirect_to root_path
   end
 

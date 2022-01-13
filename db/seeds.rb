@@ -16,31 +16,71 @@ user1 = User.new(
 user1.skip_confirmation!
 user1.save
 
-user2 = User.create!(
+@user2 = User.new(
   name:"jirou", 
   search_name:"jirou",
   email:"jirou@jirou.com",
   password:123456789,
   password_confirmation:123456789
 )
+@user2.skip_confirmation!
+@user2.save
+
+@user3 = User.new(
+  name:"saburou", 
+  search_name:"saburou",
+  email:"saburou@saburou.com",
+  password:123456789,
+  password_confirmation:123456789
+)
+@user3.skip_confirmation!
+@user3.save
+
+@user4 = User.new(
+  name:"shirou", 
+  search_name:"shirou",
+  email:"shirou@shirou.com",
+  password:123456789,
+  password_confirmation:123456789
+)
+@user4.skip_confirmation!
+@user4.save
+
 
 private_group = user1.groups.create(
   name:"private_group",
-  overview:"aaaaa",
+  overview:"my private group",
   personal:true
 )
 
 5.times do |n|
-  user1.groups.create!(
+  group = user1.groups.create!(
     name:"group#{n}",
-    overview:"aaaaa",
-    personal:false
+    overview:"group#{n}overview",
+    personal:false,
+  )
+  GroupUser.find_by(group_id:group.id, user_id:user1.id).update(activated:true)
+  GroupUser.create!(
+    group_id: group.id,
+    user_id: @user2.id,
+    activated: true
+  )
+
+  GroupUser.create!(
+    group_id: group.id,
+    user_id: @user3.id,
+    activated: true
+  )
+
+  GroupUser.create!(
+    group_id: group.id,
+    user_id: @user4.id
   )
 end
 5.times do |n|
   private_group.schedules.create(
     title: "#{n}plan_name",
-    contents: "Ihaveplans",
+    contents: "I have plans",
     start_at: '2001-02-03T12:13:14Z',
     end_at: '2001-02-03T12:13:14Z'
   )
