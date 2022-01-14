@@ -22,5 +22,5 @@ def group_user_create_params
 end
 
 def group_user_update_params
-  params.require(:group_user).permit(:activated)
+  params.require(:group_user).permit(:activated, :role)
 end

@@ -12,6 +12,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     super
+    @group = current_user.groups.new(name:"private", personal:true)
+    @group_user = GroupUser.new(user:current_user, group:@group,role:10, activated: true)
+    ActiveRecord::Base.transaction do
+      @group.save!
+      @group_user.save!
+    end
+
+    rescue
+      flash[:errors] = []
+      flash[:errors] << @group.errors.messages
+      flash[:errors] << @group_user.errors.messages
   end
 
   # GET /resource/edit

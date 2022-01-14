@@ -3,20 +3,35 @@ require 'rails_helper'
 RSpec.describe "Users", type: :request do
 
   describe "POST sign_in" do
-    it "returns http success" do
-      user = FactoryBot.create(:user)
-      params = user.attributes
-      post user_session_url, params:{user: params}
-      expect(response).to have_http_status(:success)
-      expect redirect_to root_url
+
+    context "with valid data" do
+      before do
+        @params = FactoryBot.create(:user).attributes
+      end
+
+      it "returns http success" do
+        post user_session_url, params:{user: @params}
+        expect(response).to have_http_status(:success)
+      end  
+
+      it "redirect_to root_path" do
+        post user_session_url, params:{user: @params}
+        expect redirect_to root_url
+      end
     end
   end
 
   describe "POST sign_up" do
+    before do
+      @params = FactoryBot.build(:user).attributes
+    end
     it "returns http success" do
-      params = FactoryBot.build(:user).attributes
-      post user_registration_url, params:{user: params}
+      post user_registration_url, params:{user: @params}
       expect(response).to have_http_status(:success)
+    end
+
+    it "redirect_to root_path" do
+      post user_registration_url, params:{user: @params}
       expect redirect_to root_url
     end
   end
