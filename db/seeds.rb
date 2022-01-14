@@ -52,6 +52,8 @@ private_group = user1.groups.create(
   overview:"my private group",
   personal:true
 )
+GroupUser.find_by(group_id:private_group.id, user_id:user1.id).update(activated:true)
+
 
 5.times do |n|
   group = user1.groups.create!(
@@ -77,6 +79,22 @@ private_group = user1.groups.create(
     user_id: @user4.id
   )
 end
+
+
+
+user2group = @user2.groups.create(
+  name:"user2group",
+  overview:"user2group overview",
+  personal:false
+)
+
+GroupUser.create!(
+  group_id: user2group.id,
+  user_id: user1.id,
+)
+
+
+
 5.times do |n|
   private_group.schedules.create(
     title: "#{n}plan_name",

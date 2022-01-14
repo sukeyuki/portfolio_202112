@@ -9,10 +9,8 @@ RSpec.describe "Groups", type: :request do
 
   describe "POST /create" do
     it "returns http 302" do
-      # FIXME: paramsのデータはなくても動きそう。params必要ないか？そもそもこのテストも必要ないか？
       params = FactoryBot.build(:group).attributes
       post groups_url, params:{group: params}
-      expect(response).to have_http_status "302"
       expect(response).to redirect_to root_path
     end
 
@@ -21,7 +19,6 @@ RSpec.describe "Groups", type: :request do
       expect{
         post groups_url, params:{group: params}
       }.to change(Group, :count).by(1)
-      expect(response).to redirect_to root_path
     end
 
     it "can create one new group and one group_user" do

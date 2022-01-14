@@ -107,7 +107,7 @@ h2{
 
 .oneday_schedule{
     width: 14%;
-    border: solid;
+    // border: solid;
 }
 
 .day_disp{
@@ -118,12 +118,15 @@ h2{
 }
 
 .one_hour{
-    height: 4%;
+    height: 40px;
     border:1px solid;
+    box-sizing: border-box;
 }
 
 .one_hour_disp{
-    height: 4%;
+    height: 40px;
+    border: 1px;
+    box-sizing: border-box;
     position:relative;
     top:-1%;
 }

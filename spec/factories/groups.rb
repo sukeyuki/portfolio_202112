@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :group do
+  factory :group , class: Group do
     name {"family"}
     overview{"my happy family"}
     personal {false}

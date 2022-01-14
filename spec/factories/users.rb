@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :user, class: User do
     name {"tarou"}
     search_name {"tarou"}
     sequence(:email) {|n|"tarou#{n}@tarou.com"}

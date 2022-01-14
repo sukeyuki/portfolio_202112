@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :schedule do
+  factory :schedule, class: Schedule do
     title {"plan_name"}
     contents {
       "first:go to shcool
@@ -26,7 +26,7 @@ FactoryBot.define do
 
   trait :schedule_with_blank_attributes do
     title {nil}
-    group_id {nil}
+    group {nil}
     contents {nil}
     start_at {nil}
     end_at {nil}

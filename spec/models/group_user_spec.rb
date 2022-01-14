@@ -10,7 +10,7 @@ RSpec.describe GroupUser, type: :model do
   end
 
   it "is invalid with blank attributes" do
-    group_user = FactoryBot.build(:group_user, :group_user_with_blank_attributesa)
+    group_user = FactoryBot.build(:group_user, :group_user_with_blank_attributes)
     group_user.valid?
     # FIXME: 下記テストが通らない。なぜかスルーしてしまう。rails c にて行った際は下記エラーが発出しているのに。。。
     expect(group_user.errors[:user]).to include("must exist")

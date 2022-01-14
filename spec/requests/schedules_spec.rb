@@ -8,6 +8,10 @@ RSpec.describe "Schedules", type: :request do
     sign_in @user
   end
 
+
+  let(:group) { FactoryBot.create(:group)}
+
+
   describe "GET /index" do
     it "returns http success" do
       get schedules_url
@@ -24,9 +28,17 @@ RSpec.describe "Schedules", type: :request do
       expect(response).to redirect_to root_path
     end
 
+
+      # # FIXME: 下記テストが通らないが、理由がわからない。
+      # debugger
+      # schedule = FactoryBot.build(:schedule)
+
+
     it "can add one schedule with valid data" do
       params = FactoryBot.build(:schedule).attributes
-      # FIXME: 下記テストが通らないが、理由がわからない。
+      # params["group_id"] = 1
+      params["group_id"] = group.id
+
       expect{
         post schedules_url, params: {schedule: params}
       }.to change(Schedule, :count).by(1)
