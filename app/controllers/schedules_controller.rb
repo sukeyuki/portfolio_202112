@@ -2,7 +2,6 @@ class SchedulesController < ApplicationController
   before_action :authenticate_user!, only: [:index]
   # before_action :correct_user
   def index
-    #FIXME: root_urlにて動作させるとデータが入らない事がある。
     @user = current_user
     @new_group = Group.new
     @new_schedule = Schedule.new
@@ -10,7 +9,6 @@ class SchedulesController < ApplicationController
     @group_users_all = GroupUser.all
     @users_all = User.all
     @first_day = start_at_params=={} ? Date.today : Date.parse(start_at_params[:start_at])
-    # debugger
     unless current_user.groups.find_by(personal:true)
       group = current_user.groups.new(name:"private", personal:true, overview:"my personal scuedule")
       group_user = GroupUser.new(user:current_user, group:group,role:10, activated: true)
@@ -26,14 +24,11 @@ class SchedulesController < ApplicationController
         flash[:errors] << group_user.errors.messages
       end
     end
-    # debugger
 
-
-    # @groups_show ||= {}
-    # @user.groups.each do |group|
-    #   @groups_show[group.id] = false
-    # end
-    # @groups_show[1] = true
+    @groups_show = {}
+    group_show_params.each do |key, val|
+      @groups_show[key] = val
+    end
   end
 
   def create
@@ -58,6 +53,12 @@ class SchedulesController < ApplicationController
 
     def start_at_params
       para = params.permit(:start_at)
+    end
+
+    def group_show_params
+      # group名と"-checked"を組み合わせてsymbol化する。
+      group_syms = current_user.groups.map {|group| (group.id.to_s+"-checked").to_sym}
+      params.permit(*group_syms)
     end
 
 

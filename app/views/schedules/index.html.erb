@@ -19,7 +19,7 @@
                 <div>
                     <%@user.groups.each do |group|%>
                         <%if GroupUser.find_by(user_id: current_user.id, group_id: group.id).activated?%>
-                            <input type="checkbox" id ="<%=group.name%>group-show" class ="show-group">
+                            <input type="checkbox" id ="<%=group.id%>-checked" class ="show-group" <%="checked" if @groups_show[group.id.to_s+"-checked"]=="checked"%>>
                             <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name=<%=group.name%> data-overview=<%=group.overview%> data-url=<%= edit_group_url(group)%>>
                                 <%=group.name%>
                             </a>
@@ -39,7 +39,6 @@
                             <br>
                         <%end%>
                     <%end%>
-
             </div>
 
                 <%=link_to"グループ作成", new_group_url%>

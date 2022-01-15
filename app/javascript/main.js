@@ -13,13 +13,16 @@ $(function() {
   });
 
 
-  // グループ表示の方法が未定のため保留
   $('.show-group').on('click',function(){
-    $(this).attr(
-      'checkbox', 'checked'
-    )
-    window.location.href='http://localhost:3000/'
-    // $.post('http://localhost:3000/', "aaa")
+    const url = new URL(location);
+    $('.show-group').each(function(index, element){
+      url.searchParams.delete($(element).attr('id'));
+
+      if($(element).prop('checked')){
+        url.searchParams.set($(element).attr('id'), "checked")
+      };
+    });
+    window.location.href = url;
   });
 
 
@@ -34,8 +37,6 @@ $(function() {
     // console.log(url.search);
     url.searchParams.set("start_at",$(this).val());
     console.log(url.toString());
-    $(this).attr('value', $(this).val());
-
     window.location.href = url;
     });    
 
