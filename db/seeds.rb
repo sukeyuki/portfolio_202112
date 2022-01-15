@@ -47,12 +47,12 @@ user1.save
 @user4.save
 
 
-private_group = user1.groups.create(
-  name:"private_group",
-  overview:"my private group",
-  personal:true
-)
-GroupUser.find_by(group_id:private_group.id, user_id:user1.id).update(activated:true)
+# private_group = user1.groups.create(
+#   name:"private_group",
+#   overview:"my private group",
+#   personal:true
+# )
+# GroupUser.find_by(group_id:private_group.id, user_id:user1.id).update(activated:true)
 
 
 5.times do |n|
@@ -95,11 +95,11 @@ GroupUser.create!(
 
 
 
-5.times do |n|
-  private_group.schedules.create(
-    title: "#{n}plan_name",
-    contents: "I have plans",
-    start_at: '2001-02-03T12:13:14Z',
-    end_at: '2001-02-03T12:13:14Z'
-  )
-end
+# 5.times do |n|
+#   private_group.schedules.create(
+#     title: "#{n}plan_name",
+#     contents: "I have plans",
+#     start_at: '2001-02-03T12:13:14Z',
+#     end_at: '2001-02-03T12:13:14Z'
+#   )
+# end

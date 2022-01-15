@@ -23,13 +23,21 @@ $(function() {
   });
 
 
-  $('#schedule_start_at').on('chenge',function(){
-    console.log($(this).val)
+  $('#schedule_start_at').on('change',function(){
+    // console.log($(this).val());
+    const url = new URL(location);
+    // console.log(url.toString());
+    // console.log(url.href);
+    // console.log(url.hostname);
+    // console.log(url.pathname);
+    // console.log(url.protocol);
+    // console.log(url.search);
+    url.searchParams.set("start_at",$(this).val());
+    console.log(url.toString());
+    $(this).attr('value', $(this).val());
 
-    // window.location.href='http://localhost:3000/schedules'
-  
-    });
-
+    window.location.href = url;
+    });    
 
 });
 

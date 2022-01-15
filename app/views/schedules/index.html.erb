@@ -17,27 +17,28 @@
         		<div id = "group_list" class = "border">
                 予定表
                 <div>
-                  <%@user.groups.each do |group|%>
-                    
-                    <input type="checkbox" id ="<%=group.name%>group-show" class ="show-group">
-                    <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name=<%=group.name%> data-overview=<%=group.overview%> data-url=<%= edit_group_url(group)%>>
-                    	<%=group.name%>
-                    </a>
-                        <a data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <%@user.groups.each do |group|%>
+                        <%if GroupUser.find_by(user_id: current_user.id, group_id: group.id).activated?%>
+                            <input type="checkbox" id ="<%=group.name%>group-show" class ="show-group">
+                            <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name=<%=group.name%> data-overview=<%=group.overview%> data-url=<%= edit_group_url(group)%>>
+                                <%=group.name%>
+                            </a>
+                            <a data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
                             <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
-                            ＜
-                        </a>
-                        <div class="collapse" id="group<%=group.id%>">
-                            <div class="card-body">
-                                <%#TODO 空白が大きい。整理%>
-                                <%group.users.each do |user|%>
-                                <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
-                                <br>
-                                <%end%>
+                                ＜
+                            </a>
+                            <div class="collapse" id="group<%=group.id%>">
+                                <div class="card-body">
+                                    <%#TODO 空白が大きい。整理%>
+                                    <%group.users.each do |user|%>
+                                        <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
+                                        <br>
+                                    <%end%>
+                                </div>
                             </div>
-                        </div>
-                        <br>
-                  <%end%>
+                            <br>
+                        <%end%>
+                    <%end%>
 
             </div>
 
@@ -48,12 +49,11 @@
                     グループリクエスト
                 </p>
 
-
                 <label for="start_at">日時の変更</label><br>
                 <%#TODO 選択日を予定表に反映する機能の追加%>
-                <input type="date" id="schedule_start_at" name="name" required><br>
-                
-                
+                <%# <input type="date" id="schedule_start_at" name="schedule_start" value="2020-01-15",required><br> %>
+                <input type="date" id="schedule_start_at" name="schedule_start" value="<%=@first_day.to_s%>",required><br>
+
             </div>
             <div id = "schedule" class = "border">
                 <div id ="schedule_table_window">
@@ -394,21 +394,20 @@
                 </button>
                 </div>
                     <div class="modal-body">
-                        grop_name<br>
                         <%@user.groups.each do |group|%>
-
-                        <%=group.name unless GroupUser.find_by(user_id:@user, group_id:group.id).activated%>
-                        <input type="radio" id="participation" name="attendance">
-                        <label for="title">承認</label>
-                        <input type="radio" id="non_participation" name="attendance">
-                        <label for="title">拒否</label>
-                        <br>
+                            <% unless GroupUser.find_by(user_id:@user, group_id:group.id).activated%>
+                                <%=group.name%>
+                                <input type="radio" id="participation" name="attendance">
+                                <label for="title">承認</label>
+                                <input type="radio" id="non_participation" name="attendance">
+                                <label for="title">拒否</label>
+                                <br>
+                            <%end%>
                         <%end%>
 
                     </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
             </div>

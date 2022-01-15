@@ -9,7 +9,26 @@ class SchedulesController < ApplicationController
     @group_user = GroupUser.new
     @group_users_all = GroupUser.all
     @users_all = User.all
-    @first_day = params[:first_day] || Date.today
+    @first_day = start_at_params=={} ? Date.today : Date.parse(start_at_params[:start_at])
+    # debugger
+    unless current_user.groups.find_by(personal:true)
+      group = current_user.groups.new(name:"private", personal:true, overview:"my personal scuedule")
+      group_user = GroupUser.new(user:current_user, group:group,role:10, activated: true)
+      begin
+        ActiveRecord::Base.transaction do
+          group.save!
+          group_user.save!
+        end
+
+      rescue
+        flash[:errors] = []
+        flash[:errors] << group.errors.messages
+        flash[:errors] << group_user.errors.messages
+      end
+    end
+    # debugger
+
+
     # @groups_show ||= {}
     # @user.groups.each do |group|
     #   @groups_show[group.id] = false
@@ -18,6 +37,7 @@ class SchedulesController < ApplicationController
   end
 
   def create
+    debugger
     @schedule = Schedule.new(schedule_params)
     unless @schedule.save
       flash[:errors] = @schedule.errors.messages
@@ -34,6 +54,10 @@ class SchedulesController < ApplicationController
   private
     def schedule_params
       params.require(:schedule).permit(:group_id, :title, :contents, :start_at, :end_at)
+    end
+
+    def start_at_params
+      para = params.permit(:start_at)
     end
 
 
