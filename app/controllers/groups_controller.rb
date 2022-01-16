@@ -23,6 +23,8 @@ class GroupsController < ApplicationController
 
   def edit
     @group = Group.find(params[:id])
+    @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
+    # @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: current_user.id) unless users_search_params == {}
   end
 
   def update
@@ -32,9 +34,13 @@ class GroupsController < ApplicationController
     end
     redirect_to root_path
   end
-end
 
-private
-def group_params
-  params.require(:group).permit(:name, :overview, :personal)
+  private
+  def group_params
+    params.require(:group).permit(:name, :overview, :personal)
+  end
+
+  def users_search_params
+    params.permit(:search)
+  end
 end

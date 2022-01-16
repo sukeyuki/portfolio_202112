@@ -26,7 +26,6 @@
                     <%=form.text_area :overview, size:"50x5"%>
                     <br>
                     <%=form.submit "update"%>
-                    <br>
                 <%end%>
 
             </div>
@@ -34,17 +33,39 @@
                 参加中
                 <br>
                 <%@group.users.each do |user|%>
-                  <%=user.name if GroupUser.find_by(user_id: user.id, group_id: @group.id).activated%>
+                    <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+                    <%#FIXME ネストにてしてしまっている%>
+                    <%if gu.activated%>
+                        <%unless @group.personal == true%>
+                            <%=link_to 'kick', group_user_url(gu), method: :delete %>
+                        <%end%>
+                        <%=user.name%>
+                    <%end%>
                 <%end%>
                 <br>
                 招待中
                 <br>
                 <%@group.users.each do |user|%>
-                <%=user.name unless GroupUser.find_by(user_id: user.id, group_id: @group.id).activated%>
+                    <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+                    <%unless gu.activated%>
+                        <%=link_to 'kick', group_user_url(gu), method: :delete %>
+                        <%=user.name%>
+                    <%end%>
                 <%end%>
                 <br>
                 招待
-
+                <%=form_with url:edit_group_url(@group), method: :post, local: true do |f|%>
+                    <%=f.text_field :search%>
+                    <%=f.submit 'Search'%>
+                <%end%>
+                <%@search_users&.each do |user|%>
+                    <%=form_with model:GroupUser.new, local: true do |f|%>
+                        <input type = "hidden" name = "group_user[user_id]" value = "<%=user.id%>">
+                        <input type = "hidden" name = "group_user[group_id]" value = "<%=@group.id%>">
+                        <%=f.submit 'Invite'%>
+                        <%=user.name%>
+                    <%end%>
+                <%end%>
             </div>
         </div>
     </body>

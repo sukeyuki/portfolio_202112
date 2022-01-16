@@ -12,8 +12,9 @@ Rails.application.routes.draw do
   root 'schedules#index'
   resources :schedules, only: [:index, :create, :update]
   resources :groups, only: [:new, :edit, :create, :update]
-  resources :group_users, only: [:create, :update]
+  resources :group_users, only: [:create, :update, :destroy]
 
 
+  post 'groups/:id/edit', to: 'groups#edit'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

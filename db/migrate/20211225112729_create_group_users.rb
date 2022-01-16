@@ -6,6 +6,7 @@ class CreateGroupUsers < ActiveRecord::Migration[6.1]
       t.boolean :activated,   default: false
       t.integer :role, default: 30
 
+      t.index [:user_id, :group_id], unique: true
       t.timestamps
     end
   end

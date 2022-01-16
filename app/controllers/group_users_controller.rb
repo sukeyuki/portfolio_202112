@@ -4,7 +4,7 @@ class GroupUsersController < ApplicationController
     unless @group_user.save
       flash[:errors] = @group_user.errors.messages
     end
-    redirect_to root_path
+    redirect_to edit_group_url(group_user_create_params[:group_id])
   end
 
   def update
@@ -14,13 +14,21 @@ class GroupUsersController < ApplicationController
     end
     redirect_to root_path
   end
+
+  def destroy
+    g_id = GroupUser.find(params[:id]).group_id
+    GroupUser.find(params[:id]).destroy
+    redirect_to edit_group_url(g_id)
+  end
+
+  private
+  def group_user_create_params
+    params.require(:group_user).permit(:user_id, :group_id, :role)
+  end
+
+  def group_user_update_params
+    params.require(:group_user).permit(:activated, :role)
+  end
 end
 
-private
-def group_user_create_params
-  params.require(:group_user).permit(:user_id, :group_id, :role)
-end
 
-def group_user_update_params
-  params.require(:group_user).permit(:activated, :role)
-end
