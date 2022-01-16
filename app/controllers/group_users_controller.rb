@@ -8,17 +8,28 @@ class GroupUsersController < ApplicationController
   end
 
   def update
+    #メイン画面のグループリクエストを拒否したらデータを消す処理に移行 
+    if group_user_update_params[:activated]=="delete"
+      # return redirect_to action: :destroy
+      # FIXME: redirect_toを使用出来なかったため下記のように記載したが間違っている気がする。
+      return self.destroy
+    end
     @group_user = GroupUser.find(params[:id])
     unless @group_user.update(group_user_update_params)
       flash[:errors] = @group_user.errors.messages
     end
-    redirect_to root_path
+    redirect_to(session[:forwarding_url])
+    session.delete(:forwarding_url)
+    # redirect_to root_path
   end
 
   def destroy
     g_id = GroupUser.find(params[:id]).group_id
     GroupUser.find(params[:id]).destroy
-    redirect_to edit_group_url(g_id)
+    redirect_to(session[:forwarding_url])
+    session.delete(:forwarding_url)
+    # redirect_to root_url
+    # redirect_to edit_group_url(g_id)
   end
 
   private

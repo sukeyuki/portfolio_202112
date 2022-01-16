@@ -25,6 +25,7 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
     # @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: current_user.id) unless users_search_params == {}
+    session[:forwarding_url] = request.original_url if request.get?
   end
 
   def update

@@ -46,6 +46,13 @@
                 <p id = "create_group" type="button" data-toggle="modal" data-target="#group_request_modal">
                 <%#TODO グループリクエスト機能の追加%>
                     グループリクエスト
+                    <span class="red">
+                    <%if GroupUser.where(user_id:current_user.id).where(activated:false).count==0%>
+                        <%=nil%>
+                    <%else%>
+                        <%=GroupUser.where(user_id:current_user.id).where(activated:false).count%>
+                    <%end%>
+                    </span>
                 </p>
 
                 <label for="start_at">日時の変更</label><br>
@@ -357,20 +364,10 @@
                 </button>
                 </div>
                     <div class="modal-body">
-											グループ名:
-												<div id ="group-name">エラー。空データ</div>
-											詳細
-												<div id ="group-overview"></div>
-											<%# <p>メンバー</p>
-												<div id ="group_member"></div> %>
-
-                        <%# <label for="title">グループ名</label><br>
-                        <input type="text" id="group_name" name="name" required minlength="4" maxlength="8" size="10"><br> %>
-
-                        <%# <p>詳細</p>
-                        <textarea id = "group_detail" placeholder="詳細を入力" rows="5" cols="50"></textarea> %>
-
-                    
+                            グループ名:
+                        <div id ="group-name">エラー。空データ</div>
+                            詳細
+                        <div id ="group-overview"></div>
                     </div>
                 <div class="modal-footer">
 
@@ -394,16 +391,19 @@
                 </div>
                     <div class="modal-body">
                         <%@user.groups.each do |group|%>
-                            <% unless GroupUser.find_by(user_id:@user, group_id:group.id).activated%>
-                                <%=group.name%>
-                                <input type="radio" id="participation" name="attendance">
-                                <label for="title">承認</label>
-                                <input type="radio" id="non_participation" name="attendance">
-                                <label for="title">拒否</label>
+                            <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
+                            <% unless gu.activated%>
+                                <%=form_with model:gu do |f|%>
+                                    <%=group.name%>
+                                    承認
+                                    <%=f.radio_button :activated, :true%>
+                                    拒否
+                                    <%=f.radio_button :activated, :delete%>
+                                    <%=f.submit "response", class:"btn btn-primary"%>
+                                <%end%>
                                 <br>
                             <%end%>
                         <%end%>
-
                     </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

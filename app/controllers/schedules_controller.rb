@@ -29,10 +29,10 @@ class SchedulesController < ApplicationController
     group_show_params.each do |key, val|
       @groups_show[key] = val
     end
+    session[:forwarding_url] = request.original_url if request.get?
   end
 
   def create
-    debugger
     @schedule = Schedule.new(schedule_params)
     unless @schedule.save
       flash[:errors] = @schedule.errors.messages
