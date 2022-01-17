@@ -15,7 +15,6 @@ $(function() {
     const url = new URL(location);
     $('.show-group').each(function(index, element){
       url.searchParams.delete($(element).attr('id'));
-
       if($(element).prop('checked')){
         url.searchParams.set($(element).attr('id'), "checked")
       };

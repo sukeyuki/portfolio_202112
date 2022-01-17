@@ -321,34 +321,41 @@
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新しい予定</h5>
+                <h5 class="modal-title" id="exampleModalLabel">new schedule</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                     <div class="modal-body">
+                        <%=form_with model:@new_schedule do |f|%>
+                            <%=f.label :title, "titele:"%>
+                            <br>
+                            <%=f.text_field :title%>
+                            <br>
+                            <%=f.label :group_id, "group:"%>
+                            <br>
+                            <%=f.select :group_id, GroupUser.where(user_id:current_user.id).where(activated:true).map{|gu|[Group.find(gu.group_id).name, Group.find(gu.group_id).id]}%>
+                            <br>
+                            <%#FIXME 時間指定を10分間隔にて指定可能としたい%>
+                            <%=f.label :start_at, "from:"%>
+                            <br>
+                            <%=f.datetime_local_field :start_at%>
+                            <br>
+                            <%=f.label :end_at, "to:"%>
+                            <br>
+                            <%=f.datetime_local_field :end_at%>
+                            <br>
+                            <%=f.label :contents, "content:"%>
+                            <br>
+                            <%=f.text_area :contents, size:"50x5", placeholder:"詳細を入力"%>
+                            <br>
+                            <div class="modal-footer">
+                                <%=f.button "save", class:"btn btn-primary"%>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        <%end%>
 
-                        <label for="schedule_title">title:</label><br>
-                        <input type="text" id="schedule_title" name="name" required minlength="4" maxlength="20" size="20"><br>
-
-                        <label for="group_name">group:</label><br>
-                        <input type="text" id="group_name" name="name" required minlength="4" maxlength="20" size="20"><br>
-
-                        <label for="schedule_start_at">from:</label><br>
-                        <input type="datetime-local" id="schedule_start_at" name="name" required><br>
-
-                        <label for="schedule_end_at">to:</label><br>
-                        <input type="datetime-local" id="schedule_end_at" name="name" required><br>
-                        
-
-                        <p>詳細</p>
-                        <textarea id = "schedule_detail" placeholder="詳細を入力" rows="5" cols="50"></textarea>
-                    
                     </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
             </div>
             </div>
         </div>

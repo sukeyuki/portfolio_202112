@@ -20,16 +20,12 @@ class GroupUsersController < ApplicationController
     end
     redirect_to(session[:forwarding_url])
     session.delete(:forwarding_url)
-    # redirect_to root_path
   end
 
   def destroy
-    g_id = GroupUser.find(params[:id]).group_id
     GroupUser.find(params[:id]).destroy
     redirect_to(session[:forwarding_url])
     session.delete(:forwarding_url)
-    # redirect_to root_url
-    # redirect_to edit_group_url(g_id)
   end
 
   private

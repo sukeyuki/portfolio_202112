@@ -22,10 +22,15 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    # FIXME: 全ての人がURLを記載することでグループedit画面に入ることができる状態
     @group = Group.find(params[:id])
-    @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
-    # @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: current_user.id) unless users_search_params == {}
-    session[:forwarding_url] = request.original_url if request.get?
+    # debugger
+    if GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
+      @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
+      session[:forwarding_url] = request.original_url if request.get?
+    else
+      redirect_to root_path
+    end
   end
 
   def update
