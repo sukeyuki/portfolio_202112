@@ -78,9 +78,15 @@ user1.save
     group_id: group.id,
     user_id: @user4.id
   )
+  5.times do |n|
+    group.schedules.create(
+      title: "#{n}plan_name",
+      contents: "I have plans",
+      start_at: '2022-02-01T06:00:00Z',
+      end_at: '2022-02-01T07:00:00Z'
+    )
+  end
 end
-
-
 
 user2group = @user2.groups.create(
   name:"user2group",
@@ -88,8 +94,19 @@ user2group = @user2.groups.create(
   personal:false
 )
 
+user3group = @user3.groups.create(
+  name:"user3group",
+  overview:"user3group overview",
+  personal:false
+)
+
 GroupUser.create!(
   group_id: user2group.id,
+  user_id: user1.id,
+)
+
+GroupUser.create!(
+  group_id: user3group.id,
   user_id: user1.id,
 )
 

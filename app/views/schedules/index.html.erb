@@ -11,15 +11,13 @@
         <link rel="icon" type="image/png" href = "images/favicon.png">
     </head> 
     <body>
-
-
         <div class = "wrapper flex border">
         		<div id = "group_list" class = "border">
                 予定表
                 <div>
                     <%@user.groups.each do |group|%>
                         <%if GroupUser.find_by(user_id: current_user.id, group_id: group.id).activated?%>
-                            <input type="checkbox" id ="<%=group.id%>-checked" class ="show-group" <%="checked" if @groups_show[group.id.to_s+"-checked"]=="checked"%>>
+                            <input type="checkbox" id ="<%=group.id%>-checkbox" class ="show-group" <%="checked" if @groups_show_list.include?(group.id)%>>
                             <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name=<%=group.name%> data-overview=<%=group.overview%> data-url=<%= edit_group_url(group)%>>
                                 <%=group.name%>
                             </a>
@@ -58,7 +56,7 @@
                 <label for="start_at">日時の変更</label><br>
                 <%#TODO 選択日を予定表に反映する機能の追加%>
                 <%# <input type="date" id="schedule_start_at" name="schedule_start" value="2020-01-15",required><br> %>
-                <input type="date" id="schedule_start_at" name="schedule_start" value="<%=@first_day.to_s%>",required><br>
+                <input type="date" id="schedule_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
 
             </div>
             <div id = "schedule" class = "border">
@@ -66,6 +64,10 @@
                     <div id = "schedule_table">
                         <%#TODO スケジュール表示機能作成。%>
                         <%#TODO スケジュール日時表示部分の整理。色、配置など。%>
+                        <%#TODO 渡されたインスタンス変数から、スケジュールのブロックを作成する。%>
+
+
+
                         <div id = "time_disp">
                             <div class = "day_disp one_hour_disp"><%=@first_day.month%>月</div>
                             <div class = "one_hour_disp aa">0:00</div>
@@ -122,7 +124,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+1).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(1.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
@@ -149,7 +151,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+2).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(2.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
@@ -176,7 +178,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+3).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(3.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
@@ -203,7 +205,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+4).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(4.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
@@ -230,7 +232,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+5).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(5.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
@@ -257,7 +259,7 @@
                             <div class = "one_hour"></div>
                         </div>
                         <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=(@first_day+6).day%>日</div>
+                            <div class = "day_disp"><%=@first_day.since(6.days).day%>日</div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
                             <div class = "one_hour"></div>
