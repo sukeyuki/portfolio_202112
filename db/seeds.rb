@@ -82,8 +82,8 @@ user1.save
     group.schedules.create(
       title: "#{n}plan_name",
       contents: "I have plans",
-      start_at: '2022-02-01T06:00:00Z',
-      end_at: '2022-02-01T07:00:00Z'
+      start_at: "2022-02-#{n+1}T06:00:00Z",
+      end_at: "2022-02-#{n+1}T07:00:00Z"
     )
   end
 end

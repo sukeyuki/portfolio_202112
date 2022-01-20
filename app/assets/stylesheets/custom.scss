@@ -93,27 +93,29 @@ h2{
 } */
 
 #schedule_table{
-    width:1500px;
+    width:1450px;
     height:1000px;
     display: flex;
+    position:relative;
 }
 
 #time_disp{
     position: sticky;
     left:0px;
     background-color: sandybrown;
-    width: 3%;
+    width: 50px;
 }
 
 .oneday_schedule{
-    width: 14%;
+    // width: 14%;
+    width: 200px;
     // border: solid;
 }
 
 .day_disp{
     position:sticky;
     top:0px;
-    height: 4%;
+    height: 40px;
     background-color: red;
 }
 
@@ -166,4 +168,11 @@ h2{
 
 .red{
     color:red;
+}
+
+.schedule_block {
+    // width:200px;
+    background-color: red;
+    position:absolute;
+    border:solid;
 }
