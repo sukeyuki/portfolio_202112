@@ -54,11 +54,14 @@ class SchedulesController < ApplicationController
       # schedule_ids << schedule.id
       schedule_start_end_arr << [schedule.start_at, schedule.end_at]
     end
-    schedule_z_index = {}
+    schedule_overlap_params = {}
     @show_schedules.each.with_index do |schedule, index|
-      schedule_z_index[schedule.id] = overlap_calc(schedule_start_end_arr,index)
+      schedule_overlap_params[schedule.id] = {}
+      schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
+      schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
   # debugger
+
 
     @show_schedules.each do |schedule|
       day_diff = (schedule.end_at.to_date-schedule.start_at.to_date).to_i
@@ -67,18 +70,18 @@ class SchedulesController < ApplicationController
         #加えて、end_atがある日はその日の始まりからend_atまでの予定を入れる。
         @schedules_position_parameters[schedule.id] = []      
         par = {}
-        par[:left]   = time_disp_width + one_hour_width*((schedule.start_at - @first_day).to_i/86400)
         par[:top]    = day_disp_height + one_hour_height*((schedule.start_at - @first_day).to_i%86400).to_f/(60*60).to_f
         par[:height] = one_hour_height*(schedule.start_at.end_of_day - schedule.start_at).to_f/(60*60).to_f
-        par[:width]  = one_hour_width - 20*(schedule_z_index[schedule.id]-1)
-        par[:zindex] = schedule_z_index[schedule.id]
+        par[:width]  = one_hour_width / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = time_disp_width + one_hour_width*((schedule.start_at - @first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        # par[:zindex] = schedule_z_index[schedule.id]
         @schedules_position_parameters[schedule.id] << par if schedule.start_at >= @first_day
         par = {}
-        par[:left]   = time_disp_width + one_hour_width*((schedule.end_at - @first_day).to_i/86400)
         par[:top]    = day_disp_height
         par[:height] = one_hour_height*(schedule.end_at - schedule.end_at.beginning_of_day).to_f/(60*60).to_f
-        par[:width]  = one_hour_width - 20*(schedule_z_index[schedule.id]-1)
-        par[:zindex] = schedule_z_index[schedule.id]
+        par[:width]  = one_hour_width / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = time_disp_width + one_hour_width*((schedule.end_at - @first_day).to_i/86400)  + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        # par[:zindex] = schedule_z_index[schedule.id]
         #表示範囲に入らない場合は配列に加えない
         @schedules_position_parameters[schedule.id] << par  if schedule.end_at <= @first_day.since(6.days).end_of_day
 
@@ -86,11 +89,11 @@ class SchedulesController < ApplicationController
           # 日を2日以上跨ぐ場合に一日中の予定を作成
           (day_diff-1).times do |n|
             par = {}
-            par[:left]   = time_disp_width + one_hour_width*(((schedule.start_at - @first_day).to_i/86400)+n+1)
             par[:top]    = day_disp_height
             par[:height] = one_hour_height*24
-            par[:width]  = one_hour_width - 20*(schedule_z_index[schedule.id]-1)
-            par[:zindex] = schedule_z_index[schedule.id]
+            par[:width]  = one_hour_width / schedule_overlap_params[schedule.id][:overlap_count]
+            par[:left]   = time_disp_width + one_hour_width*(((schedule.start_at - @first_day).to_i/86400)+n+1) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+            # par[:zindex] = schedule_z_index[schedule.id]
             #表示範囲に入らない場合は配列に加えない
             @schedules_position_parameters[schedule.id] << par  if ((schedule.start_at - @first_day).to_i/86400)+n+1 >= 0 and ((schedule.start_at - @first_day).to_i/86400)+n+1 <= 6
           end
@@ -98,11 +101,11 @@ class SchedulesController < ApplicationController
       else
         #日を跨がない場合
         par = {}
-        par[:left]   = time_disp_width + one_hour_width*((schedule.start_at - @first_day).to_i/86400)
         par[:top]    = day_disp_height + one_hour_height*((schedule.start_at - @first_day).to_i%86400).to_f/(60*60).to_f
         par[:height] = one_hour_height*(schedule.end_at - schedule.start_at).to_f/(60*60).to_f
-        par[:width]  = one_hour_width - 20*(schedule_z_index[schedule.id]-1)
-        par[:zindex] = schedule_z_index[schedule.id]
+        par[:width]  = one_hour_width / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = time_disp_width + one_hour_width*((schedule.start_at - @first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        # par[:zindex] = schedule_z_index[schedule.id]
         @schedules_position_parameters[schedule.id] = [par]      
       end      
     end

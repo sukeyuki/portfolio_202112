@@ -3,4 +3,5 @@ class GroupUser < ApplicationRecord
   belongs_to :group
   belongs_to :user
   enum role: {admin:10, editor:20, viewer:30}
+  scope :activated, -> {where(activated: true)}
 end
