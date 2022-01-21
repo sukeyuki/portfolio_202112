@@ -119,7 +119,9 @@ class SchedulesController < ApplicationController
     unless @schedule.save
       flash[:errors] = @schedule.errors.messages
     end
-    redirect_to root_path
+    redirect_to(session[:forwarding_url])
+    session.delete(:forwarding_url)
+    # redirect_to root_path
   end
 
   def update
