@@ -3,12 +3,10 @@ class SchedulesController < ApplicationController
   # before_action :correct_user
   def index
     @user = current_user
-    @new_group = Group.new
-    @new_schedule = Schedule.new
-    @group_user = GroupUser.new
-    @group_users_all = GroupUser.all
-    @users_all = User.all
-    @first_day = start_at_params=={} ? Time.current : Time.zone.parse(start_at_params[:start_at])
+    # @group_user = GroupUser.new
+    # @group_users_all = GroupUser.all
+    # @users_all = User.all
+    # @first_day = start_at_params=={} ? Time.current : Time.zone.parse(start_at_params[:start_at])
     @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
     unless current_user.groups.find_by(personal:true)
       group = current_user.groups.new(name:"private", personal:true, overview:"my personal scuedule")
@@ -136,7 +134,7 @@ class SchedulesController < ApplicationController
     end
 
     def start_at_params
-      para = params.permit(:start_at)
+      params.permit(:start_at)
     end
 
     def group_show_params

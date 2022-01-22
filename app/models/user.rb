@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   #  :lockable, :timeoutable, :trackable and :omniauthable
+  # after_save :create_personal_group
+  after_create :create_personal_group
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
   
@@ -11,7 +14,15 @@ class User < ApplicationRecord
   has_many :group_users, dependent: :destroy
   has_many :groups, through: :group_users
 
-  # user = User.new(name:"tarou", search_name:"tarou",email:"tarou@tarou.com", password:123456789, password_confirmation:123456789)
-  # group = user.groups.new(name:"jobs", overview:"aaaaa", personal:true)
-  # group = Group.new(name:"jobs", overview:"aaaaa", personal:true)
+  
+  private
+
+  def create_personal_group
+    ActiveRecord::Base.transaction do
+      # group = Group.create!(name:"private", personal:true, overview:"my personal scuedule")
+      # GroupUser.create!(group:group, user:self,role:10, activated: true)
+      group = groups.create!(name:"private", personal:true, overview:"my personal scuedule")
+      # GroupUser.find_by(group:group, user:self).update(role:10, activated: true)
+    end
+  end
 end

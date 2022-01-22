@@ -16,7 +16,7 @@
                 予定表
                 <div>
                     <%@user.groups.each do |group|%>
-                        <%if GroupUser.find_by(user_id: current_user.id, group_id: group.id).activated?%>
+                        <%if GroupUser.find_by(group_id: group.id).activated?%>
                             <input type="checkbox" id ="<%=group.id%>-checkbox" class ="show-group" <%="checked" if @groups_show_list.include?(group.id)%>>
                             <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
                                 <%=group.name%>
@@ -348,7 +348,7 @@
                 </button>
                 </div>
                     <div class="modal-body">
-                        <%=form_with model:@new_schedule do |f|%>
+                        <%=form_with model:Schedule.new do |f|%>
                             <%=f.label :title, "titele:"%>
                             <br>
                             <%=f.text_field :title%>
