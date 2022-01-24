@@ -35,17 +35,21 @@ $(function() {
     var start_at_disp = $(this).data("start-at");
     var end_at_disp = $(this).data("end-at");
     var id = $(this).data("id");
+    var group = $(this).data("group");
     $("#schedule_overview_title").text(title);
     $("#schedule_overview_contents").text("内容:"+content);
     $("#schedule_overview_users").text("参加者:"+users);
     $("#schedule_overview_start_at").text("from:"+start_at_disp);
     $("#schedule_overview_end_at").text("to:"+end_at_disp);
+    $("#schedule_overview_group").text("グループ:"+group);
+    
 
     $("#schedule_edit").data("title",title);
     $("#schedule_edit").data("content",content);
     $("#schedule_edit").data("start_at",start_at_disp);
     $("#schedule_edit").data("end_at",end_at_disp);
     $("#schedule_edit").data("id",id);
+    $("#schedule_edit").data("group",group);
     $("#schedule_edit").css("display", "block");
   });
 
@@ -56,7 +60,7 @@ $(function() {
     $("#update_schedule_start").attr("value", start_at[0]+"T"+start_at[1]);
     $("#update_schedule_end").attr("value", end_at[0]+"T"+end_at[1]);
     $("#update_schedule_content").text($(this).data("content"));
-    $("#update_schedule_content").text($(this).data("content"));
+    $("#schedule_update_group").text($(this).data("group"));
     var id = $(this).data("id");
     $("#update_schedule_form").attr("action", "/schedules/"+id);
     var url = new URL(location);

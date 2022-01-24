@@ -19,11 +19,20 @@ body{
 }
 
 #header{
-    /* background-color:#b4c1d1; */
     font-size: 2rem;
     font-family:'Philosopher','serif';
     text-transform: uppercase;
     font-weight: normal;
+    position:relative;
+}
+
+#logo{
+    color:black;
+}
+
+#year_and_month{
+    position:absolute;
+    left:25%;
 }
 
 h2{
@@ -123,15 +132,17 @@ h2{
 .one_hour{
     height: 40px;
     border:1px solid;
-    box-sizing: border-box;
+    // box-sizing: border-box;
 }
 
 .one_hour_disp{
     height: 40px;
     border: 1px;
-    box-sizing: border-box;
+    // box-sizing: border-box;
     position:relative;
     top:-1%;
+    background-color: lightblue;
+    z-index: 10;
 }
 
 #create_schedule{

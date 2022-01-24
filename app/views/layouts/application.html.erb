@@ -15,9 +15,19 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <div id = "header" class = "border">
-    <%#TODO 青文字修正%>
-    <%=link_to"planning with", root_url%>
+    <div id = "header" class = "border flex">
+      <%=link_to"planning with", root_url, id:"logo"%>
+      <%unless @first_day==nil%>
+        <%if @first_day.month == @first_day.since(6.day).month%>
+          <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月</div>
+        <%elsif @first_day.month != @first_day.since(6.day).month%>
+          <%if @first_day.year == @first_day.since(6.day).year%>
+            <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月〜<%=@first_day.since(6.day).month%>月</div>
+          <%elsif @first_day.year != @first_day.since(6.day).year%>
+            <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月〜<%=@first_day.since(6.day).year%>年<%=@first_day.since(6.day).month%>月</div>
+          <%end%> 
+        <%end%>
+      <%end%>
     </div>
 
     <%= yield %>
