@@ -159,6 +159,15 @@ module SchedulesHelper
     end
     return att.min
   end
+
+  def id_with_index(groups)
+    output = {}
+    return nil if groups==nil
+    groups.each.with_index do |group, index|
+      output[group.id]=index
+    end
+    return output
+  end
 end
 
 

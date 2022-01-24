@@ -61,12 +61,14 @@
                         <%#FIXME スケジュールeditのタグが増えてしまうところを修正%>
                         <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
                         <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
+                        <%groupid_index = groupid_withindex = id_with_index(Group.with_active_user(@user))%>
                         <%schedules.each do |schedule|%>
                             <%schedule_params[schedule.id].each do |prm|%>
                                 <div class = "schedule_block" data-title="<%=schedule.title%>" 
                                 data-content="<%=schedule.contents%>" 
                                 data-users="<%=User.where(id:GroupUser.where(group_id:schedule.group.id).where(activated:true).map(&:user_id)).map(&:name)%>" 
                                 data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" data-id="<%=schedule.id%>" data-group="<%=schedule.group.name%>"
+                                data-group_index = "<%=groupid_index[schedule.group.id]%>"
                                 style="top:<%=prm[:top]%>px; 
                                 left:<%=prm[:left]%>px; 
                                 height:<%=prm[:height]%>px;

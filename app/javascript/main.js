@@ -52,7 +52,6 @@ $(function() {
     }else{
       $("#schedule_overview_period").text(start_at_ymd[0]+'年 '+start_at_ymd[1]+"月 "+start_at_ymd[2]+"日 "+start_at_hms[0]+":"+start_at_hms[1]+"〜"+end_at_hms[0]+":"+end_at_hms[1]);      
     };
-
     $("#schedule_overview_group").text("グループ:"+group);
     
     $("#schedule_edit").data("title",title);
@@ -82,6 +81,19 @@ $(function() {
     if ($(element).data("users_count")==1){
       $(element).css("display","none");
     };
+  });
+  var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#fcc9ac", "#c3dcbe", "#b7aed6", "#ffe0b6", "#bad41d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
+  $('.schedule_block').each(function(index, element){
+  console.log($(element).data("group_index"));
+  console.log(color_arr[index%12]);
+  index = $(element).data("group_index");
+  color = color_arr[index%12]
+  $(this).css(
+    // "background-color", "#fabea7"
+
+    "background-color", color
+  );
+
   });
 });
 

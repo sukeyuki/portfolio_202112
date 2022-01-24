@@ -184,10 +184,10 @@ h2{
 }
 
 .schedule_block {
-    // width:200px;
-    background-color: red;
+    background-color: #e1eec1;
     position:absolute;
-    border:solid;
+    border:solid 1px;
+    border-radius: 10px;
     word-break:break-all;
     overflow:hidden;
 }
