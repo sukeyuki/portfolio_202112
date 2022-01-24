@@ -74,6 +74,7 @@ h2{
 #schedule_overview{
     width:80%;
     position:relative;
+    overflow: scroll;
 }
 
 .border{
@@ -187,6 +188,8 @@ h2{
     background-color: red;
     position:absolute;
     border:solid;
+    word-break:break-all;
+    overflow:hidden;
 }
 
 #schedule_edit{
