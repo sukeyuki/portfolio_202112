@@ -15,27 +15,25 @@
         		<div id = "group_list" class = "border">
                 予定表
                 <div>
-                    <%@user.groups.each do |group|%>
-                        <%if GroupUser.find_by(group_id: group.id).activated?%>
-                            <input type="checkbox" id ="<%=group.id%>-checkbox" class ="show-group" <%="checked" if @groups_show_list.include?(group.id)%>>
-                            <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
-                                <%=group.name%>
-                            </a>
-                            <a data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
-                                ＜
-                            </a>
-                            <div class="collapse" id="group<%=group.id%>">
-                                <div class="card-body">
-                                    <%#TODO 空白が大きい。整理%>
-                                    <%group.users.each do |user|%>
-                                        <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
-                                        <br>
-                                    <%end%>
-                                </div>
+                    <%Group.with_active_user(@user).each do |group|%>
+                        <input type="checkbox" id ="<%=group.id%>-checkbox" class ="group-checkbox" <%="checked" if @groups_show_list.include?(group.id)%>>
+                        <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
+                            <%=group.name%>
+                        </a>
+                        <a class = "users<" data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
+                            ＜
+                        </a>
+                        <div class="collapse" id="group<%=group.id%>">
+                            <div class="card-body">
+                                <%#TODO 空白が大きい。整理%>
+                                <%group.users.each do |user|%>
+                                    <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
+                                    <br>
+                                <%end%>
                             </div>
-                            <br>
-                        <%end%>
+                        </div>
+                        <br>
                     <%end%>
             </div>
 
@@ -54,24 +52,23 @@
                 </p>
 
                 <label for="start_at">日時の変更</label><br>
-                <%#TODO 選択日を予定表に反映する機能の追加%>
-                <%# <input type="date" id="schedule_start_at" name="schedule_start" value="2020-01-15",required><br> %>
-                <input type="date" id="schedule_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
-
+                <input type="date" id="display_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
 
             </div>
             <div id = "schedule" class = "border">
                 <div id ="schedule_table_window">
                     <div id = "schedule_table">
-                        <%#TODO スケジュール表示機能作成。%>
                         <%#TODO スケジュール日時表示部分の整理。色、配置など。%>
-                        <%#TODO 渡されたインスタンス変数から、スケジュールのブロックを作成する。%>
-                        <%@show_schedules.each do |schedule|%>
-                            <%@schedules_position_parameters[schedule.id].each do |prm|%>
+                        <%#TODO スケジュールdeleteの作成%>
+                        <%#FIXME スケジュールeditのタグが増えてしまうところを修正%>
+                        <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
+                        <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
+                        <%schedules.each do |schedule|%>
+                            <%schedule_params[schedule.id].each do |prm|%>
                                 <div class = "schedule_block" data-title="<%=schedule.title%>" 
-                                data-contents="<%=schedule.contents%>" 
+                                data-content="<%=schedule.contents%>" 
                                 data-users="<%=User.where(id:GroupUser.where(group_id:schedule.group.id).where(activated:true).map(&:user_id)).map(&:name)%>" 
-                                data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" 
+                                data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" data-id="<%=schedule.id%>" 
                                 style="top:<%=prm[:top]%>px; 
                                 left:<%=prm[:left]%>px; 
                                 height:<%=prm[:height]%>px;
@@ -86,7 +83,7 @@
 
                         <div id = "time_disp">
                             <div class = "day_disp one_hour_disp"><%=@first_day.month%>月</div>
-                            <div class = "one_hour_disp aa">0:00</div>
+                            <div class = "one_hour_disp">0:00</div>
                             <div class = "one_hour_disp">1:00</div>
                             <div class = "one_hour_disp">2:00</div>
                             <div class = "one_hour_disp">3:00</div>
@@ -306,7 +303,6 @@
 
                     </div>
                     <button id = "create_schedule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_schedule_modal">
-                        <%#TODO スケジュール作成機能作成%>
                         create schedule
                     </button>
                 </div>
@@ -326,11 +322,15 @@
 
                     <div id = "schedule_overview"class = "border">
                         <%#TODO スケジュール詳細表示機能作成%>
-                        <h2 id = "schedule_overview_title">題名 初期値</h2>
-                        <p id = "schedule_overview_users">参加者初期値</p>
-                        <p id = "schedule_overview_contents">日時 初期値</p>
-                        <p id = "schedule_overview_start_at">start_at 初期値</p>
-                        <p id = "schedule_overview_end_at">end_at 初期値</p>
+                        <h2 id = "schedule_overview_title">Schedule detail</h2>
+                        <p id = "schedule_overview_group"></p>
+                        <p id = "schedule_overview_users"></p>
+                        <p id = "schedule_overview_contents"></p>
+                        <p id = "schedule_overview_start_at"></p>
+                        <p id = "schedule_overview_end_at"></p>
+                        <div id = "schedule_edit" type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_schedule_modal">
+                            edit schedule
+                        </div>
                     </div>
                 </div>
             </div>
@@ -349,7 +349,7 @@
                 </div>
                     <div class="modal-body">
                         <%=form_with model:Schedule.new do |f|%>
-                            <%=f.label :title, "titele:"%>
+                            <%=f.label :title, "title:"%>
                             <br>
                             <%=f.text_field :title%>
                             <br>
@@ -372,6 +372,49 @@
                             <br>
                             <div class="modal-footer">
                                 <%=f.button "save", class:"btn btn-primary"%>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        <%end%>
+
+                    </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal update schedule -->
+        <div class="modal fade" id="update_schedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">edit schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                    <div class="modal-body">
+                        <%=form_with model:Schedule.new, id:"update_schedule_form" do |f|%>
+                            <input type="hidden" name="_method" value="patch">
+                            <%=f.label :title, "title:"%>    
+                            <br>
+                            <%=f.text_field :title ,id:"update_schedule_title"%>
+                            <br>
+                            group:
+                            <br>
+                            <%=f.label :start_at, "from:"%>
+                            <br>
+                            <%=f.datetime_local_field :start_at, id:"update_schedule_start"%>
+                            <br>
+                            <%=f.label :end_at, "to:"%>
+                            <br>
+                            <%=f.datetime_local_field :end_at, id:"update_schedule_end"%>
+                            <br>
+                            <%=f.label :contents, "content:"%>
+                            <br>
+                            <%=f.text_area :contents, size:"50x5", placeholder:"詳細を入力",id:"update_schedule_content"%>
+                            <br>
+                            <div class="modal-footer">
+                                <%=f.button "update", class:"btn btn-primary"%>
+                                <a id ="schedule-delete" type="button" class="btn btn-secondary" data-method="delete">Delete</a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         <%end%>
@@ -461,11 +504,7 @@
             </div>
             </div>
         </div>
-
-	
     </body>
-
-
 </html>
 
 

@@ -64,6 +64,7 @@ h2{
 
 #schedule_overview{
     width:80%;
+    position:relative;
 }
 
 .border{
@@ -102,7 +103,7 @@ h2{
 #time_disp{
     position: sticky;
     left:0px;
-    background-color: sandybrown;
+    // background-color: sandybrown;
     width: 50px;
 }
 
@@ -116,7 +117,7 @@ h2{
     position:sticky;
     top:0px;
     height: 40px;
-    background-color: red;
+    background-color: lightblue;
 }
 
 .one_hour{
@@ -175,4 +176,11 @@ h2{
     background-color: red;
     position:absolute;
     border:solid;
+}
+
+#schedule_edit{
+    position: absolute;
+    right:0px;
+    bottom:0px;
+    display:none;
 }
