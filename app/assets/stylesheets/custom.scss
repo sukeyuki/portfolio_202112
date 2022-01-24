@@ -69,11 +69,11 @@ h2{
 #schedule_detail{
     height:30%;
     display: flex;
+    position:relative;
 }
 
 #schedule_overview{
     width:80%;
-    position:relative;
     overflow: scroll;
 }
 
@@ -194,7 +194,7 @@ h2{
 
 #schedule_edit{
     position: absolute;
-    right:0px;
-    bottom:0px;
+    right:20px;
+    top:20px;
     display:none;
 }
