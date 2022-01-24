@@ -67,17 +67,11 @@ $(function() {
     $("#schedule-delete").attr('href', url["origin"]+"/schedules/"+id);
   });
 
-  $("#schedule-delete")
-    // $('.schedule_block').each(function(index, element){
-    //   var start_at = $(element).data("start-at")
-    //   var end_at = $(element).data("end-at")
-    //   console.log(start_at)
-    //   console.log(end_at)
-
-      // $(element).css({
-      //   'top':'40px',
-      //   'left':'50px'
-      // });
-    // });
+  $(".users_hide").each(function(index, element){
+    // console.log($(element).data("users_count"));
+    if ($(element).data("users_count")==1){
+      $(element).css("display","none");
+    };
+  });
 });
 

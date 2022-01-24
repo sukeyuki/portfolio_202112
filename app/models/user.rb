@@ -12,7 +12,8 @@ class User < ApplicationRecord
 
   has_many :group_users, dependent: :destroy
   has_many :groups, through: :group_users
-
+  scope :with_active_group, -> (g) {joins(:group_users).merge(g.group_users.activated)}
+  # scope :with_activeaaa, -> (u) {joins(:group_users).merge(u.group_users.activated)}
   
   private
   def create_personal_group

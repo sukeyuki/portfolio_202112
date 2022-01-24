@@ -20,15 +20,15 @@
                             <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
                                 <%=group.name%>
                             </a>
-                            <a class = "users<" data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class = "users_hide" data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample" data-users_count="<%=User.with_active_group(group).count%>">
                                 <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
                                 ＜
                             </a>
                             <div class="collapse" id="group<%=group.id%>">
                                 <div class="card-body">
                                     <%#TODO 空白が大きい。整理%>
-                                    <%group.users.each do |user|%>
-                                        <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
+                                    <%User.with_active_group(group).each do |user|%>
+                                        <%= user.name if user != current_user%>
                                         <br>
                                     <%end%>
                                 </div>
@@ -40,7 +40,6 @@
                     <%=link_to"グループ作成", new_group_url%>
 
                     <p id = "create_group" type="button" data-toggle="modal" data-target="#group_request_modal">
-                        <%#TODO グループリクエスト機能の追加%>
                         グループリクエスト
                         <span class="red">
                             <%if GroupUser.where(user_id:current_user.id).where(activated:false).count==0%>
@@ -59,7 +58,6 @@
                 <div id ="schedule_table_window">
                     <div id = "schedule_table">
                         <%#TODO スケジュール日時表示部分の整理。色、配置など。%>
-                        <%#TODO スケジュールdeleteの作成%>
                         <%#FIXME スケジュールeditのタグが増えてしまうところを修正%>
                         <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
                         <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
