@@ -12,14 +12,29 @@ $(function() {
 
   $('.group-checkbox').on('click',function(){
     const url = new URL(location);
+    url.searchParams.delete("checkbox");
+    checkbox = []
     $('.group-checkbox').each(function(index, element){
-      url.searchParams.delete($(element).attr('id'));
       if($(element).prop('checked')){
-        url.searchParams.set($(element).attr('id'), "checked")
+        id = $(element).attr("id").split("-")[0];
+        checkbox.push(id);
       };
     });
+    console.log(checkbox);
+    url.searchParams.set("checkbox", checkbox);
+    // url.searchParams.set("checkbox", "["+checkbox+"]");
     window.location.href = url;
   });
+  // $('.group-checkbox').on('click',function(){
+  //   const url = new URL(location);
+  //   $('.group-checkbox').each(function(index, element){
+  //     url.searchParams.delete($(element).attr('id'));
+  //     if($(element).prop('checked')){
+  //       url.searchParams.set($(element).attr('id'), "checked")
+  //     };
+  //   });
+  //   window.location.href = url;
+  // });
 
   $('#display_start_at').on('change',function(){
     const url = new URL(location);
