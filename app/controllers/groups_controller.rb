@@ -22,6 +22,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    @user = current_user
     @group = Group.find(params[:id])
     #グループに参加していない人はrootにリダイレクト
     if GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
