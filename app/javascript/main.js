@@ -97,18 +97,19 @@ $(function() {
       $(element).css("display","none");
     };
   });
-  var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#fcc9ac", "#c3dcbe", "#b7aed6", "#ffe0b6", "#bad41d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
+  var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#ffe0b6", "#bad4d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
+  // var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#fcc9ac", "#c3dcbe", "#b7aed6", "#ffe0b6", "#bad41d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
   $('.schedule_block').each(function(index, element){
   console.log($(element).data("group_index"));
-  console.log(color_arr[index%12]);
+  console.log(color_arr[index%9]);
   index = $(element).data("group_index");
-  color = color_arr[index%12]
+  color = color_arr[index%9]
   $(this).css(
-    // "background-color", "#fabea7"
-
     "background-color", color
   );
-
   });
+
+
+
 });
 

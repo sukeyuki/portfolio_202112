@@ -17,6 +17,7 @@
     <p class="alert"><%= alert %></p>
     <div id = "header" class = "border flex">
       <%=link_to"planning with", root_url, id:"logo"%>
+      
       <%unless @first_day==nil%>
         <%if @first_day.month == @first_day.since(6.day).month%>
           <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月</div>
@@ -28,6 +29,12 @@
           <%end%> 
         <%end%>
       <%end%>
+
+      
+      <%unless @current_user==nil%>
+        <%= image_tag "profile_icon.png", id:"my_profile", size:'70x70'%>
+      <%end%>
+
     </div>
 
     <%= yield %>

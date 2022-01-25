@@ -7,6 +7,7 @@ module SchedulesHelper
   def displayed_schedules_params(schedules, first_day)
     #######パラメータ代入#######
     #HTMLの表の長さ一覧
+    margin = 5
     w_time_disp = 50
     h_day_disp = 40
     w_one_hour = 200
@@ -21,11 +22,17 @@ module SchedulesHelper
       schedule_start_end_arr << [schedule.start_at, schedule.end_at]
     end
     schedule_overlap_params = {}
+    
+    # debugger
     schedules.each.with_index do |schedule, index|
       schedule_overlap_params[schedule.id] = {}
       schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
       schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
+    # debugger
+
+
+    # debugger
 
     schedules.each do |schedule|
       day_diff = (schedule.end_at.to_date-schedule.start_at.to_date).to_i
@@ -36,14 +43,14 @@ module SchedulesHelper
         par = {}
         par[:top]    = h_day_disp + h_one_hour*((schedule.start_at - first_day).to_i%86400).to_f/(60*60).to_f
         par[:height] = h_one_hour*(schedule.start_at.end_of_day - schedule.start_at).to_f/(60*60).to_f
-        par[:width]  = w_one_hour / schedule_overlap_params[schedule.id][:overlap_count]
-        par[:left]   = w_time_disp + w_one_hour*((schedule.start_at - first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        par[:width]  = (w_one_hour-2*margin) / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = w_time_disp + w_one_hour*((schedule.start_at - first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1) + margin
         schedules_position_parameters[schedule.id] << par if schedule.start_at >= first_day
         par = {}
         par[:top]    = h_day_disp
         par[:height] = h_one_hour*(schedule.end_at - schedule.end_at.beginning_of_day).to_f/(60*60).to_f
-        par[:width]  = w_one_hour / schedule_overlap_params[schedule.id][:overlap_count]
-        par[:left]   = w_time_disp + w_one_hour*((schedule.end_at - first_day).to_i/86400)  + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        par[:width]  = (w_one_hour-2*margin) / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = w_time_disp + w_one_hour*((schedule.end_at - first_day).to_i/86400)  + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1) + margin
         #表示範囲に入らない場合は配列に加えない
         schedules_position_parameters[schedule.id] << par  if schedule.end_at <= first_day.since(6.days).end_of_day
 
@@ -53,8 +60,8 @@ module SchedulesHelper
             par = {}
             par[:top]    = h_day_disp
             par[:height] = h_one_hour*24
-            par[:width]  = w_one_hour / schedule_overlap_params[schedule.id][:overlap_count]
-            par[:left]   = w_time_disp + w_one_hour*(((schedule.start_at - first_day).to_i/86400)+n+1) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+            par[:width]  = (w_one_hour-2*margin) / schedule_overlap_params[schedule.id][:overlap_count]
+            par[:left]   = w_time_disp + w_one_hour*(((schedule.start_at - first_day).to_i/86400)+n+1) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1) + margin
             #表示範囲に入らない場合は配列に加えない
             schedules_position_parameters[schedule.id] << par  if ((schedule.start_at - first_day).to_i/86400)+n+1 >= 0 and ((schedule.start_at - first_day).to_i/86400)+n+1 <= 6
           end
@@ -64,8 +71,8 @@ module SchedulesHelper
         par = {}
         par[:top]    = h_day_disp + h_one_hour*((schedule.start_at - first_day).to_i%86400).to_f/(60*60).to_f
         par[:height] = h_one_hour*(schedule.end_at - schedule.start_at).to_f/(60*60).to_f
-        par[:width]  = w_one_hour / schedule_overlap_params[schedule.id][:overlap_count]
-        par[:left]   = w_time_disp + w_one_hour*((schedule.start_at - first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1)
+        par[:width]  = (w_one_hour-2*margin) / schedule_overlap_params[schedule.id][:overlap_count]
+        par[:left]   = w_time_disp + w_one_hour*((schedule.start_at - first_day).to_i/86400) + par[:width] * (schedule_overlap_params[schedule.id][:position_calc]-1) + margin
         schedules_position_parameters[schedule.id] = [par]      
       end      
     end
@@ -87,18 +94,38 @@ module SchedulesHelper
       return new_arr
     end
   
+
     def chain_index(se_ar,index)
+      rg = se_ar[index].dup
       arr = []
       arr << index
       se_ar.each_with_index do |ar,i|
         unless i == index
-          if se_ar[index][0]<=ar[1] and se_ar[index][1]>=ar[0]
-            arr << i
+          if rg[0]<ar[1] and rg[1]>ar[0]
+            rg[0] = [rg[0], ar[0]].min
+            rg[1] = [rg[1], ar[1]].max
+            if !arr.include?(i)
+              arr << i
+              redo
+            end
           end
         end
       end
       return arr
     end
+
+    # def chain_index(se_ar,index)
+    #   arr = []
+    #   arr << index
+    #   se_ar.each_with_index do |ar,i|
+    #     unless i == index
+    #       if se_ar[index][0]<=ar[1] and se_ar[index][1]>=ar[0]
+    #         arr << i
+    #       end
+    #     end
+    #   end
+    #   return arr
+    # end
   
     if begin_f==true
       if arr.count == 0
@@ -122,6 +149,7 @@ module SchedulesHelper
     if begin_f==true
       return count.map.with_index do |c,i|
         chain_index(arr,i).map{|id|count[id]}.max
+        # debugger
       end
     end
   

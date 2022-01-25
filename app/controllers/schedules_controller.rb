@@ -8,14 +8,12 @@ class SchedulesController < ApplicationController
     # debugger
     @groups_show_list = []
     # debugger
-    group_show_ids = group_show_params["checkbox"].split(",")
-    group_show_ids.each do |id|
-      @groups_show_list << id.to_i
+    unless group_show_params["checkbox"]==nil
+      group_show_ids = group_show_params["checkbox"].split(",")
+      group_show_ids.each do |id|
+        @groups_show_list << id.to_i
+      end
     end
-    # group_show_params.each do |key, *|
-    #   @groups_show_list << key.delete("-checkbox").to_i
-    # end
-
     # フレンドリーフォーワーディング用。group_user#destroy実行後このurlにredirectする。
     session[:forwarding_url] = request.original_url if request.get?
   end
