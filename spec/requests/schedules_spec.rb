@@ -6,6 +6,7 @@ RSpec.describe "Schedules", type: :request do
     @user = FactoryBot.create(:user)
     @user.confirm
     sign_in @user
+    get root_path
   end
 
   let(:group) { FactoryBot.create(:group)}
@@ -16,7 +17,16 @@ RSpec.describe "Schedules", type: :request do
         get schedules_url
         expect(response).to have_http_status(:success)
       end  
+
+      # it "return http scuccess with first day data" do
+      #   @params=
+
+
+        
+      # end
     end
+
+
   end
 
   describe "POST /create" do

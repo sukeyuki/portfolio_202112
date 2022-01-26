@@ -3,6 +3,7 @@ class GroupUsersController < ApplicationController
     group_user = GroupUser.new(group_user_create_params)
     unless group_user.save
       flash[:errors] = group_user.errors.messages
+      return redirect_to root_url
     end
     redirect_to edit_group_url(group_user_create_params[:group_id])
   end

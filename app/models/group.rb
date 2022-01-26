@@ -6,4 +6,5 @@ class Group < ApplicationRecord
   has_many :group_users, dependent: :destroy
   has_many :users, through: :group_users
   scope :with_active_user, -> (u) {joins(:group_users).merge(u.group_users.activated)}
+  scope :with_not_active_user, -> (u) {joins(:group_users).merge(u.group_users.non_activated)}
 end

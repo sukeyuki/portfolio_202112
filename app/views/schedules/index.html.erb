@@ -2,7 +2,7 @@
     <div id = "group_list" class = "border">
         予定表
         <div>
-            <%Group.with_active_user(@user).each do |group|%>
+            <%@user_active_groups.each do |group|%>
                 <input type="checkbox" id ="<%=group.id%>-checkbox" class ="group-checkbox" <%="checked" if @groups_show_list.include?(group.id)%>>
                 <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
                     <%=group.name%>
@@ -29,10 +29,10 @@
         <p id = "create_group" type="button" data-toggle="modal" data-target="#group_request_modal">
             グループリクエスト
             <span class="red">
-                <%if GroupUser.where(user_id:current_user.id).where(activated:false).count==0%>
+                <%if @user_non_active_groups.count==0%>
                     <%=nil%>
                 <%else%>
-                    <%=GroupUser.where(user_id:current_user.id).where(activated:false).count%>
+                    <%=@user_non_active_groups.count%>
                 <%end%>
             </span>
         </p>
@@ -48,7 +48,7 @@
                 <%#FIXME スケジュールeditのタグが増えてしまうところを修正%>
                 <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
                 <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
-                <%groupid_index = groupid_withindex = id_with_index(Group.with_active_user(@user))%>
+                <%groupid_index = groupid_withindex = id_with_index(@user_active_groups)%>
                 <%schedules.each do |schedule|%>
                     <%schedule_params[schedule.id].each do |prm|%>
                         <div class = "schedule_block" data-title="<%=schedule.title%>" 
@@ -448,19 +448,17 @@
         </button>
         </div>
             <div class="modal-body">
-                <%@user.groups.each do |group|%>
+                <%@user_non_active_groups.each do |group|%>
                     <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
-                    <% unless gu.activated%>
-                        <%=form_with model:gu do |f|%>
-                            <%=group.name%>
-                            承認
-                            <%=f.radio_button :activated, :true%>
-                            拒否
-                            <%=f.radio_button :activated, :delete%>
-                            <%=f.submit "response", class:"btn btn-primary"%>
-                        <%end%>
-                        <br>
+                    <%=form_with model:gu do |f|%>
+                        <%=group.name%>
+                        承認
+                        <%=f.radio_button :activated, :true%>
+                        拒否
+                        <%=f.radio_button :activated, :delete%>
+                        <%=f.submit "response", class:"btn btn-primary"%>
                     <%end%>
+                    <br>
                 <%end%>
             </div>
         <div class="modal-footer">
