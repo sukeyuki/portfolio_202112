@@ -1,8 +1,9 @@
 class GroupUsersController < ApplicationController
   def create
-    @group_user = GroupUser.new(group_user_create_params)
-    unless @group_user.save
-      flash[:errors] = @group_user.errors.messages
+    group_user = GroupUser.new(group_user_create_params)
+    unless group_user.save
+      flash[:errors] = group_user.errors.messages
+      return redirect_to root_url
     end
     redirect_to edit_group_url(group_user_create_params[:group_id])
   end
@@ -14,9 +15,9 @@ class GroupUsersController < ApplicationController
       # FIXME: redirect_toを使用出来なかったため下記のように記載したが間違っている気がする。
       return self.destroy
     end
-    @group_user = GroupUser.find(params[:id])
-    unless @group_user.update(group_user_update_params)
-      flash[:errors] = @group_user.errors.messages
+    group_user = GroupUser.find(params[:id])
+    unless group_user.update(group_user_update_params)
+      flash[:errors] = group_user.errors.messages
     end
     redirect_to(session[:forwarding_url])
     session.delete(:forwarding_url)

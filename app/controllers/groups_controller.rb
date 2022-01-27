@@ -5,23 +5,24 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = current_user.groups.new(group_params)
-    @group_user = GroupUser.new(user:current_user, group:@group,role:10, activated: true)
+    group = current_user.groups.new(group_params)
+    group_user = GroupUser.new(user:current_user, group:group,role:10, activated: true)
     ActiveRecord::Base.transaction do
-      @group.save!
-      @group_user.save!
+      group.save!
+      group_user.save!
     end
 
     rescue
       flash[:errors] = []
-      flash[:errors] << @group.errors.messages
-      flash[:errors] << @group_user.errors.messages
+      flash[:errors] << group.errors.messages
+      flash[:errors] << group_user.errors.messages
 
     ensure
       redirect_to root_path
   end
 
   def edit
+    @user = current_user
     @group = Group.find(params[:id])
     #グループに参加していない人はrootにリダイレクト
     if GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
@@ -33,9 +34,9 @@ class GroupsController < ApplicationController
   end
 
   def update
-    @group = Group.find(params[:id])
-    unless @group.update(group_params)
-      flash[:errors] = @group.errors.messages
+    group = Group.find(params[:id])
+    unless group.update(group_params)
+      flash[:errors] = group.errors.messages
     end
     redirect_to root_path
   end

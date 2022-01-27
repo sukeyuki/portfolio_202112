@@ -1,471 +1,469 @@
-<!DOCTYPE html>
-<html lang=ja>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>main </title>
-        <meta name ="description" content = "予定管理ページ">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
-        <link href="css/style_main.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href = "images/favicon.png">
-    </head> 
-    <body>
-        <div class = "wrapper flex border">
-        		<div id = "group_list" class = "border">
-                予定表
+<div class = "wrapper flex border">
+    <div id = "group_list" class = "border">
+        予定表
+        <div>
+            <%@user_active_groups.each do |group|%>
+                <input type="checkbox" id ="<%=group.id%>-checkbox" class ="group-checkbox" <%="checked" if @groups_show_list.include?(group.id)%>>
+                <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
+                    <%=group.name%>
+                </a>
+                <a class = "users_hide" data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample" data-users_count="<%=User.with_active_group(group).count%>">
+                    <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
+                    ＜
+                </a>
+                <div class="collapse" id="group<%=group.id%>">
+                    <div class="card-body">
+                        <%#TODO 空白が大きい。整理%>
+                        <%User.with_active_group(group).each do |user|%>
+                            <%= user.name if user != current_user%>
+                            <br>
+                        <%end%>
+                    </div>
+                </div>
+                    <br>
+            <%end%>
+        </div>
+
+        <%=link_to"グループ作成", new_group_url%>
+
+        <p id = "create_group" type="button" data-toggle="modal" data-target="#group_request_modal">
+            グループリクエスト
+            <span class="red">
+                <%if @user_non_active_groups.count==0%>
+                    <%=nil%>
+                <%else%>
+                    <%=@user_non_active_groups.count%>
+                <%end%>
+            </span>
+        </p>
+
+        <label for="start_at">表示日時</label><br>
+        <input type="date" id="display_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
+    </div>
+
+    <div id = "schedule" class = "border">
+        <div id ="schedule_table_window">
+            <div id = "schedule_table">
+                <%#TODO スケジュール日時表示部分の整理。色、配置など。%>
+                <%#FIXME スケジュールeditのタグが増えてしまうところを修正%>
+                <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
+                <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
+                <%groupid_index = groupid_withindex = id_with_index(@user_active_groups)%>
+                <%schedules.each do |schedule|%>
+                    <%schedule_params[schedule.id].each do |prm|%>
+                        <div class = "schedule_block" data-title="<%=schedule.title%>" 
+                        data-content="<%=schedule.contents%>" 
+                        data-users="<%=User.where(id:GroupUser.where(group_id:schedule.group.id).where(activated:true).map(&:user_id)).map(&:name)%>" 
+                        data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" data-id="<%=schedule.id%>" data-group="<%=schedule.group.name%>"
+                        data-group_index = "<%=groupid_index[schedule.group.id]%>"
+                        style="top:<%=prm[:top]%>px; 
+                        left:<%=prm[:left]%>px; 
+                        height:<%=prm[:height]%>px;
+                        width:<%=prm[:width]%>px;
+                        z-index:<%=prm[:zindex]%>">
+                        <%=schedule.title%>
+                        </div>
+                    <%end%>
+                <%end%>
+
+                <div id = "time_disp">
+                    <div class = "one_hour_disp"></div>
+                    <div class = "one_hour_disp">0:00</div>
+                    <div class = "one_hour_disp">1:00</div>
+                    <div class = "one_hour_disp">2:00</div>
+                    <div class = "one_hour_disp">3:00</div>
+                    <div class = "one_hour_disp">4:00</div>
+                    <div class = "one_hour_disp">5:00</div>
+                    <div class = "one_hour_disp">6:00</div>
+                    <div class = "one_hour_disp">7:00</div>
+                    <div class = "one_hour_disp">8:00</div>
+                    <div class = "one_hour_disp">9:00</div>
+                    <div class = "one_hour_disp">10:00</div>
+                    <div class = "one_hour_disp">11:00</div>
+                    <div class = "one_hour_disp">12:00</div>
+                    <div class = "one_hour_disp">13:00</div>
+                    <div class = "one_hour_disp">14:00</div>
+                    <div class = "one_hour_disp">15:00</div>
+                    <div class = "one_hour_disp">16:00</div>
+                    <div class = "one_hour_disp">17:00</div>
+                    <div class = "one_hour_disp">18:00</div>
+                    <div class = "one_hour_disp">19:00</div>
+                    <div class = "one_hour_disp">20:00</div>
+                    <div class = "one_hour_disp">21:00</div>
+                    <div class = "one_hour_disp">22:00</div>
+                    <div class = "one_hour_disp">23:00</div>
+                    <div class = "one_hour_disp">24:00</div>
+                </div>
+
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(1.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(2.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(3.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(4.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(5.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                <div class = "oneday_schedule">
+                    <div class = "day_disp"><%=@first_day.since(6.days).day%>日</div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                    <div class = "one_hour"></div>
+                </div>
+                
+
+            </div>
+            <button id = "create_schedule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_schedule_modal">
+                create schedule
+            </button>
+        </div>
+
+        <div id = "schedule_detail" class = "border">
+            <div id = "attendance" class="border">
+                <%#TODO 参加不参加は追加機能。拡張機能作成時までこのまま%>
                 <div>
-                    <%@user.groups.each do |group|%>
-                        <%if GroupUser.find_by(group_id: group.id).activated?%>
-                            <input type="checkbox" id ="<%=group.id%>-checkbox" class ="show-group" <%="checked" if @groups_show_list.include?(group.id)%>>
-                            <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
-                                <%=group.name%>
-                            </a>
-                            <a data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <%#TODO ＜クリック時に変換。グループメンバーがいないときは非表示%>
-                                ＜
-                            </a>
-                            <div class="collapse" id="group<%=group.id%>">
-                                <div class="card-body">
-                                    <%#TODO 空白が大きい。整理%>
-                                    <%group.users.each do |user|%>
-                                        <%= user.name if user != current_user and GroupUser.find_by(user_id: user.id, group_id: group.id).activated%>
-                                        <br>
-                                    <%end%>
-                                </div>
-                            </div>
-                            <br>
-                        <%end%>
+                    <input type="radio" id ="Participation" name = "schedule_attendance">
+                    <label for="Participation">参加</label>
+                </div>
+                <div>
+                    <input type="radio" id ="non-participation" name = "schedule_attendance">
+                    <label for="non-participation">不参加</label>
+                </div>
+            </div>
+
+            <div id = "schedule_overview"class = "border">
+                <%#TODO スケジュール詳細表示機能作成%>
+                <h2 id = "schedule_overview_title">Schedule detail</h2>
+                <p id = "schedule_overview_group"></p>
+                <p id = "schedule_overview_users"></p>
+                <p id = "schedule_overview_period"></p>
+                <p id = "schedule_overview_contents"></p>
+                <div id = "schedule_edit" type="button" class="btn btn-primary" data-toggle="modal" data-target="#update_schedule_modal">
+                    edit schedule
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal create schedule -->
+<div class="modal fade" id="create_schedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">new schedule</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+            <div class="modal-body">
+                <%=form_with model:Schedule.new do |f|%>
+                    <%=f.label :group_id, "group:"%>
+                    <br>
+                    <%=f.select :group_id, GroupUser.where(user_id:current_user.id).where(activated:true).map{|gu|[Group.find(gu.group_id).name, Group.find(gu.group_id).id]}%>
+                    <br>
+                    <%=f.label :title, "title:"%>
+                    <br>
+                    <%=f.text_field :title%>
+                    <br>
+
+                    <%#FIXME 時間指定を10分間隔にて指定可能としたい%>
+                    <%=f.label :start_at, "from:"%>
+                    <br>
+                    <%=f.datetime_local_field :start_at%>
+                    <br>
+                    <%=f.label :end_at, "to:"%>
+                    <br>
+                    <%=f.datetime_local_field :end_at%>
+                    <br>
+                    <%=f.label :contents, "content:"%>
+                    <br>
+                    <%=f.text_area :contents, size:"50x5", placeholder:"詳細を入力"%>
+                    <br>
+                    <div class="modal-footer">
+                        <%=f.button "save", class:"btn btn-primary"%>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                <%end%>
+
+            </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal update schedule -->
+<div class="modal fade" id="update_schedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">edit schedule</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+            <div class="modal-body">
+                <%=form_with model:Schedule.new, id:"update_schedule_form" do |f|%>
+                    <input type="hidden" name="_method" value="patch">
+                    group:
+                    <br>
+                    <span id = "schedule_update_group"></span>
+                    <br>
+                    <%=f.label :title, "title:"%>    
+                    <br>
+                    <%=f.text_field :title ,id:"update_schedule_title"%>
+                    <br>
+                    <%=f.label :start_at, "from:"%>
+                    <br>
+                    <%=f.datetime_local_field :start_at, id:"update_schedule_start"%>
+                    <br>
+                    <%=f.label :end_at, "to:"%>
+                    <br>
+                    <%=f.datetime_local_field :end_at, id:"update_schedule_end"%>
+                    <br>
+                    <%=f.label :contents, "content:"%>
+                    <br>
+                    <%=f.text_area :contents, size:"50x5", placeholder:"詳細を入力",id:"update_schedule_content"%>
+                    <br>
+                    <div class="modal-footer">
+                        <%=f.button "update", class:"btn btn-primary"%>
+                        <a id ="schedule-delete" type="button" class="btn btn-secondary" data-method="delete">Delete</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                <%end%>
+
+            </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal show group -->
+<div class="modal fade" id="create_group_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+            <div class="modal-body">
+                    グループ名:
+                <div id ="group-name">エラー。空データ</div>
+                    詳細
+                <div id ="group-overview"></div>
+            </div>
+        <div class="modal-footer">
+
+
+        <button id = "edit-button" type="button" class="btn btn-secondary" data-dismiss="modal" >Edit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal group request -->
+<div class="modal fade" id="group_request_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">グループリクエスト</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+            <div class="modal-body">
+                <%@user_non_active_groups.each do |group|%>
+                    <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
+                    <%=form_with model:gu do |f|%>
+                        <%=group.name%>
+                        承認
+                        <%=f.radio_button :activated, :true%>
+                        拒否
+                        <%=f.radio_button :activated, :delete%>
+                        <%=f.submit "response", class:"btn btn-primary"%>
                     <%end%>
+                    <br>
+                <%end%>
             </div>
-
-                <%=link_to"グループ作成", new_group_url%>
-
-                <p id = "create_group" type="button" data-toggle="modal" data-target="#group_request_modal">
-                <%#TODO グループリクエスト機能の追加%>
-                    グループリクエスト
-                    <span class="red">
-                    <%if GroupUser.where(user_id:current_user.id).where(activated:false).count==0%>
-                        <%=nil%>
-                    <%else%>
-                        <%=GroupUser.where(user_id:current_user.id).where(activated:false).count%>
-                    <%end%>
-                    </span>
-                </p>
-
-                <label for="start_at">日時の変更</label><br>
-                <%#TODO 選択日を予定表に反映する機能の追加%>
-                <%# <input type="date" id="schedule_start_at" name="schedule_start" value="2020-01-15",required><br> %>
-                <input type="date" id="schedule_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
-
-
-            </div>
-            <div id = "schedule" class = "border">
-                <div id ="schedule_table_window">
-                    <div id = "schedule_table">
-                        <%#TODO スケジュール表示機能作成。%>
-                        <%#TODO スケジュール日時表示部分の整理。色、配置など。%>
-                        <%#TODO 渡されたインスタンス変数から、スケジュールのブロックを作成する。%>
-                        <%@show_schedules.each do |schedule|%>
-                            <%@schedules_position_parameters[schedule.id].each do |prm|%>
-                                <div class = "schedule_block" data-title="<%=schedule.title%>" 
-                                data-contents="<%=schedule.contents%>" 
-                                data-users="<%=User.where(id:GroupUser.where(group_id:schedule.group.id).where(activated:true).map(&:user_id)).map(&:name)%>" 
-                                data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" 
-                                style="top:<%=prm[:top]%>px; 
-                                left:<%=prm[:left]%>px; 
-                                height:<%=prm[:height]%>px;
-                                width:<%=prm[:width]%>px;
-                                z-index:<%=prm[:zindex]%>">
-                                <%# style="top:1000px" %>
-                                    <%=schedule.title%>
-
-                                </div>
-                            <%end%>
-                        <%end%>
-
-                        <div id = "time_disp">
-                            <div class = "day_disp one_hour_disp"><%=@first_day.month%>月</div>
-                            <div class = "one_hour_disp aa">0:00</div>
-                            <div class = "one_hour_disp">1:00</div>
-                            <div class = "one_hour_disp">2:00</div>
-                            <div class = "one_hour_disp">3:00</div>
-                            <div class = "one_hour_disp">4:00</div>
-                            <div class = "one_hour_disp">5:00</div>
-                            <div class = "one_hour_disp">6:00</div>
-                            <div class = "one_hour_disp">7:00</div>
-                            <div class = "one_hour_disp">8:00</div>
-                            <div class = "one_hour_disp">9:00</div>
-                            <div class = "one_hour_disp">10:00</div>
-                            <div class = "one_hour_disp">11:00</div>
-                            <div class = "one_hour_disp">12:00</div>
-                            <div class = "one_hour_disp">13:00</div>
-                            <div class = "one_hour_disp">14:00</div>
-                            <div class = "one_hour_disp">15:00</div>
-                            <div class = "one_hour_disp">16:00</div>
-                            <div class = "one_hour_disp">17:00</div>
-                            <div class = "one_hour_disp">18:00</div>
-                            <div class = "one_hour_disp">19:00</div>
-                            <div class = "one_hour_disp">20:00</div>
-                            <div class = "one_hour_disp">21:00</div>
-                            <div class = "one_hour_disp">22:00</div>
-                            <div class = "one_hour_disp">23:00</div>
-                            <div class = "one_hour_disp">24:00</div>
-                        </div>
-
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(1.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(2.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(3.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(4.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(5.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        <div class = "oneday_schedule">
-                            <div class = "day_disp"><%=@first_day.since(6.days).day%>日</div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                            <div class = "one_hour"></div>
-                        </div>
-                        
-
-                    </div>
-                    <button id = "create_schedule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_schedule_modal">
-                        <%#TODO スケジュール作成機能作成%>
-                        create schedule
-                    </button>
-                </div>
-
-                <div id = "schedule_detail" class = "border">
-                    <div id = "attendance" class="border">
-                        <%#TODO 参加不参加は追加機能。拡張機能作成時までこのまま%>
-                        <div>
-                            <input type="radio" id ="Participation" name = "schedule_attendance">
-                            <label for="Participation">参加</label>
-                        </div>
-                        <div>
-                            <input type="radio" id ="non-participation" name = "schedule_attendance">
-                            <label for="non-participation">不参加</label>
-                        </div>
-                    </div>
-
-                    <div id = "schedule_overview"class = "border">
-                        <%#TODO スケジュール詳細表示機能作成%>
-                        <h2 id = "schedule_overview_title">題名 初期値</h2>
-                        <p id = "schedule_overview_users">参加者初期値</p>
-                        <p id = "schedule_overview_contents">日時 初期値</p>
-                        <p id = "schedule_overview_start_at">start_at 初期値</p>
-                        <p id = "schedule_overview_end_at">end_at 初期値</p>
-                    </div>
-                </div>
-            </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
-
-
-        <!-- Modal create schedule -->
-        <div class="modal fade" id="create_schedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">new schedule</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                    <div class="modal-body">
-                        <%=form_with model:Schedule.new do |f|%>
-                            <%=f.label :title, "titele:"%>
-                            <br>
-                            <%=f.text_field :title%>
-                            <br>
-                            <%=f.label :group_id, "group:"%>
-                            <br>
-                            <%=f.select :group_id, GroupUser.where(user_id:current_user.id).where(activated:true).map{|gu|[Group.find(gu.group_id).name, Group.find(gu.group_id).id]}%>
-                            <br>
-                            <%#FIXME 時間指定を10分間隔にて指定可能としたい%>
-                            <%=f.label :start_at, "from:"%>
-                            <br>
-                            <%=f.datetime_local_field :start_at%>
-                            <br>
-                            <%=f.label :end_at, "to:"%>
-                            <br>
-                            <%=f.datetime_local_field :end_at%>
-                            <br>
-                            <%=f.label :contents, "content:"%>
-                            <br>
-                            <%=f.text_area :contents, size:"50x5", placeholder:"詳細を入力"%>
-                            <br>
-                            <div class="modal-footer">
-                                <%=f.button "save", class:"btn btn-primary"%>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            </div>
-                        <%end%>
-
-                    </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- Modal show group -->
-        <div class="modal fade" id="create_group_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                    <div class="modal-body">
-                            グループ名:
-                        <div id ="group-name">エラー。空データ</div>
-                            詳細
-                        <div id ="group-overview"></div>
-                    </div>
-                <div class="modal-footer">
-
-    
-                <button id = "edit-button" type="button" class="btn btn-secondary" data-dismiss="modal" >Edit</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- Modal group request -->
-        <div class="modal fade" id="group_request_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">グループリクエスト</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                    <div class="modal-body">
-                        <%@user.groups.each do |group|%>
-                            <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
-                            <% unless gu.activated%>
-                                <%=form_with model:gu do |f|%>
-                                    <%=group.name%>
-                                    承認
-                                    <%=f.radio_button :activated, :true%>
-                                    拒否
-                                    <%=f.radio_button :activated, :delete%>
-                                    <%=f.submit "response", class:"btn btn-primary"%>
-                                <%end%>
-                                <br>
-                            <%end%>
-                        <%end%>
-                    </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- Modal invite friends -->
-        <div class="modal fade" id="invite_friends_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">友達招待</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                    <div class="modal-body">
-                        <label for="start_at">idを入力</label><br>
-                        <input type="text" id="user_id" name="name" required><br>                    
-                    </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-            </div>
-        </div>
-
-	
-    </body>
-
-
-</html>
-
-
+    </div>
+    </div>
+</div>

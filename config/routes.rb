@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # end
 
   root 'schedules#index'
-  resources :schedules, only: [:index, :create, :update]
+  resources :schedules, only: [:index, :create, :update, :destroy]
   resources :groups, only: [:new, :edit, :create, :update]
   resources :group_users, only: [:create, :update, :destroy]
 

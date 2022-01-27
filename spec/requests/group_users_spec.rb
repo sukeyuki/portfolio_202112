@@ -23,9 +23,9 @@ RSpec.describe "GroupUsers", type: :request do
         expect(response).to have_http_status "302"  
       end
       
-      it "redirect_to root_path" do
+      it "redirect_to group_edit_url" do
         post group_users_url, params:{group_user: @params}
-        expect(response).to redirect_to root_path
+        expect(response).to redirect_to edit_group_url(@group)
       end  
 
       it "can create one new group_user with valid data" do
@@ -64,43 +64,45 @@ RSpec.describe "GroupUsers", type: :request do
 
   describe "POST /update" do
     context "with valid data" do
-      context "with activated data" do
+      context "with activated true" do
         before do
           @group_user = FactoryBot.create(:group_user)
           @params = {
             "activated"=> true
           }
+          get root_path
         end
 
         it "returns http success" do
-          post group_users_url, params:{group_user: @params}
+          patch group_user_url(@group_user), params:{group_user: @params}
           expect(response).to have_http_status "302"  
         end
 
         it "redirect_to root_path" do
-          post group_users_url, params:{group_user: @params}
+          patch group_user_url(@group_user), params:{group_user: @params}
           expect(response).to redirect_to root_path
         end  
       end
 
-      context "with role data" do
-        before do
-          @group_user = FactoryBot.create(:group_user)
-          @params = {
-            "role"=> "admin"
-          }
-        end
+      ##roleは未実装
+      # context "with role data" do
+      #   before do
+      #     @group_user = FactoryBot.create(:group_user)
+      #     @params = {
+      #       "role"=> "admin"
+      #     }
+      #   end
 
-        it "returns http success" do
-          put group_user_url(@group_user), params:{group_user: @params}
-          expect(response).to have_http_status "302"  
-        end
+      #   it "returns http success" do
+      #     put group_user_url(@group_user), params:{group_user: @params}
+      #     expect(response).to have_http_status "302"  
+      #   end
 
-        it "redirect_to root_path" do
-          put group_user_url(@group_user), params:{group_user: @params}
-          expect(response).to redirect_to root_path
-        end  
-      end
+      #   it "redirect_to root_path" do
+      #     put group_user_url(@group_user), params:{group_user: @params}
+      #     expect(response).to redirect_to root_path
+      #   end  
+      # end
     end
   end
 end
