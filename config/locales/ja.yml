@@ -1,0 +1,5 @@
+ja:
+  activerecord:
+    errors:
+      messages:
+        term_is_missing: '期間の指定が間違っています'

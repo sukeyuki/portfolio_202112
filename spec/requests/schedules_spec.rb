@@ -18,15 +18,15 @@ RSpec.describe "Schedules", type: :request do
         expect(response).to have_http_status(:success)
       end  
 
-      # it "return http scuccess with first day data" do
-      #   @params=
-
-
-        
-      # end
+      it "return http scuccess with first day data" do
+        @params = {
+          'start_at':"2022-01-01",
+          "checkbox":"1",
+        }
+        get schedules_url
+        expect(response).to have_http_status(:success)
+      end
     end
-
-
   end
 
   describe "POST /create" do
