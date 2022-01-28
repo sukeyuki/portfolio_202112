@@ -83,26 +83,25 @@ RSpec.describe "GroupUsers", type: :request do
           expect(response).to redirect_to root_path
         end  
       end
-
-      ##roleは未実装
-      # context "with role data" do
-      #   before do
-      #     @group_user = FactoryBot.create(:group_user)
-      #     @params = {
-      #       "role"=> "admin"
-      #     }
-      #   end
-
-      #   it "returns http success" do
-      #     put group_user_url(@group_user), params:{group_user: @params}
-      #     expect(response).to have_http_status "302"  
-      #   end
-
-      #   it "redirect_to root_path" do
-      #     put group_user_url(@group_user), params:{group_user: @params}
-      #     expect(response).to redirect_to root_path
-      #   end  
-      # end
     end
   end
+
+  describe "POST /destroy" do
+    before do
+      @group_user = FactoryBot.create(:group_user, :activated_true)
+      get root_path
+    end
+
+    it "delete one group_user" do
+      expect{
+        delete group_user_url(@group_user)
+      }.to change(GroupUser, :count).by(-1)
+    end
+
+    it "redirect_to root_path" do
+      delete group_user_url(@group_user)
+      expect(response).to redirect_to root_path
+    end
+  end
+
 end

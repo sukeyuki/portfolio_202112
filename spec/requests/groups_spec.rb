@@ -51,7 +51,32 @@ RSpec.describe "Groups", type: :request do
           post groups_url, params:{group: @params}
         }.to change(Group, :count).by(0)
       end  
-      # FIXME: エラーの内容を確認するspecが必要？
+    end
+  end
+
+  describe "GET /edit" do
+    before do
+      @group = @user.groups.create(FactoryBot.build(:group).attributes)
+    end
+
+    context "with valid data" do
+      it "returns http 200" do
+        GroupUser.where(group:@group, user:@user).update(activated:true)
+        get edit_group_url(@group)
+        expect(response).to have_http_status "200"
+      end
+    end
+
+    context "with invalid data" do
+      it "returns http 302" do
+        get edit_group_url(@group)
+        expect(response).to have_http_status "302"
+      end
+
+      it "redirect to root" do
+        get edit_group_url(@group)
+        expect(response).to redirect_to root_path
+      end
     end
   end
 

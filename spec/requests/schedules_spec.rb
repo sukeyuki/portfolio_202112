@@ -18,7 +18,23 @@ RSpec.describe "Schedules", type: :request do
         expect(response).to have_http_status(:success)
       end  
 
+      it "return http scuccess with group checkbox data" do
+        @params = {
+          "checkbox":"1",
+        }
+        get schedules_url
+        expect(response).to have_http_status(:success)
+      end
+
       it "return http scuccess with first day data" do
+        @params = {
+          'start_at':"2022-01-01",
+        }
+        get schedules_url
+        expect(response).to have_http_status(:success)
+      end
+
+      it "return http scuccess with first day and grop checkbox data" do
         @params = {
           'start_at':"2022-01-01",
           "checkbox":"1",
@@ -83,14 +99,27 @@ RSpec.describe "Schedules", type: :request do
     end
 
     it "returns http 302 with valid data" do
-      put schedule_path(@schedule), params: {schedule:@params}
+      put schedule_url(@schedule), params: {schedule:@params}
       expect(response).to have_http_status "302"
     end
 
     it "redirect_to root_path" do
-      put schedule_path(@schedule), params: {schedule:@params}
+      put schedule_url(@schedule), params: {schedule:@params}
       expect(response).to redirect_to root_path
     end
-    # TODO: パラメータを更新して、反映されているかどうかを確認するコードが欲しいが、良いテストが思いつかない。
+  end
+
+  describe "PUT /destroy" do
+    before do
+      @params = FactoryBot.build(:schedule).attributes
+      @schedule = FactoryBot.create(:schedule)
+    end
+
+    it "delete one schedule" do
+      expect{
+        delete schedule_url(@schedule), params: {schedule: @params}
+      }.to change(Schedule, :count).by(-1)
+    end
+
   end
 end
