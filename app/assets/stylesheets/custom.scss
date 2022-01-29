@@ -40,11 +40,6 @@ body{
     left:25%;
 }
 
-h2{
-    display:inline-block;
-    width:500px
-}
-
 #header{
     height: 10vh;
 }
@@ -217,4 +212,19 @@ h2{
 #my_profile_modal{
     // opacity: 0.5;
     background-color:rgba(0,0,0,0.1);
+}
+
+.input_user_info{
+    margin:auto;
+    margin-top:20px;
+    text-align: center;
+    background-color:#eeeeee;
+    width: 400px;
+    border-radius: 15px;
+    
+}
+
+.input_user_info_logo{
+    width:200px;
+    margin:auto;
 }
