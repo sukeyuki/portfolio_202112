@@ -27,15 +27,15 @@ RSpec.describe GroupUser, type: :model do
     end
 
     it "has :user error" do
-      expect(@group_user.errors[:user]).to include("must exist")
+      expect(@group_user.errors[:user]).to include("を入力してください")
     end
 
     it "has :group error" do
-      expect(@group_user.errors[:group]).to include("must exist")
+      expect(@group_user.errors[:group]).to include("を入力してください")
     end
 
     it "has :activated error" do
-      expect(@group_user.errors[:activated]).to include("is not included in the list")
+      expect(@group_user.errors[:activated]).to include("は一覧にありません")
     end
   end
 end

@@ -14,15 +14,15 @@ RSpec.describe User, type: :model do
     end
 
     it "has :name errors" do
-      expect(@user.errors[:name]).to include("can't be blank")
+      expect(@user.errors[:name]).to include("を入力してください")
     end
 
     it "has :search_name errors" do
-      expect(@user.errors[:search_name]).to include("can't be blank")
+      expect(@user.errors[:search_name]).to include("を入力してください")
     end
 
     it "has :email errors" do
-      expect(@user.errors[:email]).to include("can't be blank")
+      expect(@user.errors[:email]).to include("を入力してください")
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
     end
 
     it "has :password error" do
-      expect(@user.errors[:password]).to include("is too short (minimum is 6 characters)")
+      expect(@user.errors[:password]).to include("は6文字以上で入力してください")
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.describe User, type: :model do
       @user.valid?  
     end
     it "has :email error" do
-      expect(@user.errors[:email]).to include("has already been taken") 
+      expect(@user.errors[:email]).to include("はすでに存在します") 
     end
   end
 end

@@ -91,6 +91,7 @@ $(function() {
     var url = new URL(location);
     $("#schedule-delete").attr('href', url["origin"]+"/schedules/"+id);
   });
+  
 
   $(".users_hide").each(function(index, element){
     if ($(element).data("users_count")==1){
@@ -100,16 +101,15 @@ $(function() {
   var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#ffe0b6", "#bad4d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
   // var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#fcc9ac", "#c3dcbe", "#b7aed6", "#ffe0b6", "#bad41d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
   $('.schedule_block').each(function(index, element){
-  console.log($(element).data("group_index"));
-  console.log(color_arr[index%9]);
-  index = $(element).data("group_index");
-  color = color_arr[index%9]
-  $(this).css(
-    "background-color", color
-  );
+    console.log($(element).data("group_index"));
+    console.log(color_arr[index%9]);
+    index = $(element).data("group_index");
+    color = color_arr[index%9]
+    $(this).css(
+      "background-color", color
+    );
   });
-
-
-
+  // $("document").on("click","#errors_modal_button");
+  // $("#errors_modal_button").trigger("click");
 });
 

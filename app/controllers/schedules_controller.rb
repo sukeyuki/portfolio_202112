@@ -15,13 +15,13 @@ class SchedulesController < ApplicationController
     end
     # フレンドリーフォーワーディング用。group_user#destroy実行後このurlにredirectする。
     session[:forwarding_url] = request.original_url if request.get?
-    # debugger
+    debugger
   end
 
   def create
     schedule = Schedule.new(schedule_params)
     unless schedule.save
-      flash[:errors] = schedule.errors.messages
+      flash[:errors] = schedule.errors.full_messages
     end
     redirect_to(session[:forwarding_url])
     session.delete(:forwarding_url)

@@ -14,8 +14,8 @@ class GroupsController < ApplicationController
 
     rescue
       flash[:errors] = []
-      flash[:errors] << group.errors.messages
-      flash[:errors] << group_user.errors.messages
+      flash[:errors] << group.errors.full_messages
+      flash[:errors] << group_user.errors.full_messages
 
     ensure
       redirect_to root_path
@@ -36,7 +36,8 @@ class GroupsController < ApplicationController
   def update
     group = Group.find(params[:id])
     unless group.update(group_params)
-      flash[:errors] = group.errors.messages
+      flash[:errors] = group.errors.full_messages
+      return redirect_to(session[:forwarding_url])
     end
     redirect_to root_path
   end
