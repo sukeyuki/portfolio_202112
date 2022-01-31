@@ -23,16 +23,11 @@ module SchedulesHelper
     end
     schedule_overlap_params = {}
     
-    # debugger
     schedules.each.with_index do |schedule, index|
       schedule_overlap_params[schedule.id] = {}
       schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
       schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
-    # debugger
-
-
-    # debugger
 
     schedules.each do |schedule|
       day_diff = (schedule.end_at.to_date-schedule.start_at.to_date).to_i

@@ -19,9 +19,6 @@
     </head>
 
     <body>
-        <% flash.each do |message_type, message| %>
-		    <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
-        <% end %>
         <div id = "header" class = "border flex">
             <%=link_to"planning with", root_url, id:"logo"%>
             <%unless @first_day==nil%>
@@ -74,7 +71,8 @@
 
 
 
-<a id = "errors_modal_button" class = "group" type="button" data-toggle="modal" data-target="#errors_modal" style="display: none;">test</a>
+<%# <a id = "errors_modal_button" class = "group" type="button" data-toggle="modal" data-target="#errors_modal">test</a> %>
+<%# <a id = "errors_modal_button" class = "group" type="button" data-toggle="modal" data-target="#errors_modal" style="display: none;">test</a> %>
 
     <!-- Modal errors -->
     <div class="modal fade" id="errors_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,13 +84,15 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                    <% flash&.each do |message_type, message| %>
-                        <%message&.each do |m|%>
-                            <%=m%>
-                            <br>
-                        <%end%>
-                        <br>
-                    <% end %>
+                <%if flash[:schedule].class == Array%>
+                    <%flash[:schedule]&.each do |e| %>
+                    <%=e%>
+                    <br>
+                    <%end%>
+                <%elsif flash[:schedule].class == String%>
+                  <%=flash[:schedule]%>
+                <%end%>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
@@ -101,15 +101,17 @@
     </div>
 
 
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-    <%unless flash[:errors] == nil %>
+    <%unless flash[:create_schedule_error] == nil %>
         <script>
-            $("#errors_modal_button").trigger("click");
+            $("#create_schedule").trigger("click");
+        </script>
+    <%end%>
+    <%unless flash[:update_schedule_error] == nil %>
+        <script>
+            $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
         </script>
     <%end%>
   </body>

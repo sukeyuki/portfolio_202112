@@ -42,6 +42,8 @@ body{
 
 #header{
     height: 10vh;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #select_range{
@@ -52,6 +54,12 @@ body{
     height:90vh;
 }
 
+.wrapper_front{
+    width:95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .flex{
     display:flex;
 }
@@ -59,6 +67,7 @@ body{
 #group_list {
     height: 100%;
     width:25%;
+    padding-left: 10px;
 }
 
 #schedule{
@@ -73,18 +82,13 @@ body{
 }
 
 #schedule_overview{
-    width:80%;
+    width:100%;
     overflow: scroll;
 }
 
 .border{
     border: solid;
 }
-
-#attendance{
-    width:20%;
-}
-
 
 #schedule{
     position: relative;
@@ -96,12 +100,6 @@ body{
     overflow-x: scroll;
     overflow-y: scroll;
 }
-/* #schedule_table th{
-    border-right: none !important;
-    border-left: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
-} */
 
 #schedule_table{
     width:1450px;
@@ -113,7 +111,6 @@ body{
 #time_disp{
     position: sticky;
     left:0px;
-    // background-color: sandybrown;
     width: 50px;
     z-index: 5;
 }
@@ -177,6 +174,7 @@ body{
 .half_disp{
     height: 100%;
     width: 50%;
+    padding-left: 10px;
 }
 
 .flex{
