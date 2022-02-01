@@ -31,11 +31,11 @@ class GroupUsersController < ApplicationController
 
   private
   def group_user_create_params
-    params.require(:group_user).permit(:user_id, :group_id, :role)
+    params.require(:group_user).permit(:user_id, :group_id)
   end
 
   def group_user_update_params
-    params.require(:group_user).permit(:activated, :role)
+    params.require(:group_user).permit(:activated)
   end
 end
 

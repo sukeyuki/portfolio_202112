@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
   def create
     group = current_user.groups.new(group_params)
     group.personal = false
-    group_user = GroupUser.new(user:current_user, group:group,role:10, activated: true)
+    group_user = GroupUser.new(user:current_user, group:group, activated: true)
     ActiveRecord::Base.transaction do
       group.save!
       group_user.save!
