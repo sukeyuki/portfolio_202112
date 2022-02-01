@@ -25,9 +25,9 @@ class GroupsController < ApplicationController
 
   def edit
     @user = current_user
-    @group = Group.find(params[:id])
+    @group = Group.find_by_id(params[:id])
     #グループに参加していない人はrootにリダイレクト
-    if GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
+    if @group!=nil && GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
       @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
       session[:forwarding_url] = request.original_url if request.get?
     else

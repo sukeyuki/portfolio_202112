@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :group_user, class: GroupUser do
     association :user
     association :group
-    role {30}
   end
 
   trait :activated_true do

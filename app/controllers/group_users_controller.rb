@@ -24,7 +24,7 @@ class GroupUsersController < ApplicationController
   end
 
   def destroy
-    GroupUser.find(params[:id]).destroy
+    GroupUser.find(params[:id]).destroy_myself
     redirect_to(session[:forwarding_url])
     session.delete(:forwarding_url)
   end

@@ -95,5 +95,15 @@ $(function() {
       "background-color", color
     );
   });
+
+  // $("#16-0-schedule-block").click();
+  // $("#16-0-schedule-block").trigger("click");
+
+// <script>
+  // $(".schedule_block").on("click",function(){
+  //     $("#schedule_edit").trigger("click");
+  // });
+// </script>
+
 });
 

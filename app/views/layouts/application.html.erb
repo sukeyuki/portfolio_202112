@@ -111,8 +111,13 @@
     <%end%>
     <%unless flash[:update_schedule_error] == nil %>
         <script>
-            $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
+            // $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
+            $("#<%=@wrong_schedule_id%>-0-schedule-block").click();
+            // $("#schedule_edit").trigger("click");
+            // $("#schedule_edit").click();
         </script>
     <%end%>
+
+
   </body>
 </html>

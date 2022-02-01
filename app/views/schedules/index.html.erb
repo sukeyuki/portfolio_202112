@@ -67,6 +67,18 @@
                         </div>
                     <%end%>
                 <%end%>
+                <%# <div class = "schedule_block" style = "z-index:10;background-color:blue">
+                aaaa
+                </div>    %>
+                <%# <script>
+                $(".schedule_block").on("click",function(){
+                    $(this).css("background-color","red")
+                });
+                $(".schedule_block").on("click",function(){
+                    $("#schedule_edit").trigger("click");
+                });
+
+                </script>              %>
 
                 <div id = "time_disp">
                     <div class = "one_hour_disp"></div>
@@ -477,7 +489,6 @@
         </button>
         </div>
             <div class="modal-body">
-                <label for="title">グループ名</label><br>
                 <%=form_with model:Group.new do |form|%>
                     <%=form.label :name, "name"%>
                     <br>
