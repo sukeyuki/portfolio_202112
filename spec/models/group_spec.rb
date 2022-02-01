@@ -21,11 +21,6 @@ RSpec.describe Group, type: :model do
       expect(@group_with_blank_attr.errors[:name]).to include("を入力してください")
     end
 
-    it "has :overview error" do
-      @group_with_blank_attr.valid?
-      expect(@group_with_blank_attr.errors[:overview]).to include("を入力してください")
-    end
-
     it "has :personal error" do
       @group_with_blank_attr.valid?
       expect(@group_with_blank_attr.errors[:personal]).to include("は一覧にありません")

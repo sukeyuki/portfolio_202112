@@ -24,9 +24,6 @@ RSpec.describe Schedule, type: :model do
     it "has :group error" do
       expect(@schedule.errors[:group]).to include("を入力してください")
     end
-    it "has :contents error" do
-      expect(@schedule.errors[:contents]).to include("を入力してください")
-    end
     it "has :start_at error" do
       expect(@schedule.errors[:start_at]).to include("を入力してください")
     end

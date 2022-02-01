@@ -81,7 +81,7 @@ class SchedulesController < ApplicationController
       csv << [user.name, user.search_name, user.email]
       csv << []
       csv << ["checked groups info"]
-      csv << ["name", "content"] unless groups_show_list == []
+      csv << ["name", "overview"] unless groups_show_list == []
       Group.where(id:[groups_show_list]).each do |group|
         csv << [group.name, group.overview]
       end

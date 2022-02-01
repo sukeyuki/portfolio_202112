@@ -110,14 +110,22 @@
         </script>
     <%end%>
     <%unless flash[:update_schedule_error] == nil %>
-        <script>
+     <script>
+            $(document).ready(function(){
+                $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
+                $("#schedule_edit").trigger("click");
+            })
             // $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
-            $("#<%=@wrong_schedule_id%>-0-schedule-block").click();
+            // $("#<%=@wrong_schedule_id%>-0-schedule-block").click();
             // $("#schedule_edit").trigger("click");
             // $("#schedule_edit").click();
+
         </script>
     <%end%>
-
-
+    <%unless flash[:group_create_error] == nil %>
+        <script>
+            $("#create_group").click();
+        </script>
+    <%end%>
   </body>
 </html>

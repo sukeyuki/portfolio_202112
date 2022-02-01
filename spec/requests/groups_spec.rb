@@ -84,6 +84,7 @@ RSpec.describe "Groups", type: :request do
     before do
       @params = FactoryBot.build(:group, :other_valid_group).attributes
       @group = FactoryBot.create(:group)
+      get root_path
     end
 
     context "with valid data" do
