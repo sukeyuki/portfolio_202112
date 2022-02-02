@@ -40,13 +40,10 @@ body{
     left:25%;
 }
 
-h2{
-    display:inline-block;
-    width:500px
-}
-
 #header{
     height: 10vh;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #select_range{
@@ -57,6 +54,12 @@ h2{
     height:90vh;
 }
 
+.wrapper_front{
+    width:95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .flex{
     display:flex;
 }
@@ -64,6 +67,7 @@ h2{
 #group_list {
     height: 100%;
     width:25%;
+    padding-left: 10px;
 }
 
 #schedule{
@@ -78,18 +82,13 @@ h2{
 }
 
 #schedule_overview{
-    width:80%;
+    width:100%;
     overflow: scroll;
 }
 
 .border{
     border: solid;
 }
-
-#attendance{
-    width:20%;
-}
-
 
 #schedule{
     position: relative;
@@ -101,12 +100,6 @@ h2{
     overflow-x: scroll;
     overflow-y: scroll;
 }
-/* #schedule_table th{
-    border-right: none !important;
-    border-left: none !important;
-    border-top: none !important;
-    border-bottom: none !important;
-} */
 
 #schedule_table{
     width:1450px;
@@ -118,7 +111,6 @@ h2{
 #time_disp{
     position: sticky;
     left:0px;
-    // background-color: sandybrown;
     width: 50px;
     z-index: 5;
 }
@@ -182,6 +174,7 @@ h2{
 .half_disp{
     height: 100%;
     width: 50%;
+    padding-left: 10px;
 }
 
 .flex{
@@ -217,4 +210,23 @@ h2{
 #my_profile_modal{
     // opacity: 0.5;
     background-color:rgba(0,0,0,0.1);
+}
+
+.input_user_info{
+    margin:auto;
+    margin-top:20px;
+    text-align: center;
+    background-color:#eeeeee;
+    width: 400px;
+    border-radius: 15px;
+    
+}
+
+.input_user_info_logo{
+    width:200px;
+    margin:auto;
+}
+
+.errors{
+    color:red;
 }

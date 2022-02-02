@@ -2,20 +2,22 @@ class GroupsController < ApplicationController
   before_action :authenticate_user!
 
   def new
+    @group = Group.new
   end
 
   def create
     group = current_user.groups.new(group_params)
-    group_user = GroupUser.new(user:current_user, group:group,role:10, activated: true)
+    group.personal = false
+    group_user = GroupUser.new(user:current_user, group:group, activated: true)
     ActiveRecord::Base.transaction do
       group.save!
       group_user.save!
     end
 
     rescue
-      flash[:errors] = []
-      flash[:errors] << group.errors.messages
-      flash[:errors] << group_user.errors.messages
+      # flash[:group_create_error] = []
+      flash[:group_create_error] = group.errors.full_messages
+      # flash[:group_create_error] << group_user.errors.full_messages
 
     ensure
       redirect_to root_path
@@ -23,9 +25,9 @@ class GroupsController < ApplicationController
 
   def edit
     @user = current_user
-    @group = Group.find(params[:id])
+    @group = Group.find_by_id(params[:id])
     #グループに参加していない人はrootにリダイレクト
-    if GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
+    if @group!=nil && GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
       @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
       session[:forwarding_url] = request.original_url if request.get?
     else
@@ -36,9 +38,12 @@ class GroupsController < ApplicationController
   def update
     group = Group.find(params[:id])
     unless group.update(group_params)
-      flash[:errors] = group.errors.messages
+      flash[:group_update_error] = group.errors.full_messages
+      # return redirect_to(session[:forwarding_url])
     end
-    redirect_to root_path
+    # redirect_to root_path
+    redirect_to(session[:forwarding_url])
+    session.delete(:forwarding_url)
   end
 
   private

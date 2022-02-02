@@ -20,21 +20,9 @@ $(function() {
         checkbox.push(id);
       };
     });
-    console.log(checkbox);
     url.searchParams.set("checkbox", checkbox);
-    // url.searchParams.set("checkbox", "["+checkbox+"]");
     window.location.href = url;
   });
-  // $('.group-checkbox').on('click',function(){
-  //   const url = new URL(location);
-  //   $('.group-checkbox').each(function(index, element){
-  //     url.searchParams.delete($(element).attr('id'));
-  //     if($(element).prop('checked')){
-  //       url.searchParams.set($(element).attr('id'), "checked")
-  //     };
-  //   });
-  //   window.location.href = url;
-  // });
 
   $('#display_start_at').on('change',function(){
     const url = new URL(location);
@@ -57,7 +45,6 @@ $(function() {
     end_at_arr    = end_at.split(" ");
     end_at_ymd    = end_at_arr[0].split("-");
     end_at_hms    = end_at_arr[1].split(":");
-    // console.log(start_at_arr[1])
     $("#schedule_overview_title").text(title);
     $("#schedule_overview_contents").text("内容:"+content);
     $("#schedule_overview_users").text("参加者:"+users);
@@ -91,6 +78,7 @@ $(function() {
     var url = new URL(location);
     $("#schedule-delete").attr('href', url["origin"]+"/schedules/"+id);
   });
+  
 
   $(".users_hide").each(function(index, element){
     if ($(element).data("users_count")==1){
@@ -98,18 +86,22 @@ $(function() {
     };
   });
   var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#ffe0b6", "#bad4d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
-  // var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#fcc9ac", "#c3dcbe", "#b7aed6", "#ffe0b6", "#bad41d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
   $('.schedule_block').each(function(index, element){
-  console.log($(element).data("group_index"));
-  console.log(color_arr[index%9]);
-  index = $(element).data("group_index");
-  color = color_arr[index%9]
-  $(this).css(
-    "background-color", color
-  );
+    console.log($(element).data("group_index"));
+    console.log(color_arr[index%9]);
+    index = $(element).data("group_index");
+    color = color_arr[index%9]
+    $(this).css(
+      "background-color", color
+    );
   });
 
+  // $("#16-0-schedule-block").click();
+  // $("#16-0-schedule-block").trigger("click");
 
+  // $(".schedule_block").on("click",function(){
+  //     $("#schedule_edit").trigger("click");
+  // });
 
 });
 

@@ -1,76 +1,57 @@
-<!DOCTYPE html>
-<html lang=ja>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>group edit </title>
-        <meta name ="description" content = "group edit">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
-        <link href="css/style_main.css" rel="stylesheet">
-        <link href="css/style_login.css" rel="stylesheet">
-        <link rel="icon" type="image/png" href = "images/favicon.png">
+<div class = "wrapper flex">
+    <div class = "half_disp">
+        <%flash[:group_update_error]&.each do |e|%>
+            <div class = "errors"><%=e%></div>
+        <%end%>
+        <%=form_with model:@group do |form|%>
+            <%=form.label :name, "name"%>
+            <br>
+            <%=form.text_field :name%>
+            <br> 
+            <%=form.label :overview, "contents"%>
+            <br>
+            <%=form.text_area :overview, size:"50x5"%>
+            <br>
+            <%=form.submit "update"%>
+        <%end%>
 
-    </head> 
-    <body>
-        <div class = "wrapper flex">
-            <div class = "half_disp">
-                <label for="title">グループ名</label><br>
-                <%=form_with model:@group do |form|%>
-                    <%=form.label :name, "name"%>
-                    <br>
-                    <%=form.text_field :name%>
-                    <br> 
-                    <%=form.label :overview, "contents"%>
-                    <br>
-                    <%=form.text_area :overview, size:"50x5"%>
-                    <br>
-                    <%=form.submit "update"%>
+    </div>
+    <div class = "half_disp">
+        参加中
+        <br>
+        <%@group.users.each do |user|%>
+            <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+            <%#FIXME ネストにてしてしまっている%>
+            <%if gu.activated%>
+                <%unless @group.personal == true%>
+                    <%=link_to 'kick', group_user_url(gu), method: :delete %>
                 <%end%>
-
-            </div>
-            <div class = "half_disp">
-                参加中
-                <br>
-                <%@group.users.each do |user|%>
-                    <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
-                    <%#FIXME ネストにてしてしまっている%>
-                    <%if gu.activated%>
-                        <%unless @group.personal == true%>
-                            <%=link_to 'kick', group_user_url(gu), method: :delete %>
-                        <%end%>
-                        <%=user.name%>
-                    <%end%>
-                <%end%>
-                <br>
-                招待中
-                <br>
-                <%@group.users.each do |user|%>
-                    <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
-                    <%unless gu.activated%>
-                        <%=link_to 'kick', group_user_url(gu), method: :delete %>
-                        <%=user.name%>
-                    <%end%>
-                <%end%>
-                <br>
-                招待
-                <%=form_with url:edit_group_url(@group), method: :post, local: true do |f|%>
-                    <%=f.text_field :search%>
-                    <%=f.submit 'Search'%>
-                <%end%>
-                <%@search_users&.each do |user|%>
-                    <%=form_with model:GroupUser.new, local: true do |f|%>
-                        <input type = "hidden" name = "group_user[user_id]" value = "<%=user.id%>">
-                        <input type = "hidden" name = "group_user[group_id]" value = "<%=@group.id%>">
-                        <%=f.submit 'Invite'%>
-                        <%=user.name%>
-                    <%end%>
-                <%end%>
-            </div>
-        </div>
-    </body>
-
-
-</html>
-
-
+                <%=user.name%>
+            <%end%>
+        <%end%>
+        <br>
+        招待中
+        <br>
+        <%@group.users.each do |user|%>
+            <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+            <%unless gu.activated%>
+                <%=link_to 'kick', group_user_url(gu), method: :delete %>
+                <%=user.name%>
+            <%end%>
+        <%end%>
+        <br>
+        招待
+        <%=form_with url:edit_group_url(@group), method: :post, local: true do |f|%>
+            <%=f.text_field :search%>
+            <%=f.submit 'Search'%>
+        <%end%>
+        <%@search_users&.each do |user|%>
+            <%=form_with model:GroupUser.new, local: true do |f|%>
+                <input type = "hidden" name = "group_user[user_id]" value = "<%=user.id%>">
+                <input type = "hidden" name = "group_user[group_id]" value = "<%=@group.id%>">
+                <%=f.submit 'Invite'%>
+                <%=user.name%>
+            <%end%>
+        <%end%>
+    </div>
+</div>

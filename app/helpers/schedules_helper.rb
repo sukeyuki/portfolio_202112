@@ -16,24 +16,23 @@ module SchedulesHelper
     schedules_position_parameters = {}
     #########################
 
-    #######スケジュール表示位置計算#######
+    #######スケジュール開始と終了を配列に入れる#######
     schedule_start_end_arr = []
     schedules.each do |schedule|
       schedule_start_end_arr << [schedule.start_at, schedule.end_at]
     end
+    ############################################
+
+    ##同時刻のスケジュールが被らないために何分割するか、どこに配置するかを計算##
     schedule_overlap_params = {}
-    
-    # debugger
     schedules.each.with_index do |schedule, index|
       schedule_overlap_params[schedule.id] = {}
       schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
       schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
-    # debugger
+    ###############################################################
 
-
-    # debugger
-
+    ######scheduleの配置位置を計算######
     schedules.each do |schedule|
       day_diff = (schedule.end_at.to_date-schedule.start_at.to_date).to_i
       if day_diff >= 1
@@ -80,8 +79,11 @@ module SchedulesHelper
     return schedules_position_parameters
   end
 
-
+  ##スケジュールを何分割するかを求めるアルゴリズム
+  ##本アルゴリズムは再帰を用いて実装している。begin_fはreturn直前の場合のみ処理を行うため実装している。return直前はtrue, それ以外はfalseが入る。
   def overlap_count(arr, begin_f)
+
+    #指定したスケジュールと他のスケジュールの被っている範囲を出すアルゴリズム
     def calc_area_list(arr, index)
       new_arr = []
       arr.each_with_index do |ar,i|
@@ -93,8 +95,8 @@ module SchedulesHelper
       end
       return new_arr
     end
-  
 
+    #被っているスケジュール一覧を求めるアルゴリズム
     def chain_index(se_ar,index)
       rg = se_ar[index].dup
       arr = []
@@ -113,20 +115,8 @@ module SchedulesHelper
       end
       return arr
     end
-
-    # def chain_index(se_ar,index)
-    #   arr = []
-    #   arr << index
-    #   se_ar.each_with_index do |ar,i|
-    #     unless i == index
-    #       if se_ar[index][0]<=ar[1] and se_ar[index][1]>=ar[0]
-    #         arr << i
-    #       end
-    #     end
-    #   end
-    #   return arr
-    # end
   
+    #スケジュールが0個ならnilを返す。スケジュールが1個なら1を返す。
     if begin_f==true
       if arr.count == 0
         return [nil]
@@ -134,7 +124,8 @@ module SchedulesHelper
         return [1]
       end    
     end
-  
+
+    #再帰のベースケース
     if arr.count == 0
       return 1
     elsif arr.count == 1
@@ -149,14 +140,13 @@ module SchedulesHelper
     if begin_f==true
       return count.map.with_index do |c,i|
         chain_index(arr,i).map{|id|count[id]}.max
-        # debugger
       end
     end
   
     return count.max+1
   end
   
-
+  ##スケジュールどうしが被らない位置を計算するアルゴリズム
   def position_calc(arr,i)
     flag_id = []
     same_start_list = []
@@ -195,6 +185,24 @@ module SchedulesHelper
       output[group.id]=index
     end
     return output
+  end
+
+  def time_disp
+    tag.div(id:"time_disp") do |tag|
+      concat tag.div(class:"one_hour_disp")
+      25.times do |time|
+        concat tag.div(time.to_s+":00",class:"one_hour_disp")
+      end
+    end
+  end
+
+  def one_day(first_day, since)
+    tag.div(class:"oneday_schedule") do |tag|
+      concat tag.div(first_day.since(since.days).day.to_s + "日",class:"day_disp")
+      24.times do
+        concat tag.div(class:"one_hour")
+      end
+    end
   end
 end
 

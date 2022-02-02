@@ -19,19 +19,16 @@ RSpec.describe Schedule, type: :model do
     end  
     
     it "has :title error" do
-      expect(@schedule.errors[:title]).to include("can't be blank")
+      expect(@schedule.errors[:title]).to include("を入力してください")
     end
     it "has :group error" do
-      expect(@schedule.errors[:group]).to include("must exist")
-    end
-    it "has :contents error" do
-      expect(@schedule.errors[:contents]).to include("can't be blank")
+      expect(@schedule.errors[:group]).to include("を入力してください")
     end
     it "has :start_at error" do
-      expect(@schedule.errors[:start_at]).to include("can't be blank")
+      expect(@schedule.errors[:start_at]).to include("を入力してください")
     end
     it "has :end_at error" do
-      expect(@schedule.errors[:end_at]).to include("can't be blank")
+      expect(@schedule.errors[:end_at]).to include("を入力してください")
     end
   end
 
@@ -42,11 +39,11 @@ RSpec.describe Schedule, type: :model do
     end
 
     it "has :title error" do
-      expect(@schedule.errors[:title]).to include("is too long (maximum is 50 characters)")
+      expect(@schedule.errors[:title]).to include("は50文字以内で入力してください")
     end
 
     it "has :contents error" do
-      expect(@schedule.errors[:contents]).to include("is too long (maximum is 1000 characters)")
+      expect(@schedule.errors[:contents]).to include("は1000文字以内で入力してください")
     end
   end
 end

@@ -18,17 +18,12 @@ RSpec.describe Group, type: :model do
 
     it "has :name error" do
       @group_with_blank_attr.valid?
-      expect(@group_with_blank_attr.errors[:name]).to include("can't be blank")
-    end
-
-    it "has :overview error" do
-      @group_with_blank_attr.valid?
-      expect(@group_with_blank_attr.errors[:overview]).to include("can't be blank")
+      expect(@group_with_blank_attr.errors[:name]).to include("を入力してください")
     end
 
     it "has :personal error" do
       @group_with_blank_attr.valid?
-      expect(@group_with_blank_attr.errors[:personal]).to include("is not included in the list")
+      expect(@group_with_blank_attr.errors[:personal]).to include("は一覧にありません")
     end
   end
 
@@ -39,12 +34,12 @@ RSpec.describe Group, type: :model do
 
     it "has :name error" do
       @group_with_long_attr.valid?
-      expect(@group_with_long_attr.errors[:name]).to include("is too long (maximum is 50 characters)")
+      expect(@group_with_long_attr.errors[:name]).to include("は50文字以内で入力してください")
     end
 
     it "has :overview error" do
       @group_with_long_attr.valid?
-      expect(@group_with_long_attr.errors[:overview]).to include("is too long (maximum is 1000 characters)")
+      expect(@group_with_long_attr.errors[:overview]).to include("は1000文字以内で入力してください")
     end
   end
 end
