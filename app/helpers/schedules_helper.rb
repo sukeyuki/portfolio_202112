@@ -27,7 +27,8 @@ module SchedulesHelper
     schedule_overlap_params = {}
     schedules.each.with_index do |schedule, index|
       schedule_overlap_params[schedule.id] = {}
-      schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
+      schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,index)
+      # schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
       schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
     ###############################################################
@@ -79,9 +80,48 @@ module SchedulesHelper
     return schedules_position_parameters
   end
 
+  
+
+  ##スケジュールを何分割するかを求めるアルゴリズム
+  def overlap_count(arr,index)
+
+    def chain_index(arr, index)
+      sorted = arr.sort
+      range = [sorted[0]]
+      pointer = 0
+      sorted.each do |a|
+        current_range = range[pointer]
+        if current_range[1] <= a[0] || a[1] <= current_range[0]
+          range << a
+          pointer += 1
+        else
+          range[pointer] = [[current_range[0], a[0]].min, [current_range[1], a[1]].max]
+        end
+      end
+      target_range = range.find{|v| !(v[1] <= arr[index][0] || arr[index][1] <= v[0]) }
+      arr.size.times.select{|i| !(target_range[1] <= arr[i][0] || arr[i][1] <= target_range[0]) }
+    end
+    
+    chain_schedules = chain_index(arr,index).map{|ind| arr[ind]}
+    loop.with_index do |_, i|
+      catch :done do
+        comb = i+2
+        chain_schedules.combination(comb) do |pair|
+          latest_start = pair.map{|s|s[0]}.max
+          earliest_end = pair.map{|s|s[1]}.min
+          if latest_start < earliest_end
+            throw :done
+          end
+        end
+        return comb-1
+      end
+    end
+  end
+
+
   ##スケジュールを何分割するかを求めるアルゴリズム
   ##本アルゴリズムは再帰を用いて実装している。begin_fはreturn直前の場合のみ処理を行うため実装している。return直前はtrue, それ以外はfalseが入る。
-  def overlap_count(arr, begin_f)
+  def overlap_count_old(arr, begin_f)
 
     #指定したスケジュールと他のスケジュールの被っている範囲を出すアルゴリズム
     def calc_area_list(arr, index)
