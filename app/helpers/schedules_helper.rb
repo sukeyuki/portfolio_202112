@@ -28,7 +28,6 @@ module SchedulesHelper
     schedules.each.with_index do |schedule, index|
       schedule_overlap_params[schedule.id] = {}
       schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,index)
-      # schedule_overlap_params[schedule.id][:overlap_count] = overlap_count(schedule_start_end_arr,true)[index]
       schedule_overlap_params[schedule.id][:position_calc] = position_calc(schedule_start_end_arr,index)
     end
     ###############################################################
@@ -103,119 +102,33 @@ module SchedulesHelper
     end
     
     chain_schedules = chain_index(arr,index).map{|ind| arr[ind]}
-    loop.with_index do |_, i|
-      catch :done do
-        comb = i+2
-        chain_schedules.combination(comb) do |pair|
-          latest_start = pair.map{|s|s[0]}.max
-          earliest_end = pair.map{|s|s[1]}.min
-          if latest_start < earliest_end
-            throw :done
-          end
-        end
-        return comb-1
-      end
-    end
-  end
 
-
-  ##スケジュールを何分割するかを求めるアルゴリズム
-  ##本アルゴリズムは再帰を用いて実装している。begin_fはreturn直前の場合のみ処理を行うため実装している。return直前はtrue, それ以外はfalseが入る。
-  def overlap_count_old(arr, begin_f)
-
-    #指定したスケジュールと他のスケジュールの被っている範囲を出すアルゴリズム
-    def calc_area_list(arr, index)
-      new_arr = []
-      arr.each_with_index do |ar,i|
-        unless index == i
-          if [arr[index][0],ar[0]].max < [arr[index][1], ar[1]].min
-            new_arr << [[arr[index][0],arr[i][0]].max, [arr[index][1], arr[i][1]].min]
-          end
-        end
-      end
-      return new_arr
+    current = []
+    max = 0
+    chain_schedules.sort.each do |a|
+      current = current.reject{|v| v[1] <= a[0] } + [a]
+      max = current.size if max < current.size
     end
-
-    #被っているスケジュール一覧を求めるアルゴリズム
-    def chain_index(se_ar,index)
-      rg = se_ar[index].dup
-      arr = []
-      arr << index
-      se_ar.each_with_index do |ar,i|
-        unless i == index
-          if rg[0]<ar[1] and rg[1]>ar[0]
-            rg[0] = [rg[0], ar[0]].min
-            rg[1] = [rg[1], ar[1]].max
-            if !arr.include?(i)
-              arr << i
-              redo
-            end
-          end
-        end
-      end
-      return arr
-    end
-  
-    #スケジュールが0個ならnilを返す。スケジュールが1個なら1を返す。
-    if begin_f==true
-      if arr.count == 0
-        return [nil]
-      elsif arr.count == 1
-        return [1]
-      end    
-    end
-
-    #再帰のベースケース
-    if arr.count == 0
-      return 1
-    elsif arr.count == 1
-      return 2
-    end
-  
-    count = []
-    arr.each_with_index do |ar, index|
-      count << overlap_count(calc_area_list(arr, index),false)
-    end
-  
-    if begin_f==true
-      return count.map.with_index do |c,i|
-        chain_index(arr,i).map{|id|count[id]}.max
-      end
-    end
-  
-    return count.max+1
+    return max
   end
   
   ##スケジュールどうしが被らない位置を計算するアルゴリズム
-  def position_calc(arr,i)
-    flag_id = []
-    same_start_list = []
-    arr.each.with_index do |ele, index|
-      unless  index == i
-        if arr[i][0]== ele[0]
-          same_start_list << index
-        end
-        if arr[i][0]>ele[0] and arr[i][0]<ele[1] 
-          flag_id << index
+  def position_calc(schedules, index)
+    current = []
+    position = nil
+    schedules.each_with_index.sort.each do |a,i|
+      current = current.reject{|v| v[0][1] <= a[0]}
+      loop.with_index do |_, j|
+        unless current.map {|s|s[1]}.include?(j+1)
+          current << [a,j+1]
+          if index == i
+            position = j+1
+          end
+          break
         end
       end
     end
-  
-    if flag_id==[] and same_start_list==[]
-      return 1
-    end
-  
-    att=(1..20).to_a
-    flag_id.each do |id|
-      att.delete(position_calc(arr,id))
-    end
-  
-    if same_start_list.min&.< i
-      same_start_list << i
-      att.delete(position_calc(arr, same_start_list.min))
-      return att[same_start_list.sort!.index(i)-1]
-    end
-    return att.min
+    return position
   end
 
   def id_with_index(groups)

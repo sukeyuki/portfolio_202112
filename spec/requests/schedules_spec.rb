@@ -37,7 +37,7 @@ RSpec.describe "Schedules", type: :request do
       it "return http scuccess with first day and grop checkbox data" do
         @params = {
           'start_at':"2022-01-01",
-          "checkbox":"1",
+          "checkbox":"1,2",
         }
         get schedules_url
         expect(response).to have_http_status(:success)
