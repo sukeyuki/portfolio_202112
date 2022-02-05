@@ -253,12 +253,12 @@
             <div class="modal-body">
                 <%@user_non_active_groups.each do |group|%>
                     <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
-                    <%=form_with model:gu do |f|%>
+                    <%=form_with url:invite_user_url(gu) do |f|%>
                         <%=group.name%>
                         承認
-                        <%=f.radio_button :activated, :true%>
+                        <%=f.radio_button :response, :true%>
                         拒否
-                        <%=f.radio_button :activated, :delete%>
+                        <%=f.radio_button :response, :false%>
                         <%=f.submit "response", class:"btn btn-primary"%>
                     <%end%>
                     <br>

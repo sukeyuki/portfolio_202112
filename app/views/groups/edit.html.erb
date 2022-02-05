@@ -46,7 +46,7 @@
             <%=f.submit 'Search'%>
         <%end%>
         <%@search_users&.each do |user|%>
-            <%=form_with model:GroupUser.new, local: true do |f|%>
+            <%=form_with url:invite_users_url, local: true do |f|%>
                 <input type = "hidden" name = "group_user[user_id]" value = "<%=user.id%>">
                 <input type = "hidden" name = "group_user[group_id]" value = "<%=@group.id%>">
                 <%=f.submit 'Invite'%>
