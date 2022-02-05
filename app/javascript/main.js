@@ -20,6 +20,7 @@ $(function() {
         checkbox.push(id);
       };
     });
+    url.searchParams.set("search", true);
     url.searchParams.set("checkbox", checkbox);
     window.location.href = url;
   });

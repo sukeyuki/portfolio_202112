@@ -15,9 +15,7 @@ class GroupsController < ApplicationController
     end
 
     rescue
-      # flash[:group_create_error] = []
       flash[:group_create_error] = group.errors.full_messages
-      # flash[:group_create_error] << group_user.errors.full_messages
 
     ensure
       redirect_to root_path
@@ -29,7 +27,6 @@ class GroupsController < ApplicationController
     #グループに参加していない人はrootにリダイレクト
     if @group!=nil && GroupUser.where(group_id:@group.id).where(activated:true).map{|a|a.user_id}.include?(current_user.id)
       @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
-      session[:forwarding_url] = request.original_url if request.get?
     else
       redirect_to root_path
     end
@@ -39,11 +36,8 @@ class GroupsController < ApplicationController
     group = Group.find(params[:id])
     unless group.update(group_params)
       flash[:group_update_error] = group.errors.full_messages
-      # return redirect_to(session[:forwarding_url])
     end
-    # redirect_to root_path
-    redirect_to(session[:forwarding_url])
-    session.delete(:forwarding_url)
+    redirect_to edit_group_url(group)
   end
 
   private
