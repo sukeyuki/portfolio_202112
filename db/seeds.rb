@@ -18,45 +18,45 @@ user1 = User.new(
 user1.skip_confirmation!
 user1.save!
 
-@user2 = User.new(
+user2 = User.new(
   name:"母", 
   search_name:"hanako",
   email:"hanako@hanako.com",
   password:123456789,
   password_confirmation:123456789
 )
-@user2.skip_confirmation!
-@user2.save
+user2.skip_confirmation!
+user2.save
 
-@user3 = User.new(
+user3 = User.new(
   name:"息子", 
   search_name:"musuko",
   email:"musuko@musuko.com",
   password:123456789,
   password_confirmation:123456789
 )
-@user3.skip_confirmation!
-@user3.save
+user3.skip_confirmation!
+user3.save
 
-@user4 = User.new(
+user4 = User.new(
   name:"同僚1", 
   search_name:"douryou1",
   email:"douryou1@douryou1.com",
   password:123456789,
   password_confirmation:123456789
 )
-@user4.skip_confirmation!
-@user4.save
+user4.skip_confirmation!
+user4.save
 
-@user5 = User.new(
+user5 = User.new(
   name:"同僚2", 
   search_name:"douryou2",
   email:"douryou2@douryou2.com",
   password:123456789,
   password_confirmation:123456789
 )
-@user5.skip_confirmation!
-@user5.save
+user5.skip_confirmation!
+user5.save
 
 # グループ登録
 group1 = user1.groups.create!(
@@ -64,16 +64,18 @@ group1 = user1.groups.create!(
   overview:"楽しい家族",
   personal:false,
 )
-GroupUser.find_by(group_id:group1.id, user_id:user1.id).update(activated:true)
+GroupUser.find_by(group_id:group1.id, user_id:user1.id).update(activated:true, role:10)
 GroupUser.create!(
   group_id: group1.id,
-  user_id: @user2.id,
-  activated: true
+  user_id: user2.id,
+  activated: true,
+  role: 20
 )
 GroupUser.create!(
   group_id: group1.id,
-  user_id: @user3.id,
-  activated: true
+  user_id: user3.id,
+  activated: true,
+  role:20
 )
 
 group2 = user1.groups.create!(
@@ -81,16 +83,18 @@ group2 = user1.groups.create!(
   overview:"会社の友達",
   personal:false,
 )
-GroupUser.find_by(group_id:group2.id, user_id:user1.id).update(activated:true)
+GroupUser.find_by(group_id:group2.id, user_id:user1.id).update(activated:true, role:10)
 GroupUser.create!(
   group_id: group2.id,
-  user_id: @user4.id,
-  activated: true
+  user_id: user4.id,
+  activated: true,
+  role:20
 )
 GroupUser.create!(
   group_id: group2.id,
-  user_id: @user5.id,
-  activated: true
+  user_id: user5.id,
+  activated: true,
+  role:20
 )
 
 group3 = user1.groups.create!(
@@ -98,11 +102,12 @@ group3 = user1.groups.create!(
   overview:"ゴルフの友達",
   personal:false,
 )
-GroupUser.find_by(group_id:group3.id, user_id:user1.id).update(activated:true)
+GroupUser.find_by(group_id:group3.id, user_id:user1.id).update(activated:true, role:10)
 GroupUser.create!(
   group_id: group3.id,
-  user_id: @user4.id,
-  activated: true
+  user_id: user4.id,
+  activated: true,
+  role:20
 )
 
 group1.schedules.create(
@@ -166,24 +171,28 @@ group3.schedules.create(
 #   end
 # end
 
-user2group = @user2.groups.create(
+user4group = user4.groups.create(
   name:"釣り仲間",
   overview:"楽しい釣りの会",
   personal:false
 )
+GroupUser.find_by(group_id:user4group.id, user_id:user4.id).update(activated:true, role:10)
 
-user3group = @user3.groups.create(
+
+user5group = user5.groups.create(
   name:"筋トレの会",
   overview:"楽しい筋トレの会",
   personal:false
 )
+GroupUser.find_by(group_id:user5group.id, user_id:user5.id).update(activated:true, role:10)
+
 
 GroupUser.create!(
-  group_id: user2group.id,
+  group_id: user4group.id,
   user_id: user1.id,
 )
 
 GroupUser.create!(
-  group_id: user3group.id,
+  group_id: user5group.id,
   user_id: user1.id,
 )

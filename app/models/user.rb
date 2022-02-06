@@ -18,7 +18,7 @@ class User < ApplicationRecord
   def create_personal_group
     ActiveRecord::Base.transaction do
       group = Group.create!(name:"private", personal:true, overview:"my personal scuedule")
-      GroupUser.create!(group:group, user:self, activated: true)
+      GroupUser.create!(group:group, user:self,role:10, activated: true)
     end
   end
 end

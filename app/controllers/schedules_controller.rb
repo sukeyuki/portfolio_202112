@@ -15,7 +15,7 @@ class SchedulesController < ApplicationController
     else
       @groups_show_list = session[:checkbox_list]
     end
-    
+
     # CSV出力用処理
     respond_to do |format|
       format.html
@@ -34,8 +34,6 @@ class SchedulesController < ApplicationController
       flash[:create_schedule_error] = schedule.errors.full_messages
     end
     redirect_to root_url
-    # redirect_to(session[:forwarding_url])
-    # session.delete(:forwarding_url)
   end
 
   def update
@@ -45,16 +43,11 @@ class SchedulesController < ApplicationController
       session[:wrong_schedule_id] = params[:id]
     end
     redirect_to root_url
-    # redirect_to(session[:forwarding_url])
-    # session.delete(:forwarding_url)
   end
 
   def destroy
     Schedule.find(params[:id]).destroy
     redirect_to root_url
-    # フレンドリーフォワーディング
-    # redirect_to(session[:forwarding_url])
-    # session.delete(:forwarding_url)
   end
 
   private

@@ -8,19 +8,16 @@ class GroupUsersController < ApplicationController
   #   redirect_to edit_group_url(group_user_create_params[:group_id])
   # end
 
-  # def update
-  #   #メイン画面のグループリクエストを拒否したらデータを消す処理に移行 
-  #   if group_user_update_params[:activated]=="delete"
-  #     return self.destroy
-  #   end
-  #   group_user = GroupUser.find(params[:id])
-  #   unless group_user.update(group_user_update_params)
-  #     flash[:alert] = group_user.errors.full_messages
-  #   end
-  #   redirect_to edit_group_url(group_user.group_id)
-  #   # redirect_to(session[:forwarding_url])
-  #   # session.delete(:forwarding_url)
-  # end
+  def update
+    debugger
+    group_user = GroupUser.find(params[:id])
+    unless group_user.update(group_user_update_params)
+      flash[:alert] = group_user.errors.full_messages
+    end
+    redirect_to edit_group_url(group_user.group_id)
+    # redirect_to(session[:forwarding_url])
+    # session.delete(:forwarding_url)
+  end
 
   def destroy
     gu = GroupUser.find(params[:id]).destroy_myself
@@ -33,7 +30,7 @@ class GroupUsersController < ApplicationController
   end
 
   def group_user_update_params
-    params.require(:group_user).permit(:activated)
+    params.require(:group_user).permit(:role)
   end
 end
 

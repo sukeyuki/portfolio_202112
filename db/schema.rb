@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_112729) do
     t.integer "user_id"
     t.integer "group_id"
     t.boolean "activated", default: false
+    t.integer "role", default: 20
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id", "group_id"], name: "index_group_users_on_user_id_and_group_id", unique: true
