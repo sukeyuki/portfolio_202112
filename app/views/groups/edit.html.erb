@@ -3,10 +3,7 @@
         <%flash[:group_update_error]&.each do |e|%>
             <div class = "errors"><%=e%></div>
         <%end%>
-
-        <%if @group.personal == true%>
-            <%=@user.name+"さんprivate group"%>
-        <%end%>
+        <%my_role = GroupUser.find_by(user:@user, group:@group).role%>
 
         <%=form_with model:@group do |form|%>
             <%=form.label :name, "name"%>
@@ -23,49 +20,70 @@
     </div>
 
     <div class = "half_disp">
-        <%if @group.personal==false%>
-            管理者:
-            <br>
-            <%my_role=GroupUser.find_by(user:@user, group:@group).role%>
-            <%@group.users.each do |user|%>
-                <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
-                <%if gu.activated && gu.role=="admin"%>
-                    <%=user.name%>
-                    <%if my_role == "admin"%>
-                        <%=link_to 'to_normal', group_user_url(gu, params:{group_user:{role:"normal"}}), method: :put %>
-                    <%end%>
 
-                    <%if my_role == "admin"%>
-                        <%=link_to 'kick', group_user_url(gu), method: :delete %>
-                    <%end%>
-                <%end%>
-            <%end%>
-            <br>
+        <%#adminユーザーは  %>
+        <%admin_count = User.admin_users_of(@group).count%>
+        <%user_count = User.with_active_group(@group).count%>
 
-            一般メンバー:
-            <br>
-            <%@group.users.each do |user|%>
-                <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
-                <%if gu.activated and gu.role == "normal"%>
-                    <%=user.name%>
-                    <%if my_role == "admin"%>
-                        <%=link_to 'to_admin', group_user_url(gu, params:{group_user:{role:"admin"}}), method: :put %>
-                        ,
-                    <%end%>                    
+        管理者:
+        <br>
+        <%first_flag = true%>
+        <%User.with_active_group(@group).each do |user|%>
+            <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+            <%if gu.role=="admin"%>
+            <%="," if first_flag ==false%>
+                <%=user.name%>
+                <%if user == @user && (admin_count != 1) %>
+                    (
+                    <%=link_to 'to_normal', group_user_url(gu, params:{group_user:{role:"normal"}}), method: :put %>
+                    ,
                     <%=link_to 'kick', group_user_url(gu), method: :delete %>
+                    )
                 <%end%>
+                <%first_flag=false%>
             <%end%>
-            <br>
-            招待中
-            <br>
-            <%@group.users.each do |user|%>
-                <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
-                <%unless gu.activated%>
+        <%end%>
+        <br>
+
+        一般メンバー:
+        <br>
+        <%first_flag = true%>
+        <%User.with_active_group(@group).each do |user|%>
+            <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+            <%if gu.role == "normal"%>
+                <%="," if first_flag ==false%>
+                <%=user.name%>
+                <%if my_role == "admin"%>
+                    (
+                    <%=link_to 'to_admin', group_user_url(gu, params:{group_user:{role:"admin"}}), method: :put %>
+                    ,
                     <%=link_to 'kick', group_user_url(gu), method: :delete %>
-                    <%=user.name%>
+                    )
                 <%end%>
+
+                <%if @user == user%>
+                    (
+                    <%=link_to 'kick', group_user_url(gu), method: :delete %>
+                    )
+                <%end%>
+                <%first_flag=false%>
             <%end%>
-            <br>
+        <%end%>
+        <br>
+        招待中
+        <br>
+        <%first_flag = true%>
+        <%User.with_not_active_group(@group).each do |user|%>
+            <%="," if first_flag ==false%>
+            <% gu = GroupUser.find_by(user_id: user.id, group_id: @group.id)%>
+            <%=user.name%>
+            <%if my_role == "admin"%>
+                <%=link_to 'kick', group_user_url(gu), method: :delete %>
+            <%end%>
+            <%first_flag=false%>
+        <%end%>
+        <br>
+        <%if my_role=="admin"%>
             招待
             <%=form_with url:edit_group_url(@group), method: :post, local: true do |f|%>
                 <%=f.text_field :search%>
@@ -80,5 +98,10 @@
                 <%end%>
             <%end%>
         <%end%>
+        <%if user_count==1 %>
+            <%=link_to 'delete this group', group_user_url(GroupUser.find_by(group:@group,user:@user)), method: :delete %>
+        <%end%>
+        <br>
+
     </div>
 </div>

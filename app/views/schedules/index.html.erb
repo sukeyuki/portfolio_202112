@@ -4,7 +4,7 @@
         <div>
             <%@user_active_groups.each do |group|%>
                 <input type="checkbox" id ="<%=group.id%>-checkbox" class ="group-checkbox" <%="checked" if @groups_show_list.include?(group.id)%>>
-                <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%>>
+                <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%> data-admin_users="<%= User.admin_users_of(group).map(&:name)%>" data-normal_users="<%= User.normal_users_of(group).map(&:name)%>" data-my_role="<%= GroupUser.find_by(user:@user,group:group).role%>" data-my_group_user_id="<%=GroupUser.find_by(group:group, user:@user).id%>" data-personal_bool="<%=group.personal%>">
                     <%=group.name%>
                 </a>
                 <a class = "users_hide" data-toggle="collapse" href="#group<%=group.id%>" role="button" aria-expanded="false" aria-controls="collapseExample" data-users_count="<%=User.with_active_group(group).count%>">
@@ -208,21 +208,27 @@
     <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
+        <h5 class="modal-title" id="group-name">Detail</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
         </div>
             <div class="modal-body">
-                    グループ名:
-                <div id ="group-name">エラー。空データ</div>
-                    詳細
-                <div id ="group-overview"></div>
+                <a id ="group-overview"></a>
+                <div id ="group-overview-users-info">
+                    <br>
+                        管理者:
+                        <br>
+                    <div id ="group-admin-users"></div>
+                        一般ユーザー:
+                    <div id ="group-normal-users"></div>
+                </div>
             </div>
         <div class="modal-footer">
 
 
-        <button id = "edit-button" type="button" class="btn btn-secondary" data-dismiss="modal" >Edit</button>
+        <a id ="quit-button" type="button" class="btn btn-danger" data-method="delete" data-dismiss="modal">Quit</a>
+        <button id = "edit-button" type="button" class="btn btn-primary" data-dismiss="modal" >Edit</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>

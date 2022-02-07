@@ -5,6 +5,8 @@ class GroupUser < ApplicationRecord
   enum role: {admin:10, normal:20}
   scope :activated, -> {where(activated: true)}
   scope :non_activated, -> {where(activated: false)}
+  scope :admin, -> {where(role: "admin")}
+  scope :normal, -> {where(role: "normal")}
 
   def destroy_myself
     if GroupUser.where(group_id: group_id).count == 1

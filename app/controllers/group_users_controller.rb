@@ -9,14 +9,11 @@ class GroupUsersController < ApplicationController
   # end
 
   def update
-    debugger
     group_user = GroupUser.find(params[:id])
     unless group_user.update(group_user_update_params)
       flash[:alert] = group_user.errors.full_messages
     end
     redirect_to edit_group_url(group_user.group_id)
-    # redirect_to(session[:forwarding_url])
-    # session.delete(:forwarding_url)
   end
 
   def destroy
