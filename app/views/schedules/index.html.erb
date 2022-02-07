@@ -67,11 +67,21 @@
 
                 <%=time_disp%>
 
-
                 <%first_day = @first_day%>
+
                 <%7.times do |day|%>
-                    <%=one_day(first_day, day)%>
+                    <div class="day_disp">
+                        <%today = @first_day.since(day.days) %>
+                        <%= "曜日を取得するメソッドの呼び出し" %><br><%= today.day.to_s %>
+                    </div>
+                    <%24.times do%>
+                        <%=concat tag.div(class:"one_hour")%>
+                    <%end%>
                 <%end%>
+
+
+
+                    <%# <%=one_day(first_day, day)%> %>
 
 
             </div>

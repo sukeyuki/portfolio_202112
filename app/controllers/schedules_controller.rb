@@ -13,7 +13,7 @@ class SchedulesController < ApplicationController
     if checkbox_search_bool["search"] == "true"
       @groups_show_list = group_show_params["checkbox"].split(",").map(&:to_i)
     else
-      @groups_show_list = session[:checkbox_list]
+      @groups_show_list = session[:checkbox_list] || []
     end
 
     # CSV出力用処理
