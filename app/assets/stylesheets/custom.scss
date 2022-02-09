@@ -24,6 +24,11 @@ body{
     text-transform: uppercase;
     font-weight: normal;
     position:relative;
+    height: 10vh;
+    padding-left: 10px;
+    padding-right: 10px;
+    display:flex;
+    align-items: center
 }
 
 #logo{
@@ -35,15 +40,15 @@ body{
     right:20px;
 }
 
+#welcome_comment{
+    position: absolute;
+    right:100px;
+    font-size:1.5rem;
+}
+
 #year_and_month{
     position:absolute;
     left:25%;
-}
-
-#header{
-    height: 10vh;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 #select_range{

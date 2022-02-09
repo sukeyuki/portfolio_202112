@@ -32,7 +32,9 @@
                     <%end%> 
                 <%end%>
             <%end%>
+
             <%unless @current_user==nil%>
+                <span id="welcome_comment">welcome! <%=@user.name%>さん</span>
                 <%= image_tag "profile_icon.png", id:"my_profile", size:'70x70', data:{toggle:"modal",target:"#my_profile_modal"}%>
             <%end%>
         </div>
