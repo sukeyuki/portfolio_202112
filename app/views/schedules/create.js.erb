@@ -1,1 +1,16 @@
-<%# $("#create_schedule").trigger("click"); %>
+$("#errors_of_create_schedule").text("")
+
+<%if flash[:create_schedule_error]%>
+  <%flash[:create_schedule_error].each do |error|%>
+    $("#errors_of_create_schedule").append("<%=error%>"+"<br>");
+  <%end%>
+  console.log("failure")
+  <%flash[:create_schedule_error]=nil%>
+<%else%>
+  $("#schedule_title").val("");
+  $("#schedule_start_at").val("");
+  $("#schedule_end_at").val("");
+  $("#schedule_contents").val("");
+  window.location.href = "<%=root_url%>";
+  console.log("success");  
+<%end%>

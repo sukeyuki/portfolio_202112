@@ -104,22 +104,12 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-    <%unless flash[:create_schedule_error] == nil %>
-        <script>
-            $("#create_schedule").trigger("click");
-        </script>
-    <%end%>
     <%unless flash[:update_schedule_error] == nil %>
      <script>
             $(document).ready(function(){
                 $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
                 $("#schedule_edit").trigger("click");
             })
-            // $("#<%=@wrong_schedule_id%>-0-schedule-block").trigger("click");
-            // $("#<%=@wrong_schedule_id%>-0-schedule-block").click();
-            // $("#schedule_edit").trigger("click");
-            // $("#schedule_edit").click();
-
         </script>
     <%end%>
     <%unless flash[:group_create_error] == nil %>

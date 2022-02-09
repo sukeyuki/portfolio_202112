@@ -114,16 +114,9 @@
         </button>
         </div>
             <div class="modal-body">
-                <%if flash[:create_schedule_error].class == Array%>
-                    <%flash[:create_schedule_error]&.each do |e| %>
-                        <div class = "errors"><%=e%></div>
-                    <%end%>
-                <%elsif flash[:create_schedule_error].class == String%>
-                    <div class = "errors">
-                    <%=flash[:create_schedule_error]%>
-                    </div>
-                <%end%>
-                <%=form_with model:Schedule.new do |f|%>
+            <div id="errors_of_create_schedule" class= "errors"></div>
+
+                <%=form_with model:Schedule.new,local:false do |f|%>
                     <%=f.label :group_id, "group:"%>
                     <br>
                     <%=f.select :group_id, GroupUser.where(user_id:current_user.id).where(activated:true).map{|gu|[Group.find(gu.group_id).name, Group.find(gu.group_id).id]}%>
@@ -167,16 +160,8 @@
         </button>
         </div>
             <div class="modal-body">
-                    <%if flash[:update_schedule_error].class == Array%>
-                        <%flash[:update_schedule_error]&.each do |e| %>
-                        <div class = "errors"><%=e%></div>
-                    <%end%>
-                   <%elsif flash[:update_schedule_error].class == String%>
-                        <div class = "errors">
-                        <%=flash[:update_schedule_error]%>
-                        </div>
-                   <%end%>
-                <%=form_with model:Schedule.new, id:"update_schedule_form" do |f|%>
+                <div id="errors_of_update_schedule" class= "errors"></div>
+                <%=form_with model:Schedule.new, id:"update_schedule_form", local:false do |f|%>
                     <input type="hidden" name="_method" value="patch">
                     group:
                     <br>

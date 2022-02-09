@@ -2,6 +2,7 @@ class SchedulesController < ApplicationController
   include SchedulesHelper
   require "csv"
   before_action :authenticate_user!, only: [:index]
+
   def index
     @user = current_user
     @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
@@ -33,7 +34,7 @@ class SchedulesController < ApplicationController
     unless schedule.save
       flash[:create_schedule_error] = schedule.errors.full_messages
     end
-    redirect_to root_url
+    # redirect_to root_url
   end
 
   def update
@@ -42,7 +43,7 @@ class SchedulesController < ApplicationController
       flash[:update_schedule_error] = schedule.errors.full_messages
       session[:wrong_schedule_id] = params[:id]
     end
-    redirect_to root_url
+    # redirect_to root_url
   end
 
   def destroy

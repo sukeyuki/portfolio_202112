@@ -58,7 +58,6 @@ $(function() {
   $('#display_start_at').on('change',function(){
     const url = new URL(location);
     url.searchParams.set("start_at",$(this).val());
-    console.log(url.toString());
     window.location.href = url;
   });
 
@@ -118,8 +117,6 @@ $(function() {
   });
   var color_arr = ["#fabea7", "#e1eec1", "#aeb5dc", "#ffe0b6", "#bad4d1", "#c5b2d6", "#fffac2", "#b4c1d1", "#e5b7be"]
   $('.schedule_block').each(function(index, element){
-    console.log($(element).data("group_index"));
-    console.log(color_arr[index%9]);
     index = $(element).data("group_index");
     color = color_arr[index%9]
     $(this).css(

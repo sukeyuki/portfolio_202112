@@ -1,0 +1,16 @@
+$("#errors_of_update_schedule").text("")
+
+<%if flash[:update_schedule_error]%>
+  <%flash[:update_schedule_error].each do |error|%>
+    $("#errors_of_update_schedule").append("<%=error%>"+"<br>");
+  <%end%>
+  console.log("failure")
+  <%flash[:update_schedule_error]=nil%>
+<%else%>
+  $("#update_schedule_title").val("");
+  $("#update_schedule_start_at").val("");
+  $("#update_schedule_end_at").val("");
+  $("#update_schedule_contents").val("");
+  window.location.href = "<%=root_url%>";
+  console.log("success");  
+<%end%>
