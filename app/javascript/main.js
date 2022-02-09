@@ -8,7 +8,6 @@ $(function() {
     var my_role = $(this).data("my_role")
     var my_group_user_id = $(this).data("my_group_user_id")
     var personal_bool = $(this).data("personal_bool")
-    // console.log(personal_bool)
     $("#group-name").text(name);
     $("#group-overview").text(overview);
     $("#group-admin-users").text(admin_users);
@@ -34,11 +33,7 @@ $(function() {
       $("#quit-button").css("display","none")
       $("#group-overview-users-info").css("display","none")
     }
-
   });
-
-
-
 
   $('.group-checkbox').on('click',function(){
     const url = new URL(location);
@@ -50,13 +45,14 @@ $(function() {
         checkbox.push(id);
       };
     });
-    url.searchParams.set("search", true);
+    url.searchParams.set("checkbox_search", true);
     url.searchParams.set("checkbox", checkbox);
     window.location.href = url;
   });
 
   $('#display_start_at').on('change',function(){
     const url = new URL(location);
+    url.searchParams.set("first_day_search", true);
     url.searchParams.set("start_at",$(this).val());
     window.location.href = url;
   });
@@ -123,13 +119,5 @@ $(function() {
       "background-color", color
     );
   });
-
-  // $("#16-0-schedule-block").click();
-  // $("#16-0-schedule-block").trigger("click");
-
-  // $(".schedule_block").on("click",function(){
-  //     $("#schedule_edit").trigger("click");
-  // });
-
 });
 

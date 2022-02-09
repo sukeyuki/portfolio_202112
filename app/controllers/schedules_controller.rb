@@ -5,14 +5,22 @@ class SchedulesController < ApplicationController
 
   def index
     @user = current_user
-    @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
     @user_active_groups = Group.with_active_user(@user)
     @user_non_active_groups = Group.with_not_active_user(@user)
 
+
+    # 表示日時処理用
+    # debugger
+    if first_day_search_bool["first_day_search"] == "true"
+      @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
+    else
+      @first_day = Time.zone.parse(session[:first_day]) || Time.zone.today.beginning_of_day
+    end
+
     # グループのチェックボックス処理用
     @groups_show_list = []
-    if checkbox_search_bool["search"] == "true"
-      @groups_show_list = group_show_params["checkbox"].split(",").map(&:to_i)
+    if checkbox_search_bool["checkbox_search"] == "true"
+      @groups_show_list = group_show_params["checkbox"]&.split(",")&.map(&:to_i) || []
     else
       @groups_show_list = session[:checkbox_list] || []
     end
@@ -27,6 +35,8 @@ class SchedulesController < ApplicationController
 
     @wrong_schedule_id = session[:wrong_schedule_id]
     session[:checkbox_list] = @groups_show_list
+    session[:first_day] = @first_day.strftime("%F")
+    # debugger
   end
 
   def create
@@ -65,7 +75,11 @@ class SchedulesController < ApplicationController
   end
 
   def checkbox_search_bool
-    params.permit(:search)
+    params.permit(:checkbox_search)
+  end
+
+  def first_day_search_bool
+    params.permit(:first_day_search)
   end
 
   # csv出力用

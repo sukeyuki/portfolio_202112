@@ -9,7 +9,7 @@ class Schedule < ApplicationRecord
   # private
   def start_end_history
     if start_at != nil && end_at != nil
-      if start_at > end_at
+      if start_at >= end_at
         errors.add(:base, :term_is_missing)
       end
     end
