@@ -68,21 +68,18 @@
                 <%=time_disp%>
 
                 <%first_day = @first_day%>
+                <%7.times do |days|%>
+                    <div class ="oneday_schedule">
+                        <%this_day = first_day.since(days.day)%>
+                        <div class="day_disp">
+                            <%= this_day.day.to_s %>(<%= day_of_week(this_day) %>)
+                        </div>
 
-                <%7.times do |day|%>
-                    <div class="day_disp">
-                        <%today = @first_day.since(day.days) %>
-                        <%= "曜日を取得するメソッドの呼び出し" %><br><%= today.day.to_s %>
+                        <%24.times do%>
+                            <%=tag.div(class:"one_hour")%>
+                        <%end%>
                     </div>
-                    <%24.times do%>
-                        <%=concat tag.div(class:"one_hour")%>
-                    <%end%>
                 <%end%>
-
-
-
-                    <%# <%=one_day(first_day, day)%> %>
-
 
             </div>
             <button id = "create_schedule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_schedule_modal">

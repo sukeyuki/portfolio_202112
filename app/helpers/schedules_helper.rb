@@ -158,6 +158,10 @@ module SchedulesHelper
       end
     end
   end
+
+  def day_of_week(day)
+    %w(日 月 火 水 木 金 土)[day.wday]
+  end
 end
 
 
