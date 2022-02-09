@@ -270,16 +270,8 @@
         </button>
         </div>
             <div class="modal-body">
-                <%if flash[:group_create_error].class == Array%>
-                    <%flash[:group_create_error]&.each do |e| %>
-                        <div class = "errors"><%=e%></div>
-                    <%end%>
-                <%elsif flash[:group_create_error].class == String%>
-                    <div class = "errors">
-                    <%=flash[:group_create_error]%>
-                    </div>
-                <%end%>
-                <%=form_with model:Group.new do |form|%>
+            <div id="errors_of_create_group" class = "errors"></div>
+                <%=form_with model:Group.new, local: false do |form|%>
                     <%=form.label :name, "name"%>
                     <br>
                     <%=form.text_field :name%>

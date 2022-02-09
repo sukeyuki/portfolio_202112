@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
       flash[:group_create_error] = group.errors.full_messages
 
     ensure
-      redirect_to root_path
+      # redirect_to root_path
   end
 
   def edit

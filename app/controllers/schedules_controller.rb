@@ -13,8 +13,10 @@ class SchedulesController < ApplicationController
     # debugger
     if first_day_search_bool["first_day_search"] == "true"
       @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
+    elsif session[:first_day]
+      @first_day = Time.zone.parse(session[:first_day])
     else
-      @first_day = Time.zone.parse(session[:first_day]) || Time.zone.today.beginning_of_day
+      @first_day = Time.zone.today.beginning_of_day
     end
 
     # グループのチェックボックス処理用

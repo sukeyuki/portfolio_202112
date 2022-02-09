@@ -1,0 +1,14 @@
+$("#errors_of_create_group").text("")
+
+<%if flash[:group_create_error]%>
+  <%flash[:group_create_error].each do |error|%>
+    $("#errors_of_create_group").append("<%=error%>"+"<br>");
+  <%end%>
+  console.log("failure")
+  <%flash[:group_create_error]=nil%>
+<%else%>
+  $("#group_name").val("");
+  $("#group_overview").val("");
+  window.location.href = "<%=root_url%>";
+  console.log("success");  
+<%end%>

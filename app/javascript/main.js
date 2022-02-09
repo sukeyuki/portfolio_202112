@@ -92,12 +92,15 @@ $(function() {
   });
 
   $("#schedule_edit").on('click',function(){
-    $("#update_schedule_title").attr("value", $(this).data("title"));
+    $("#errors_of_update_schedule").text(" ")
+    // $("#update_schedule_title").attr("value", $(this).data("title"));
+    $("#update_schedule_title").val($(this).data("title"));
     var start_at_arr = $(this).data("start_at").split(" ");
     var end_at_arr = $(this).data("end_at").split(" ");
     $("#update_schedule_start").attr("value", start_at_arr[0]+"T"+start_at_arr[1]);
     $("#update_schedule_end").attr("value", end_at_arr[0]+"T"+end_at_arr[1]);
-    $("#update_schedule_content").text($(this).data("content"));
+    $("#update_schedule_content").val($(this).data("content"));
+    // $("#update_schedule_content").text($(this).data("content"));
     $("#schedule_update_group").text($(this).data("group"));
     var id = $(this).data("id");
     $("#update_schedule_form").attr("action", "/schedules/"+id);
@@ -119,5 +122,12 @@ $(function() {
       "background-color", color
     );
   });
-});
 
+  // create_scheduleをクリックした際に、エラー表示を削除する。
+  $("#create_schedule").on('click',function(){
+    $("#errors_of_create_schedule").text(" ");
+  });
+  $("#create_group").on('click',function(){
+    $("#errors_of_create_group").text(" ");
+  });
+});
