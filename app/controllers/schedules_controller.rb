@@ -8,28 +8,8 @@ class SchedulesController < ApplicationController
     @user = current_user
     @user_active_groups = Group.with_active_user(@user)
     @user_non_active_groups = Group.with_not_active_user(@user)
-
-    # 表示日時処理用
-    if first_day_search_bool["first_day_search"] == "true"
-      # index画面から選択した場合はその値を@first_dayに値を代入。空の場合は本日の日付。
-      @first_day = start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
-    elsif session[:first_day]
-      # 他画面からの遷移の場合はsessionの値を代入。
-      @first_day = Time.zone.parse(session[:first_day])
-    else
-      # ログイン直後の場合は本日の日付を代入。
-      @first_day = Time.zone.today.beginning_of_day
-    end
-
-    # グループのチェックボックス処理用
-    @groups_show_list = []
-    if checkbox_search_bool["checkbox_search"] == "true"
-      # index画面から選択した場合はその値を@groups_show_listに値を代入。
-      @groups_show_list = group_show_params["checkbox"]&.split(",")&.map(&:to_i) || []
-    else
-      # 他画面からの遷移の場合はsessionの値を代入。ログイン直後の場合は空の配列を代入。
-      @groups_show_list = session[:checkbox_list] || []
-    end
+    @first_day = first_day
+    @groups_show_list = group_show_list
 
     # CSV出力用処理
     respond_to do |format|
@@ -66,6 +46,7 @@ class SchedulesController < ApplicationController
     redirect_to root_url
   end
 
+  
   private
   def schedule_params
     params.require(:schedule).permit(:group_id, :title, :contents, :start_at, :end_at)
@@ -85,6 +66,32 @@ class SchedulesController < ApplicationController
 
   def first_day_search_bool
     params.permit(:first_day_search)
+  end
+
+  # グループのチェックボックス処理用
+  def group_show_list
+    @groups_show_list = []
+    if checkbox_search_bool["checkbox_search"] == "true"
+      # index画面から選択した場合はその値を@groups_show_listに値を代入。
+      group_show_params["checkbox"]&.split(",")&.map(&:to_i) || []
+    else
+      # 他画面からの遷移の場合はsessionの値を代入。ログイン直後の場合は空の配列を代入。
+      session[:checkbox_list] || []
+    end
+  end
+
+  # 表示日時処理用
+  def first_day
+    if first_day_search_bool["first_day_search"] == "true"
+      # index画面から選択した場合はその値を@first_dayに値を代入。空の場合は本日の日付。
+      start_at_params=={} ? Time.zone.today.beginning_of_day : Time.zone.parse(start_at_params[:start_at])
+    elsif session[:first_day]
+      # 他画面からの遷移の場合はsessionの値を代入。
+      Time.zone.parse(session[:first_day])
+    else
+      # ログイン直後の場合は本日の日付を代入。
+      Time.zone.today.beginning_of_day
+    end
   end
 
   # csv出力用

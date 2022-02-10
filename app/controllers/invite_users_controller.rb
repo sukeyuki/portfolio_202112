@@ -22,7 +22,7 @@ class InviteUsersController < ApplicationController
         flash[:alert] = group_user.errors.full_messages
       end
     else
-    #拒否
+      #拒否
       GroupUser.find(params[:id]).destroy_myself
     end
     redirect_to root_url

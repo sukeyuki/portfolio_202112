@@ -1,0 +1,29 @@
+<div class="modal fade" id="group_request_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">グループリクエスト</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+            <div class="modal-body">
+                <%@user_non_active_groups.each do |group|%>
+                    <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
+                    <%=form_with url:invite_user_url(gu) do |f|%>
+                        <%=group.name%>
+                        承認
+                        <%=f.radio_button :response, :true%>
+                        拒否
+                        <%=f.radio_button :response, :false%>
+                        <%=f.submit "response", class:"btn btn-primary"%>
+                    <%end%>
+                    <br>
+                <%end%>
+            </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+    </div>
+</div>
