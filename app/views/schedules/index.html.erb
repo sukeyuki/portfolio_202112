@@ -2,8 +2,10 @@
     <div id = "group_list">
         予定表
         <div>
+            <%# 自分が参加しているグループ一覧、グループ表示用チェックボックス、グループに参加しているuser一覧、userの表示非表示切り替え用”＜” %>
             <%@user_active_groups.each do |group|%>
                 <input type="checkbox" id ="<%=group.id%>-checkbox" class ="group-checkbox" <%="checked" if @groups_show_list.include?(group.id)%>>
+                <%# data attrにグループの詳細を代入。グループをクリックして#create_group_modalにグループの詳細を渡す。※渡す処理はmain.jsに記載 %>
                 <a class = "group" type="button" data-toggle="modal" data-target="#create_group_modal" data-name="<%=group.name%>" data-overview="<%=group.overview%>" data-url=<%= edit_group_url(group)%> data-admin_users="<%= User.admin_users_of(group).map(&:name)%>" data-normal_users="<%= User.normal_users_of(group).map(&:name)%>" data-my_role="<%= GroupUser.find_by(user:@user,group:group).role%>" data-my_group_user_id="<%=GroupUser.find_by(group:group, user:@user).id%>" data-personal_bool="<%=group.personal%>">
                     <%=group.name%>
                 </a>
@@ -27,6 +29,7 @@
         <p id = "group_reqiest" type="button" data-toggle="modal" data-target="#group_request_modal">
             グループリクエスト
             <span class="red">
+                <%# 自分に来たグループリクエスト数を表示。0は非表示 %>
                 <%if @user_non_active_groups.count==0%>
                     <%=nil%>
                 <%else%>
@@ -37,6 +40,7 @@
 
 
         <label for="start_at">表示日時</label><br>
+        <%# 画面に表示するscheduleの開始日を選択 %>
         <input type="date" id="display_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
 
         <%= link_to "CSV出力", schedules_url(params.permit(:checkbox, :start_at).merge({format: "csv"})) %>
@@ -45,14 +49,18 @@
     <div id = "schedule" class = "border">
         <div id ="schedule_table_window">
             <div id = "schedule_table">
+                <%# schedule : 表示するスケジュール一覧 %>
+                <%# schedule_params : 表示するスケジュールの座標データ %>
+                <%# groupid_index :  画面に表示されているgroupのidと、それが画面で何個目かの組み合わせ。スケジュールをグループで色分けする際に使用。%>
                 <%schedules = displayed_schedules(@groups_show_list,@first_day)%>
                 <%schedule_params = displayed_schedules_params(schedules,@first_day)%>
                 <%groupid_index = id_with_index(@user_active_groups)%>
                 <%schedules.each do |schedule|%>
-                    <%schedule_params[schedule.id].each.with_index do |prm, index|%>
-                        <div id = "<%=schedule.id.to_s+"-"+index.to_s%>-schedule-block" class = "schedule_block" data-title="<%=schedule.title%>" 
+                    <%# data attrにスケジュールの詳細を代入。スケジュールをクリックして#schedule_editと #schedule_overview にスケジュールの詳細を渡す。※渡す処理はmain.jsに記載 %>
+                    <%schedule_params[schedule.id].each.with_index do |prm|%>
+                        <div class = "schedule_block" data-title="<%=schedule.title%>" 
                         data-content="<%=schedule.contents%>" 
-                        data-users="<%=User.where(id:GroupUser.where(group_id:schedule.group.id).where(activated:true).map(&:user_id)).map(&:name)%>" 
+                        data-users="<%=User.with_active_group(schedule.group).map(&:name)%>" 
                         data-start-at="<%=schedule.start_at%>" data-end-at="<%=schedule.end_at%>" data-id="<%=schedule.id%>" data-group="<%=schedule.group.name%>"
                         data-group_index = "<%=groupid_index[schedule.group.id]%>"
                         style="top:<%=prm[:top]%>px; 
@@ -65,8 +73,10 @@
                     <%end%>
                 <%end%>
 
+                <%# スケジュール表示時刻を表示するヘルパー %>
                 <%=time_disp%>
 
+                <%# スケジュール表のマス目を表示 %>
                 <%first_day = @first_day%>
                 <%7.times do |days|%>
                     <div class ="oneday_schedule">
@@ -74,19 +84,19 @@
                         <div class="day_disp">
                             <%= this_day.day.to_s %>(<%= day_of_week(this_day) %>)
                         </div>
-
                         <%24.times do%>
                             <%=tag.div(class:"one_hour")%>
                         <%end%>
                     </div>
                 <%end%>
-
             </div>
+            <%# スケジュール作成ボタン %>
             <button id = "create_schedule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_schedule_modal">
                 create schedule
             </button>
         </div>
 
+        <%# スケジュールの詳細を表示。スケジュール表の.schedule_blockをクリックすることで表示 %>
         <div id = "schedule_detail" class = "border">
             <div id = "schedule_overview"class = "border">
                 <h2 id = "schedule_overview_title">Schedule detail</h2>
@@ -217,8 +227,6 @@
                 </div>
             </div>
         <div class="modal-footer">
-
-
         <a id ="quit-button" type="button" class="btn btn-danger" data-method="delete" data-dismiss="modal">Quit</a>
         <button id = "edit-button" type="button" class="btn btn-primary" data-dismiss="modal" >Edit</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root 'schedules#index'
   resources :schedules, only: [:index, :create, :update, :destroy]
   resources :groups, only: [:new, :edit, :create, :update]
-  resources :group_users, only: [:create, :update, :destroy]
+  resources :group_users, only: [:update, :destroy]
 
   post :"invite_users",to: "invite_users#invite", as: "invite_users"
   post :"invite_user/:id",to: "invite_users#reply", as: "invite_user"

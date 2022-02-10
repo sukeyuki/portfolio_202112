@@ -37,7 +37,6 @@ RSpec.describe "GroupUsers", type: :request do
       
     context "with invalid data" do
       before do
-        # FIXME: invalidデータの100はなんか微妙かも。なんかの拍子にvalidにならないか？
         @params = {
           "user_id"=> 100,
           "group_id"=> 100

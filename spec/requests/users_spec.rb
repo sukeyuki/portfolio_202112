@@ -35,5 +35,4 @@ RSpec.describe "Users", type: :request do
       expect redirect_to root_url
     end
   end
-# TODO: deviseは軽くしか書いていない。これ以上のテストは必要か？
 end

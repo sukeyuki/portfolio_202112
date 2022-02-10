@@ -21,85 +21,66 @@
     <body>
         <div id = "header" class = "border flex">
             <%=link_to"planning with", root_url, id:"logo"%>
+            <%# 日時表示部分。表示範囲で月替わり、年替わりする場合表示を変更する。 %>
             <%unless @first_day==nil%>
                 <%if @first_day.month == @first_day.since(6.day).month%>
+                    <%# 月替わりが発生しない場合 %>
+                    <%# ex)2022年2月 %>
                     <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月</div>
                 <%elsif @first_day.month != @first_day.since(6.day).month%>
                     <%if @first_day.year == @first_day.since(6.day).year%>
+                        <%# 月替わり発生時 %>
+                        <%# ex)2022年2月〜3月 %>
                         <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月〜<%=@first_day.since(6.day).month%>月</div>
                     <%elsif @first_day.year != @first_day.since(6.day).year%>
+                        <%# 年替わり発生時 %>
+                        <%# ex)2021年12月〜2022年1月 %>
                         <div id = "year_and_month"><%=@first_day.year%>年<%=@first_day.month%>月〜<%=@first_day.since(6.day).year%>年<%=@first_day.since(6.day).month%>月</div>
                     <%end%> 
                 <%end%>
             <%end%>
 
+            <%# welcomeコメント表示 %>
             <%unless @current_user==nil%>
                 <span id="welcome_comment">welcome! <%=@user.name%>さん</span>
                 <%= image_tag "profile_icon.png", id:"my_profile", size:'70x70', data:{toggle:"modal",target:"#my_profile_modal"}%>
             <%end%>
         </div>
 
-    <%= yield %>
+        <%= yield %>
 
-    <!-- Modal my profile -->
-    <div class="modal fade" id="my_profile_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">my profile</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body my_profile_wrapper">
-                    <%unless @user==nil || @user.id==nil%>
-                        <%= image_tag "profile_icon.png", class:"icon" ,size:'100x100'%>
-                        <br>
+        <!-- Modal my profile -->
+        <div class="modal fade" id="my_profile_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">my profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body my_profile_wrapper">
+                        <%unless @user==nil || @user.id==nil%>
+                            <%= image_tag "profile_icon.png", class:"icon" ,size:'100x100'%>
+                            <br>
 
-                        <h3><%=@user.name%></h3>
-                        <br>
-                        <%="id:"+@user.search_name%>
-                        <br>
-                        <%="email:"+@user.email%>
-                    <%end%>
-                </div>
-                <div class="modal-footer">
-                    <%=link_to "Log out", destroy_user_session_url, method: :delete, type:"button", class:"btn btn-primary"%>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal errors -->
-    <div class="modal fade" id="errors_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Error Messages</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <%if flash[:schedule].class == Array%>
-                    <%flash[:schedule]&.each do |e| %>
-                    <%=e%>
-                    <br>
-                    <%end%>
-                <%elsif flash[:schedule].class == String%>
-                  <%=flash[:schedule]%>
-                <%end%>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <h3><%=@user.name%></h3>
+                            <br>
+                            <%="id:"+@user.search_name%>
+                            <br>
+                            <%="email:"+@user.email%>
+                        <%end%>
+                    </div>
+                    <div class="modal-footer">
+                        <%=link_to "Log out", destroy_user_session_url, method: :delete, type:"button", class:"btn btn-primary"%>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
-  </body>
+    </body>
 </html>

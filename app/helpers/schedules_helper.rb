@@ -149,16 +149,6 @@ module SchedulesHelper
     end
   end
 
-  def one_day(first_day, since)
-    tag.div(class:"oneday_schedule") do |tag|
-      today = first_day.since(since.days)
-      concat tag.div(%w(日 月 火 水 木 金 土)[today.wday]+today.day.to_s,class:"day_disp")
-      24.times do
-        concat tag.div(class:"one_hour")
-      end
-    end
-  end
-
   def day_of_week(day)
     %w(日 月 火 水 木 金 土)[day.wday]
   end

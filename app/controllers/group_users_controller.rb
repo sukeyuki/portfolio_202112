@@ -1,13 +1,6 @@
 class GroupUsersController < ApplicationController
-  # def create
-  #   group_user = GroupUser.new(group_user_create_params)
-  #   unless group_user.save
-  #     flash[:alert] = group_user.errors.full_messages
-  #     return redirect_to root_url
-  #   end
-  #   redirect_to edit_group_url(group_user_create_params[:group_id])
-  # end
 
+  # PATCH /group_users/:id
   def update
     group_user = GroupUser.find(params[:id])
     unless group_user.update(group_user_update_params)
@@ -16,6 +9,7 @@ class GroupUsersController < ApplicationController
     redirect_to edit_group_url(group_user.group_id)
   end
 
+  # DELETE /group_users/:id
   def destroy
     gu = GroupUser.find(params[:id]).destroy_myself
     redirect_to edit_group_url(gu.group_id)

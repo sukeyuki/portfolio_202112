@@ -1,13 +1,17 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
 
+  # GET /groups/new
   def new
     @group = Group.new
   end
 
+  # POST /groups  ajax
   def create
     group = current_user.groups.new(group_params)
+    #個人用グループはuser modelのafter_createにて定義。
     group.personal = false
+    #グループ作成者をadmin userとする。
     group_user = GroupUser.new(user:current_user, group:group, role:10, activated: true)
     ActiveRecord::Base.transaction do
       group.save!
@@ -16,11 +20,9 @@ class GroupsController < ApplicationController
 
     rescue
       flash[:group_create_error] = group.errors.full_messages
-
-    ensure
-      # redirect_to root_path
   end
 
+  # GET /groups/:id/edit
   def edit
     @user = current_user
     @group = Group.find_by_id(params[:id])
@@ -32,6 +34,7 @@ class GroupsController < ApplicationController
     end
   end
 
+  # PUT /groups/:id
   def update
     group = Group.find(params[:id])
     unless group.update(group_params)
