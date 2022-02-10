@@ -1,9 +1,11 @@
 module SchedulesHelper
 
+  # 画面に表示するスケジュール
   def displayed_schedules(group_list,first_day)
     Schedule.where(group_id:group_list).where("end_at > ?", first_day).where("start_at < ?", first_day.since(6.days).end_of_day)
   end
 
+  # 表示するスケジュールの座標データ
   def displayed_schedules_params(schedules, first_day)
     #######パラメータ代入#######
     #HTMLの表の長さ一覧
@@ -131,6 +133,8 @@ module SchedulesHelper
     return position
   end
 
+  # 画面に表示されているgroupのidと、それが画面で何個目かの組み合わせ。
+  # スケジュールをグループで色分けする際に使用
   def id_with_index(groups)
     output = {}
     return nil if groups==nil
@@ -140,6 +144,7 @@ module SchedulesHelper
     return output
   end
 
+  # スケジュール表示時刻
   def time_disp
     tag.div(id:"time_disp") do |tag|
       concat tag.div(class:"one_hour_disp")
@@ -149,6 +154,7 @@ module SchedulesHelper
     end
   end
 
+  # スケジュールの曜日
   def day_of_week(day)
     %w(日 月 火 水 木 金 土)[day.wday]
   end
