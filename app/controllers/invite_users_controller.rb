@@ -1,4 +1,5 @@
 class InviteUsersController < ApplicationController
+  before_action :invite_filter, only: [:invite]
 
   # POST /invite_users
   def invite
@@ -35,5 +36,15 @@ class InviteUsersController < ApplicationController
 
   def response_bool
     params.permit(:response)
+  end
+
+  # invite前のvalidation
+  def invite_filter
+    group_id =  group_user_id["group_id"].to_i
+    # 自分の権限がadminの場合、invite可能。
+    if GroupUser.find_by(group_id:group_id, user:current_user).role != "admin"
+      flash[:alert] = "権限が間違っています。"
+      return redirect_to root_url
+    end
   end
 end

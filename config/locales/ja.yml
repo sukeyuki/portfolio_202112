@@ -156,4 +156,5 @@ ja:
       not_saved:
         one: エラーが発生したため %{resource} は保存されませんでした。
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
-      term_is_missing: '期間の指定が間違っています'
+      term_is_missing: '期間の指定が間違っています。'
+      group_user_count_valid: 'admin権限保有者が足りません。'
