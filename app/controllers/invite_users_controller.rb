@@ -19,9 +19,7 @@ class InviteUsersController < ApplicationController
     if response_bool[:response] == "true"
       #承認
       group_user = GroupUser.find(params[:id])
-      unless group_user.update(activated:response_bool[:response])
-        flash[:alert] = group_user.errors.full_messages
-      end  
+      group_user.update(activated:response_bool[:response])
     elsif response_bool[:response] == "false"
       #拒否
       GroupUser.find(params[:id]).destroy_myself      
