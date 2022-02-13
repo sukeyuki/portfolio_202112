@@ -18,10 +18,6 @@ class GroupUsersController < ApplicationController
   end
 
   private
-  def group_user_create_params
-    params.require(:group_user).permit(:user_id, :group_id)
-  end
-
   def group_user_update_params
     params.require(:group_user).permit(:role)
   end
@@ -32,7 +28,7 @@ class GroupUsersController < ApplicationController
     #user_role 編集されるuserの権利
     #my_self? 編集者と編集される人が同じかどうか
     group_id = GroupUser.find(params[:id]).group_id    
-    editor_role = GroupUser.find_by(group_id:group_id, user:current_user).role
+    editor_role = GroupUser.find_by(group_id:group_id, user:current_user)&.role
     user_role = GroupUser.find(params[:id]).role
     myself_or_not = GroupUser.find(params[:id]).user_id == current_user.id
 

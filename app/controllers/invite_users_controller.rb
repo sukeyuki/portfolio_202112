@@ -21,10 +21,12 @@ class InviteUsersController < ApplicationController
       group_user = GroupUser.find(params[:id])
       unless group_user.update(activated:response_bool[:response])
         flash[:alert] = group_user.errors.full_messages
-      end
-    else
+      end  
+    elsif response_bool[:response] == "false"
       #拒否
-      GroupUser.find(params[:id]).destroy_myself
+      GroupUser.find(params[:id]).destroy_myself      
+    else
+      flash[:alert] = "正しくない値が選択されています。"
     end
     redirect_to root_url
   end
@@ -42,7 +44,7 @@ class InviteUsersController < ApplicationController
   def invite_filter
     group_id =  group_user_id["group_id"].to_i
     # 自分の権限がadminの場合、invite可能。
-    if GroupUser.find_by(group_id:group_id, user:current_user).role != "admin"
+    unless GroupUser.find_by(group_id:group_id, user:current_user)&.role == "admin"
       flash[:alert] = "権限が間違っています。"
       return redirect_to root_url
     end

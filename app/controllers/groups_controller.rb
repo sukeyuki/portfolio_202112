@@ -1,11 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
 
-  # GET /groups/new
-  def new
-    @group = Group.new
-  end
-
   # POST /groups  ajax
   def create
     group = current_user.groups.new(group_params)

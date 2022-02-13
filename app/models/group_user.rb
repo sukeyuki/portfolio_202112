@@ -1,5 +1,6 @@
 class GroupUser < ApplicationRecord
   validates :activated, inclusion:{ in: [true, false] }
+  validates :role, inclusion:{ in: ["admin", "normal"] }
   belongs_to :group
   belongs_to :user
   enum role: {admin:10, normal:20}
@@ -15,11 +16,11 @@ class GroupUser < ApplicationRecord
     group = Group.find(self.group_id)
     admin_user_count = User.admin_users_of(group).count
     active_user_count = User.with_active_group(group).count
-    user_role = User.find(self.user_id).role
+    user_role = role
     #自分が"normal"であるか、admin保有者が2人以上いるか、あなたがそのグループの最後の一人の場合削除できます。
     if user_role == "normal" || admin_user_count >=2 || active_user_count ==1
       # 自分が最後の一人の場合、そのグループを削除する。
-      if active_user_count == 1
+      if active_user_count == 1 && activated=="true"
         Group.find(group_id).destroy
       end
       destroy

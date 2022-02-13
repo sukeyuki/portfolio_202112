@@ -38,9 +38,34 @@ RSpec.describe "Schedules", type: :request do
         @params = {
           'start_at':"2022-01-01",
           "checkbox":"1,2",
+          "checkbox_search":"true",
+          "first_day_search":"true"
         }
         get schedules_url
         expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "csv_output" do
+      before do
+        FactoryBot.create(:schedule)
+        @params = {
+          'start_at':"2022-02-01",
+          "checkbox":"1,2",
+          "checkbox_search":"true",
+          "first_day_search":"true"
+        }
+      end
+
+      it "have csv data" do
+        get schedules_url(@params.merge({format: "csv"}))
+        expect(response.headers["Content-Type"]).to include "text/csv"
+      end
+
+      it "have valid title" do
+        get schedules_url(@params.merge({format: "csv"}))
+        expect(response.headers["Content-Disposition"]).to include "test.csv"
+
       end
     end
   end
@@ -51,20 +76,15 @@ RSpec.describe "Schedules", type: :request do
         @params = FactoryBot.build(:schedule).attributes
       end
 
-      it "returns http 302" do
-        post schedules_url, params: {schedule: @params}
-        expect(response).to have_http_status "302"
-      end  
-
-      it "redirect_to root_path" do
-        post schedules_url, params: {schedule: @params}
-        expect(response).to redirect_to root_path
+      it "returns http 200" do
+        post schedules_url, params: {schedule: @params}, xhr:true
+        expect(response).to have_http_status "200"
       end  
 
       it "can add one schedule with valid data" do
         @params["group_id"] = group.id
         expect{
-          post schedules_url, params: {schedule: @params}
+          post schedules_url, params: {schedule: @params}, xhr:true
         }.to change(Schedule, :count).by(1)
       end
     end
@@ -74,19 +94,14 @@ RSpec.describe "Schedules", type: :request do
         @params = FactoryBot.build(:schedule, :schedule_with_blank_attributes).attributes
       end
 
-      it "returns http 302" do
-        post schedules_url, params: {schedule: @params}
-        expect(response).to have_http_status "302"
+      it "returns http 200" do
+        post schedules_url, params: {schedule: @params}, xhr:true
+        expect(response).to have_http_status "200"
       end  
-
-      it "redirect_to root_path" do
-        post schedules_url, params: {schedule: @params}
-        expect(response).to redirect_to root_path
-      end
 
       it "cannot add schedules with invalid data" do
         expect{
-          post schedules_url, params: {schedule: @params}
+          post schedules_url, params: {schedule: @params}, xhr:true
         }.to change(Schedule, :count).by(0)
       end
     end
@@ -98,14 +113,9 @@ RSpec.describe "Schedules", type: :request do
       @schedule = FactoryBot.create(:schedule)
     end
 
-    it "returns http 302 with valid data" do
-      put schedule_url(@schedule), params: {schedule:@params}
-      expect(response).to have_http_status "302"
-    end
-
-    it "redirect_to root_path" do
-      put schedule_url(@schedule), params: {schedule:@params}
-      expect(response).to redirect_to root_path
+    it "returns http 200 with valid data" do
+      put schedule_url(@schedule), params: {schedule:@params}, xhr:true
+      expect(response).to have_http_status "200"
     end
   end
 

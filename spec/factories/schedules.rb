@@ -6,8 +6,8 @@ FactoryBot.define do
       second:play soccer
       third:go home"
     }
-    start_at {'2001-02-03T12:13:14Z'}
-    end_at {'2001-02-03T12:13:14Z'}
+    start_at {'2022-02-03T12:00:00Z'}
+    end_at {'2022-02-03T13:00:00Z'}
     association :group
   end
 
@@ -18,8 +18,8 @@ FactoryBot.define do
       second:work
       third:go home"
     }
-    start_at {'2001-03-03T12:13:14Z'}
-    end_at {'2001-03-03T12:13:14Z'}
+    start_at {'2001-02-03T12:00:00Z'}
+    end_at {'2001-02-03T13:00:00Z'}
     association :group
   end
 

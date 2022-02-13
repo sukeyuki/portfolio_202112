@@ -42,7 +42,7 @@
         <label for="start_at">表示日時</label><br>
         <%# 画面に表示するscheduleの開始日を選択 %>
         <input type="date" id="display_start_at" name="schedule_start" value="<%=@first_day.strftime("%F")%>",required><br>
-
+        <%# CSV出力 %>
         <%= link_to "CSV出力", schedules_url(params.permit(:checkbox, :start_at).merge({format: "csv"})) %>
     </div>
 

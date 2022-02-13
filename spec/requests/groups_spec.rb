@@ -14,19 +14,14 @@ RSpec.describe "Groups", type: :request do
         @params = FactoryBot.build(:group).attributes
       end
 
-      it "returns http 302" do
-        post groups_url, params:{group: @params}
-        expect(response).to have_http_status "302"  
+      it "returns http 200" do
+        post groups_url, params:{group: @params}, xhr:true
+        expect(response).to have_http_status "200" 
       end  
-
-      it "redirect_to root_path" do
-        post groups_url, params:{group: @params}
-        expect(response).to redirect_to root_path
-      end
 
       it "can create one new group with valid data" do
         expect{
-          post groups_url, params:{group: @params}
+          post groups_url, params:{group: @params}, xhr:true
         }.to change(Group, :count).by(1)
       end  
     end
@@ -36,19 +31,14 @@ RSpec.describe "Groups", type: :request do
         @params = FactoryBot.build(:group, :group_with_blank_attributes).attributes
       end
            
-      it "returns http 302" do
-        post groups_url, params:{group: @params}
-        expect(response).to have_http_status "302"  
+      it "returns http 200" do
+        post groups_url, params:{group: @params}, xhr:true
+        expect(response).to have_http_status "200"  
       end
-
-      it "redirect_to root_path" do
-        post groups_url, params:{group: @params}
-        expect(response).to redirect_to root_path
-      end  
 
       it "cannot create one new group with invalid data" do
         expect{
-          post groups_url, params:{group: @params}
+          post groups_url, params:{group: @params}, xhr:true
         }.to change(Group, :count).by(0)
       end  
     end
@@ -61,7 +51,7 @@ RSpec.describe "Groups", type: :request do
 
     context "with valid data" do
       it "returns http 200" do
-        GroupUser.where(group:@group, user:@user).update(activated:true)
+        GroupUser.find_by(group:@group,user:@user).update(activated:true, role:"admin")
         get edit_group_url(@group)
         expect(response).to have_http_status "200"
       end
@@ -82,20 +72,40 @@ RSpec.describe "Groups", type: :request do
 
   describe "PUT /update" do
     before do
-      @params = FactoryBot.build(:group, :other_valid_group).attributes
       @group = FactoryBot.create(:group)
-      get root_path
+      FactoryBot.create(:group_user, :as_admin_user, user:@user, group:@group)
+      get edit_group_url(@group)
     end
 
     context "with valid data" do
+      before do
+        @params = FactoryBot.build(:group, :other_valid_group).attributes
+      end
+
       it "returns http 302 with valid data" do
         put group_url(@group), params: {group:@params}
         expect(response).to have_http_status "302"
       end
 
-      it "redirect_to root_path" do
+      it "redirect_to edit_group_url" do
         put group_url(@group), params: {group:@params}
-        expect(response).to redirect_to root_path
+        expect(response).to redirect_to edit_group_url(@group)
+      end
+    end
+
+    context "with invalid data" do
+      before do
+        @params = FactoryBot.build(:group, :group_with_blank_attributes).attributes
+      end
+
+      it "returns http 302 with valid data" do
+        put group_url(@group), params: {group:@params}
+        expect(response).to have_http_status "302"
+      end
+
+      it "redirect_to edit_group_url" do
+        put group_url(@group), params: {group:@params}
+        expect(response).to redirect_to edit_group_url(@group)
       end
     end
   end

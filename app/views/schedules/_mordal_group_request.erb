@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <%@user_non_active_groups.each do |group|%>
                     <%gu = GroupUser.find_by(user_id:@user, group_id:group.id)%>
-                    <%=form_with url:invite_user_url(gu) do |f|%>
+                    <%=form_with url:invite_user_url(gu), method:"put" do |f|%>
                         <%=group.name%>
                         承認
                         <%=f.radio_button :response, :true%>
