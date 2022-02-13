@@ -1,12 +1,10 @@
-# README
+* what for<br>
+&emsp;スケジュール管理webアプリ
 
-・what for
-  スケジュール管理webアプリ
+* attributes<br>
+&emsp;ruby 3.0.2p107<br>
+&emsp;Rails 6.1.4.4<br>
+&emsp;rspec 
 
-・attributes
-  ruby 3.0.2p107
-  Rails 6.1.4.4
-  rspec 
-
-・status
-  開発中
+* status<br>
+&emsp;開発中
