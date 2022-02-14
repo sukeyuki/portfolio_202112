@@ -58,6 +58,16 @@ user5 = User.new(
 user5.skip_confirmation!
 user5.save
 
+user6 = User.new(
+  name:"部長", 
+  search_name:"butyou",
+  email:"butyou@butyou.com",
+  password:123456789,
+  password_confirmation:123456789
+)
+user6.skip_confirmation!
+user6.save
+
 # グループ登録
 group1 = user1.groups.create!(
   name:"家族",
@@ -79,8 +89,8 @@ GroupUser.create!(
 )
 
 group2 = user1.groups.create!(
-  name:"会社仲間",
-  overview:"会社の友達",
+  name:"会社",
+  overview:"会社のプロジェクト",
   personal:false,
 )
 GroupUser.find_by(group_id:group2.id, user_id:user1.id).update(activated:true, role:10)
@@ -90,6 +100,14 @@ GroupUser.create!(
   activated: true,
   role:20
 )
+
+GroupUser.create!(
+  group_id: group2.id,
+  user_id: user6.id,
+  activated: true,
+  role:20
+)
+
 GroupUser.create!(
   group_id: group2.id,
   user_id: user5.id,
@@ -113,29 +131,50 @@ GroupUser.create!(
 group1.schedules.create(
   title: "家族で旅行",
   contents: "熱海に旅行",
-  start_at: "2022-02-1T06:00:00Z",
-  end_at: "2022-02-2T21:00:00Z"
+  start_at: "2022-02-12T06:00:00Z",
+  end_at: "2022-02-13T21:00:00Z"
 )
 
 group1.schedules.create(
-  title: "家族で食事",
+  title: "家族で外食",
+  contents: "夕食",
+  start_at: "2022-02-2T18:00:00Z",
+  end_at: "2022-02-2T20:00:00Z"
+)
+
+group1.schedules.create(
+  title: "家で食事",
   contents: "夕食",
   start_at: "2022-02-3T18:00:00Z",
-  end_at: "2022-02-3T21:00:00Z"
+  end_at: "2022-02-3T20:00:00Z"
+)
+
+group2.schedules.create(
+  title: "進捗会議",
+  contents: "プロジェクト会議",
+  start_at: "2022-02-2T16:00:00Z",
+  end_at: "2022-02-2T17:00:00Z"
+)
+
+group2.schedules.create(
+  title: "進捗会議",
+  contents: "プロジェクト会議",
+  start_at: "2022-02-3T18:00:00Z",
+  end_at: "2022-02-3T19:00:00Z"
 )
 
 group2.schedules.create(
   title: "飲み会",
   contents: "打ち上げ飲み会",
-  start_at: "2022-02-3T18:00:00Z",
-  end_at: "2022-02-3T21:00:00Z"
+  start_at: "2022-02-4T19:00:00Z",
+  end_at: "2022-02-4T21:00:00Z"
 )
 
 group3.schedules.create(
   title: "ゴルフ",
   contents: "コンペ",
-  start_at: "2022-02-5T6:00:00Z",
-  end_at: "2022-02-5T21:00:00Z"
+  start_at: "2022-02-19T6:00:00Z",
+  end_at: "2022-02-20T21:00:00Z"
 )
 
 # 5.times do |n|
