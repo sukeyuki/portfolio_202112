@@ -12,8 +12,7 @@
 
 # 操作方法
 ## メイン画面
-![image](https://user-images.githubusercontent.com/90238545/153842392-e1fbac62-7d14-4f46-a031-96344a1e4cac.png)
-
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153842809-9fb34350-ed49-4405-be0e-db4e2f4ad2ff.png">
 
 
 <br><br>
