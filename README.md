@@ -12,7 +12,8 @@
 
 # 操作方法
 ## メイン画面
-![image](https://user-images.githubusercontent.com/90238545/153837221-68b5f6ba-c71b-46d0-8f15-225dae9a18ef.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153841420-92233028-8f2f-4769-98bd-0d330315e6d8.png">
+
 <br><br>
 
 ## グループの作成
