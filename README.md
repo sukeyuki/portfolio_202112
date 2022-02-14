@@ -20,35 +20,41 @@
 ## グループの作成
 グループの作成をクリックして下さい。<br>
 モーダルが立ち上がるので、必要事項を入力し、createをクリックして下さい。
-![image](https://user-images.githubusercontent.com/90238545/153837326-e707e153-6dfd-4c89-874d-ad2667eb0bba.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843095-1c55bc9e-8938-4baf-bc57-b8fa462d6ecb.png">
+
 
 
 グループ一覧に新しいグループが作成されます。
-![image](https://user-images.githubusercontent.com/90238545/153837667-032f9d3a-f7f6-4da8-83b1-f1c6488aceb5.png)
+![image](https://user-images.githubusercontent.com/90238545/153843289-86f9d6f9-852c-4d78-81ff-2024db86782d.png)
 <br><br>
 
 ## グループ編集
 グループ名をクリックすると、グループの詳細モーダルが立ち上がります。<br>
 Editをクリックすると、グループeditページに遷移します。
-![image](https://user-images.githubusercontent.com/90238545/153837758-dfb433cf-3eb1-45a8-a5d8-ecb3872106af.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843834-c2ff5808-e22e-4e61-a2e1-80c9c5df86b4.png">
+
 
 グループeditページ
-![image](https://user-images.githubusercontent.com/90238545/153837817-d65ebe7c-cc91-47f2-a181-7df6534c8867.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843933-22767835-2810-4e5c-9ac1-129d9993329e.png">
+
+
 
 ※グループの管理者ではない場合、グループeditページへ遷移できません。<br>
 下記のようにEditボタンは表示されません。<br>代わりにQuitボタンが表示され、このボタンを押すことでグループを抜ける事ができます。
-![image](https://user-images.githubusercontent.com/90238545/153837886-589fa2af-7c2f-4c65-83d6-62f4218329dd.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843669-11b9e07d-6fd2-489b-ac46-7b739500184b.png">
 <br><br>
 
 ## 招待
 誰かを招待するためには招待する人のidを知る必要があります。<br>
 idを招待バーに打ち込みSearchをクリックすると、
 検索されたuserが表示されます。
-![image](https://user-images.githubusercontent.com/90238545/153837943-b4d5ceac-24c1-4399-83ae-7bad3eef5e71.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153844077-a4d7996f-8ae1-4fd2-bf01-11d7570fc19d.png">
+
 
 
 Invliteを押すと、userが招待されます。
-![image](https://user-images.githubusercontent.com/90238545/153837978-cce0dc41-13bd-4378-8cf0-931420348f4b.png)
+![image](https://user-images.githubusercontent.com/90238545/153844312-90ffcd3f-30e3-4f43-994d-e4ebb2cc3fa1.png)
+
 <br><br>
 
 ## 権限編集、追い出し
@@ -58,23 +64,24 @@ Invliteを押すと、userが招待されます。
 * to_normal:一般メンバーへ変更<br>
 * kick:強制追い出し<br>
 
-![image](https://user-images.githubusercontent.com/90238545/153838030-f05f2b09-e364-4b8f-9996-ac0a302d430b.png)
+<img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153844413-abc33806-5331-4989-9e7c-4d5d3a76a0bb.png">
 
 ※自分の権限変更と強制追い出しが不可能な場合があります。<br>
 グループに１人以上の管理者が必要な為、管理者が自分のみの場合、権限変更と強制追い出しが出来ません。
-![image](https://user-images.githubusercontent.com/90238545/153838068-9292f75d-8b37-412a-bb53-651fe1492e8a.png)
+![image](https://user-images.githubusercontent.com/90238545/153844701-00373ad8-65c0-4b94-8ed3-c3f4f2a228be.png)
 <br><br>
 
 ## グループ参加
 グループリクエストをクリックして下さい。<br>
 誘われているグループ一覧が表示されます。<br>
 参加する場合は承認を押してresponseをクリックして下さい。
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153844926-b8eaa8b1-372e-4657-9e71-d428681fc736.png">
 
-![image](https://user-images.githubusercontent.com/90238545/153838169-603abef2-7e86-47e7-870b-28b5b280fc00.png)
 
 参加グループが追加されます。
 
-![image](https://user-images.githubusercontent.com/90238545/153838223-2bb2d457-af99-455f-b137-37dc42cd5fc0.png)
+![image](https://user-images.githubusercontent.com/90238545/153845109-67bbf8f5-4031-45c0-b52c-bdf9f4585be1.png)
+
 <br><br>
 
 ## スケジュール作成
@@ -85,19 +92,21 @@ create scheduleボタンをクリックして下さい。
 
 スケジュールが追加されます。
 
-![image](https://user-images.githubusercontent.com/90238545/153838315-9849c2be-ae6b-4dd4-b667-f1c4d86825b5.png)
+![image](https://user-images.githubusercontent.com/90238545/153845463-050577d1-0be5-45cd-a7a4-a5056f70d8c6.png)
+
 <br><br>
 
 ## スケジュール編集
 編集したいスケジュールをクリックし、edit scheduleボタンをクリックします。
 
-![image](https://user-images.githubusercontent.com/90238545/153838381-5a363ce9-dcb8-472b-b904-e043d4dfba6d.png)
+![image](https://user-images.githubusercontent.com/90238545/153845631-364efe4d-0646-4ae8-a9c7-ac4b25f75353.png)
 
 
 編集後updateをクリックして下さい。<br>
 削除する場合、Deleteを押します。
 
-![image](https://user-images.githubusercontent.com/90238545/153838436-c0160107-e287-4380-bec0-8e25dd6c7ce8.png)
+<img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153845760-609d6b4b-c7c3-4c5b-96cb-da0877fb4a21.png">
+
 <br><br>
 
 ## スケジュール詳細表示
@@ -106,7 +115,7 @@ create scheduleボタンをクリックして下さい。
 ![image](https://user-images.githubusercontent.com/90238545/153838510-62df0c2e-34cb-414e-a327-94a78d761dd7.png)
 
 進捗会議をクリックすると。。
-![image](https://user-images.githubusercontent.com/90238545/153838563-67aa5875-12f4-4678-b4aa-c91fd736a9bc.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153845899-f3d614df-0652-406a-94f4-632c5c42311c.png">
 
 このように表示が変わります。
 <br><br>
@@ -115,10 +124,11 @@ create scheduleボタンをクリックして下さい。
 
 スケジュール表の期間を変更する事ができます。<br>
 表示日時から選択して下さい。
-![image](https://user-images.githubusercontent.com/90238545/153838640-f3d5deb8-5358-4c86-966f-b310d4c4291d.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153846009-4d53ff6b-4d05-4807-b9d6-d26376a37bf7.png">
 
-例えば2/14をクリックすると、下記のように表示日時が変更されます。
-![image](https://user-images.githubusercontent.com/90238545/153838676-43799916-cfb5-4e52-90d2-dc27fa4b38df.png)
+
+例えば2/7をクリックすると、下記のように表示日時が変更されます。
+<img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153846204-a736f714-c521-4f71-9591-f286e80ad914.png">
 
 
 ## スケジュール表示グループ変更
@@ -126,13 +136,14 @@ create scheduleボタンをクリックして下さい。
 グループ横のチェックボックスで、画面に表示するスケジュールの表示と非表示を切り替える事ができます。
 
 会社の予定のみ表示したい場合、
-![image](https://user-images.githubusercontent.com/90238545/153838747-2517cbe9-d30f-4cb3-8ad9-3e238db5e4fc.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153846311-1f35beb1-239b-4520-b534-e90b8cfc8194.png">
 
 家族の予定と、会社の予定を表示したい場合
-![image](https://user-images.githubusercontent.com/90238545/153838794-1452838c-40f7-4dab-8483-3e6c79ca98c2.png)
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153846392-eb7a0ec6-94e4-4e21-9100-5f56fb9a62e3.png">
+
 <br><br>
 
 ## CSV出力
 画面のCSV出力をクリックすると現在画面に表示されている情報をcsvで出力する事ができます。
 
-![image](https://user-images.githubusercontent.com/90238545/153838837-9bd025d9-080c-41be-b440-bc645c99b6b1.png)
+![image](https://user-images.githubusercontent.com/90238545/153846591-74d7fd2f-9909-4623-999d-9146d3b96381.png)
