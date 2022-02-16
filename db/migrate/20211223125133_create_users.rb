@@ -4,6 +4,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :name, null: false
       t.string :search_name, null: false 
 
+      t.index :search_name, unique: true
       t.timestamps
     end
   end

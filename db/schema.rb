@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_12_25_112729) do
     t.string "unconfirmed_email"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["search_name"], name: "index_users_on_search_name", unique: true
   end
 
 end
