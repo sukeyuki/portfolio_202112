@@ -24,36 +24,20 @@ class GroupUsersController < ApplicationController
 
   # update前のvalidation
   def update_filter
-    #editor_role 編集者の権利
-    #user_role 編集されるuserの権利
-    #my_self? 編集者と編集される人が同じかどうか
-    group_id = GroupUser.find(params[:id]).group_id    
-    editor_role = GroupUser.find_by(group_id:group_id, user:current_user)&.role
-    user_role = GroupUser.find(params[:id]).role
-    myself_or_not = GroupUser.find(params[:id]).user_id == current_user.id
-
+    group_user = GroupUser.find(params[:id])
     #編集者がadminでありかつ、編集されるuserが自分か権利がnormalの場合は編集可能
-    unless editor_role == "admin" && (myself_or_not || user_role=="normal")
-      flash[:alert] = "権限が間違っています。"
-      return redirect_to root_url
-    end
+    return nil if current_user.editable?(group_user)
+    flash[:alert] = "権限が間違っています。"
+    redirect_to root_url
   end
 
   # destroy前のvalidation
   def destroy_filter
-    #editor_role 編集者の権利
-    #user_role 編集されるuserの権利
-    #my_self? 編集者と編集される人が同じかどうか
-    group_id = GroupUser.find(params[:id]).group_id    
-    editor_role = GroupUser.find_by(group_id:group_id, user:current_user).role
-    user_role = GroupUser.find(params[:id]).role
-    myself_or_not = GroupUser.find(params[:id]).user_id == current_user.id
-
+    group_user = GroupUser.find(params[:id])
     #編集されるuserが自分自身か、編集者がadminかつ編集されるuserがnormalなら削除可能
-    unless myself_or_not || (editor_role=="admin" && user_role=="normal")
-      flash[:alert] = "権限が間違っています。"
-      return redirect_to root_url
-    end
+    return nil if current_user.deletable?(group_user)
+    flash[:alert] = "権限が間違っています。"
+    redirect_to root_url    
   end
 end
 
