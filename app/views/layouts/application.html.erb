@@ -23,7 +23,7 @@
         <div id = "header" class = "border flex">
             <%=link_to"planning with", root_url, id:"logo"%>
             <%# 日時表示部分。表示範囲で月替わり、年替わりする場合表示を変更する。 %>
-            <%unless @first_day==nil%>
+            <%if @first_day.present?%>
                 <%if @first_day.month == @first_day.since(6.day).month%>
                     <%# 月替わりが発生しない場合 %>
                     <%# ex)2022年2月 %>
@@ -42,7 +42,7 @@
             <%end%>
 
             <%# welcomeコメント表示 %>
-            <%unless @current_user==nil%>
+            <%if @current_user.present?%>
                 <span id="welcome_comment">welcome! <%=@user.name%>さん</span>
                 <%= image_tag "profile_icon.png", id:"my_profile", size:'70x70', data:{toggle:"modal",target:"#my_profile_modal"}%>
             <%end%>

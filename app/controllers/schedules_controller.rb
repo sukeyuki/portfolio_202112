@@ -10,7 +10,6 @@ class SchedulesController < ApplicationController
     @user_non_active_groups = Group.with_not_active_user(@user)
     @first_day = first_day
     @groups_show_list = group_show_list
-
     # CSV出力用処理
     respond_to do |format|
       format.html

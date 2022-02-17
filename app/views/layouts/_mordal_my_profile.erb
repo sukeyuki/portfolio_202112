@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body my_profile_wrapper">
-                <%unless @user==nil || @user.id==nil%>
+                <%if @current_user.present?%>
                     <%= image_tag "profile_icon.png", class:"icon" ,size:'100x100'%>
                     <br>
 
