@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
+  before_action :edit_filter, only:[:edit]
 
   # POST /groups  ajax
   def create
@@ -21,12 +22,7 @@ class GroupsController < ApplicationController
   def edit
     @user = current_user
     @group = Group.find_by_id(params[:id])
-    # admin userではない人はrootにリダイレクト
-    if @group!=nil && User.admin_users_of(@group).include?(@user)
-      @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
-    else
-      redirect_to root_path
-    end
+    @search_users = User.all.where("search_name=?", users_search_params[:search]).where.not(id: @group.users.map(&:id)) unless users_search_params == {}
   end
 
   # PUT /groups/:id
@@ -45,5 +41,14 @@ class GroupsController < ApplicationController
 
   def users_search_params
     params.permit(:search)
+  end
+
+  def edit_filter
+    user = current_user
+    group = Group.find_by_id(params[:id])
+    # グループが存在しないか、admin userではない人はrootにリダイレクト
+    if group==nil || !User.admin_users_of(group).include?(user)
+      redirect_to root_path
+    end
   end
 end

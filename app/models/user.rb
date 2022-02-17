@@ -23,7 +23,7 @@ class User < ApplicationRecord
     #user_role 編集されるuserの権利
     #my_self_or_not 編集者と編集される人が同じかどうか
     group_id = group_user.group_id    
-    editor_role = GroupUser.find_by(group_id:group_id, user:self).role
+    editor_role = GroupUser.find_by(group_id:group_id, user:self)&.role
     user_role = group_user.role
     myself_or_not = group_user.user_id == self.id
     #編集者がadminでありかつ、編集されるuserが自分か権利がnormalの場合は編集可能
@@ -39,7 +39,7 @@ class User < ApplicationRecord
     #user_role 削除されるuserの権利
     #myself_or_not 編集者と削除される人が同じかどうか
     group_id = group_user.group_id    
-    editor_role = GroupUser.find_by(group_id:group_id, user:self).role
+    editor_role = GroupUser.find_by(group_id:group_id, user:self)&.role
     user_role = group_user.role
     myself_or_not = group_user.user_id == self.id
     #削除されるuserが自分自身か、編集者がadminかつ削除されるuserがnormalなら削除可能
