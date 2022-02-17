@@ -13,7 +13,7 @@ class GroupsController < ApplicationController
       group_user.save!
     end
 
-    rescue
+    rescue ActiveRecord::RecordInvalid => _e
       flash[:group_create_error] = group.errors.full_messages
   end
 
