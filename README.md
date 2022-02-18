@@ -107,7 +107,7 @@ create scheduleボタンをクリックして下さい。<br>
 スケジュールはグループに登録される為、グループを指定する必要があります。
 
 
-![image](https://user-images.githubusercontent.com/90238545/153838274-7606d377-9c9c-4dcb-8a5a-7ffbf96d1d40.png)
+<img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/154672674-a3503502-c863-44a1-8897-009c713516d1.png">
 
 スケジュールが追加されます。
 
