@@ -39,54 +39,69 @@
 
 グループ一覧に新しいグループが作成されます。
 ![image](https://user-images.githubusercontent.com/90238545/153843289-86f9d6f9-852c-4d78-81ff-2024db86782d.png)
-<br><br>
+
+<br>
 
 ## グループの編集
+グループには権限機能があります。<br>
+権限は、管理者と一般ユーザーの2通りです。<br>
+グループの管理者はそのグループを編集する事が出来ます。<br>
 グループ名をクリックすると、グループの詳細モーダルが立ち上がります。<br>
-Editをクリックすると、グループeditページに遷移します。
+Editをクリックすると、グループeditページへ遷移します。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843834-c2ff5808-e22e-4e61-a2e1-80c9c5df86b4.png">
 
-グループ名、概要、userの編集が可能です。<br>
-グループeditページ
+
+<br>
+グループedit画面では下記操作が可能です。
+
+* グループ名、グループ概要の編集
+* 誰かをグループに招待
+* 一般ユーザーを管理者に変更
+* 一般ユーザーと招待中ユーザーの強制的な追い出し
+* 自分の退出と、一般ユーザーへの変更
+
+
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843933-22767835-2810-4e5c-9ac1-129d9993329e.png">
 
-
+<br>
 
 ※グループの管理者ではない場合、グループeditページへ遷移できません。<br>
 下記のようにEditボタンは表示されません。<br>代わりにQuitボタンが表示され、このボタンを押すことでグループを抜ける事ができます。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843669-11b9e07d-6fd2-489b-ac46-7b739500184b.png">
-<br><br>
+
+<br>
 
 ## 招待
 誰かをグループに招待するためには招待する人のidを知る必要があります。<br>
 idを招待バーに打ち込みSearchをクリックすると、
-検索されたuserが表示されます。
+検索されたユーザーが表示されます。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153844077-a4d7996f-8ae1-4fd2-bf01-11d7570fc19d.png">
 
 
 
-Invliteを押すと、userが招待されます。
+Invliteを押すと、ユーザーが招待されます。
 ![image](https://user-images.githubusercontent.com/90238545/153844312-90ffcd3f-30e3-4f43-994d-e4ebb2cc3fa1.png)
 
 招待されたユーザーが承認すれば一般ユーザーとなります。
-<br><br>
+
+<br>
 
 ## 権限編集、追い出し
-グループには権限機能があります。<br>
-権限は、管理者と一般ユーザーの2通りです。<br>
-管理者は一般ユーザーを強制的に追い出すか、一般ユーザーを管理者に変更する事が出来ます。<br>
-自分を一般ユーザーへ変更する事も出来ます。<br>
-また、招待中ユーザーを強制的に追い出す事も出来ます。<br>
+
+下記リンクのクリックで、権限の編集と強制的な追い出しが出来ます。
 * to_admin:管理者へ変更<br>
 * to_normal:一般メンバーへ変更<br>
 * kick:強制追い出し（自分の場合は退出）<br>
 
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153844413-abc33806-5331-4989-9e7c-4d5d3a76a0bb.png">
 
+<br>
+
 ※自分の権限変更と退出が不可能な場合があります。<br>
 グループに１人以上の管理者が必要な為、管理者が自分のみの場合、権限変更と退出が出来ません。
 ![image](https://user-images.githubusercontent.com/90238545/153844701-00373ad8-65c0-4b94-8ed3-c3f4f2a228be.png)
-<br><br>
+
+<br>
 
 ## グループ参加
 グループリクエストをクリックして下さい。<br>
@@ -99,12 +114,13 @@ Invliteを押すと、userが招待されます。
 
 ![image](https://user-images.githubusercontent.com/90238545/153845109-67bbf8f5-4031-45c0-b52c-bdf9f4585be1.png)
 
-<br><br>
+<br>
 
 ## スケジュール作成
 create scheduleボタンをクリックして下さい。<br>
 モーダルが立ち上がりますので、情報を入力して下さい。<br>
-スケジュールはグループに登録される為、グループを指定する必要があります。
+スケジュールはグループに登録される為、グループを指定する必要があります。<br>
+情報の入力後、saveボタンをクリックして下さい。
 
 
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/154672674-a3503502-c863-44a1-8897-009c713516d1.png">
@@ -113,7 +129,21 @@ create scheduleボタンをクリックして下さい。<br>
 
 ![image](https://user-images.githubusercontent.com/90238545/153845463-050577d1-0be5-45cd-a7a4-a5056f70d8c6.png)
 
-<br><br>
+<br>
+
+## スケジュール詳細表示
+画面下部分はスケジュールの詳細を表示する事ができます。<br>
+家族とお出かけをクリックすると。。
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/154678149-b18f1d49-485b-4700-825d-881aae34d31e.png">
+
+
+進捗会議をクリックすると。。
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153845899-f3d614df-0652-406a-94f4-632c5c42311c.png">
+
+このように表示が変わります。
+
+<br>
+
 
 ## スケジュール編集
 編集したいスケジュールをクリックし、edit scheduleボタンをクリックします。
@@ -126,18 +156,8 @@ create scheduleボタンをクリックして下さい。<br>
 
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153845760-609d6b4b-c7c3-4c5b-96cb-da0877fb4a21.png">
 
-<br><br>
+<br>
 
-## スケジュール詳細表示
-画面下部分はスケジュールの詳細を表示する事ができます。<br>
-家族でお出かけをクリックすると。。
-![image](https://user-images.githubusercontent.com/90238545/153838510-62df0c2e-34cb-414e-a327-94a78d761dd7.png)
-
-進捗会議をクリックすると。。
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153845899-f3d614df-0652-406a-94f4-632c5c42311c.png">
-
-このように表示が変わります。
-<br><br>
 
 ## スケジュール表示期間変更
 
@@ -162,7 +182,7 @@ create scheduleボタンをクリックして下さい。<br>
 家族の予定と、会社の予定を表示したい場合
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153846392-eb7a0ec6-94e4-4e21-9100-5f56fb9a62e3.png">
 
-<br><br>
+<br>
 
 ## CSV出力
 画面のCSV出力をクリックすると現在画面に表示されている情報をcsvで出力する事ができます。
