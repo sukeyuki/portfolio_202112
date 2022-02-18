@@ -7,17 +7,30 @@
 &emsp;Rails 6.1.4.4<br>
 &emsp;rspec 
 
+<br>
+
+
+# アプリ概要
+
+* １週間の予定を表示します。
+* 予定はグループ毎に管理します。<br>
+グループに所属しているユーザーで、そのグループに登録されたスケジュールを共有します。
+* スケジュールの表示非表示をグループ毎に切り替える事ができます。
+* グループの作成、編集、削除が出来ます。（編集、削除はグループの管理者のみ可能）
+* スケジュールの作成、編集、削除が出来ます。
+* CSV出力が出来ます。
 
 
 
-# 操作方法
-## メイン画面
-<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153842809-9fb34350-ed49-4405-be0e-db4e2f4ad2ff.png">
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/154644485-dd15d4e0-5e55-41ab-a795-697af8622025.png">
 
 
 <br><br>
 
+# 操作方法
+
 ## グループの作成
+
 グループの作成をクリックして下さい。<br>
 モーダルが立ち上がるので、必要事項を入力し、createをクリックして下さい。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843095-1c55bc9e-8938-4baf-bc57-b8fa462d6ecb.png">
@@ -28,12 +41,12 @@
 ![image](https://user-images.githubusercontent.com/90238545/153843289-86f9d6f9-852c-4d78-81ff-2024db86782d.png)
 <br><br>
 
-## グループ編集
+## グループの編集
 グループ名をクリックすると、グループの詳細モーダルが立ち上がります。<br>
 Editをクリックすると、グループeditページに遷移します。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843834-c2ff5808-e22e-4e61-a2e1-80c9c5df86b4.png">
 
-
+グループ名、概要、userの編集が可能です。<br>
 グループeditページ
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153843933-22767835-2810-4e5c-9ac1-129d9993329e.png">
 
@@ -45,7 +58,7 @@ Editをクリックすると、グループeditページに遷移します。
 <br><br>
 
 ## 招待
-誰かを招待するためには招待する人のidを知る必要があります。<br>
+誰かをグループに招待するためには招待する人のidを知る必要があります。<br>
 idを招待バーに打ち込みSearchをクリックすると、
 検索されたuserが表示されます。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153844077-a4d7996f-8ae1-4fd2-bf01-11d7570fc19d.png">
@@ -55,25 +68,29 @@ idを招待バーに打ち込みSearchをクリックすると、
 Invliteを押すと、userが招待されます。
 ![image](https://user-images.githubusercontent.com/90238545/153844312-90ffcd3f-30e3-4f43-994d-e4ebb2cc3fa1.png)
 
+招待されたユーザーが承認すれば一般ユーザーとなります。
 <br><br>
 
 ## 権限編集、追い出し
-自分と、一般メンバーに対して強制追い出しと権限変更が可能です。<br>
-また、招待中メンバーに対して強制追い出しが可能です。<br>
+グループには権限機能があります。<br>
+権限は、管理者と一般ユーザーの2通りです。<br>
+管理者は一般ユーザーを強制的に追い出すか、一般ユーザーを管理者に変更する事が出来ます。<br>
+自分を一般ユーザーへ変更する事も出来ます。<br>
+また、招待中ユーザーを強制的に追い出す事も出来ます。<br>
 * to_admin:管理者へ変更<br>
 * to_normal:一般メンバーへ変更<br>
-* kick:強制追い出し<br>
+* kick:強制追い出し（自分の場合は退出）<br>
 
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153844413-abc33806-5331-4989-9e7c-4d5d3a76a0bb.png">
 
-※自分の権限変更と強制追い出しが不可能な場合があります。<br>
-グループに１人以上の管理者が必要な為、管理者が自分のみの場合、権限変更と強制追い出しが出来ません。
+※自分の権限変更と退出が不可能な場合があります。<br>
+グループに１人以上の管理者が必要な為、管理者が自分のみの場合、権限変更と退出が出来ません。
 ![image](https://user-images.githubusercontent.com/90238545/153844701-00373ad8-65c0-4b94-8ed3-c3f4f2a228be.png)
 <br><br>
 
 ## グループ参加
 グループリクエストをクリックして下さい。<br>
-誘われているグループ一覧が表示されます。<br>
+招待されているグループ一覧が表示されます。<br>
 参加する場合は承認を押してresponseをクリックして下さい。
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/90238545/153844926-b8eaa8b1-372e-4657-9e71-d428681fc736.png">
 
@@ -85,8 +102,10 @@ Invliteを押すと、userが招待されます。
 <br><br>
 
 ## スケジュール作成
-create scheduleボタンをクリックして下さい。
-モーダルが立ち上がりますので、情報を入力して下さい。
+create scheduleボタンをクリックして下さい。<br>
+モーダルが立ち上がりますので、情報を入力して下さい。<br>
+スケジュールはグループに登録される為、グループを指定する必要があります。
+
 
 ![image](https://user-images.githubusercontent.com/90238545/153838274-7606d377-9c9c-4dcb-8a5a-7ffbf96d1d40.png)
 
@@ -99,10 +118,10 @@ create scheduleボタンをクリックして下さい。
 ## スケジュール編集
 編集したいスケジュールをクリックし、edit scheduleボタンをクリックします。
 
+
 ![image](https://user-images.githubusercontent.com/90238545/153845631-364efe4d-0646-4ae8-a9c7-ac4b25f75353.png)
 
-
-編集後updateをクリックして下さい。<br>
+モーダルが立ち上がるので、編集内容を入力し,updateをクリックして下さい。<br>
 削除する場合、Deleteを押します。
 
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153845760-609d6b4b-c7c3-4c5b-96cb-da0877fb4a21.png">
@@ -131,7 +150,9 @@ create scheduleボタンをクリックして下さい。
 <img width="1439" alt="image" src="https://user-images.githubusercontent.com/90238545/153846204-a736f714-c521-4f71-9591-f286e80ad914.png">
 
 
-## スケジュール表示グループ変更
+<br>
+
+## スケジュール表示非表示切り替え
 
 グループ横のチェックボックスで、画面に表示するスケジュールの表示と非表示を切り替える事ができます。
 

@@ -13,7 +13,7 @@ class GroupUser < ApplicationRecord
     # admin_user_count: 消去するgoup_userグループのアドミンユーザー数
     # active_user_count: 消去するgroup_userグループのユーザー数
     # user_role: 消去するgroup_userユーザーのrole
-    group = Group.find(self.group_id)
+    # group = Group.find(self.group_id)
     admin_user_count = User.admin_users_of(group).count
     active_user_count = User.with_active_group(group).count
     user_role = role
