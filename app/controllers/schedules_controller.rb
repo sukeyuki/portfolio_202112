@@ -25,7 +25,6 @@ class SchedulesController < ApplicationController
 
   # POST /schedules    ajax
   def create
-    debugger
     schedule = Schedule.new(schedule_params)
     unless schedule.save
       flash[:create_schedule_error] = schedule.errors.full_messages
