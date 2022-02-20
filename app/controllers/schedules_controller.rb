@@ -2,11 +2,12 @@ class SchedulesController < ApplicationController
   include SchedulesHelper
   require "csv"
   before_action :authenticate_user!, only: [:index]
+  before_action :admin_goto_admin_page, only:[:index]
 
   # GET /schedules
   def index
     @user = current_user
-    @user_active_groups = Group.with_active_user(@user)
+    @user_active_groups = Group.with_active_user(@user).order(personal:"DESC")   # privateグループを先頭に表示する為に並び替えている。
     @user_non_active_groups = Group.with_not_active_user(@user)
     @first_day = first_day
     @groups_show_list = group_show_list
@@ -115,4 +116,15 @@ class SchedulesController < ApplicationController
     send_data(csv_data, filename:"test.csv")
   end
 
+  def admin_goto_admin_page
+     if current_user.search_name == "admin"
+      @user = current_user
+      # @user_active_groups = Group.with_active_user(@user)
+      # @user_non_active_groups = Group.with_not_active_user(@user)
+      # @first_day = first_day
+      # @groups_show_list = group_show_list
+  
+      render "layouts/admin"
+     end
+  end
 end

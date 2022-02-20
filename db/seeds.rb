@@ -8,22 +8,34 @@
 
 
 # user登録
+
+user0 = User.new(
+  name:"admin", 
+  search_name:"admin",
+  email:"admin@admin.com",
+  password:Rails.application.credentials[:seed_admin_password],
+  password_confirmation:Rails.application.credentials[:seed_admin_password]
+)
+user0.skip_confirmation!
+user0.save!
+
+
 user1 = User.new(
   name:"太郎", 
   search_name:"tarou",
   email:"tarou@tarou.com",
-  password:123456789,
-  password_confirmation:123456789
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user1.skip_confirmation!
 user1.save!
 
 user2 = User.new(
-  name:"母", 
-  search_name:"hanako",
-  email:"hanako@hanako.com",
-  password:123456789,
-  password_confirmation:123456789
+  name:"妻", 
+  search_name:"tsuma",
+  email:"tsuma@tsuma.com",
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user2.skip_confirmation!
 user2.save
@@ -32,8 +44,8 @@ user3 = User.new(
   name:"息子", 
   search_name:"musuko",
   email:"musuko@musuko.com",
-  password:123456789,
-  password_confirmation:123456789
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user3.skip_confirmation!
 user3.save
@@ -42,8 +54,8 @@ user4 = User.new(
   name:"同僚1", 
   search_name:"douryou1",
   email:"douryou1@douryou1.com",
-  password:123456789,
-  password_confirmation:123456789
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user4.skip_confirmation!
 user4.save
@@ -52,8 +64,8 @@ user5 = User.new(
   name:"同僚2", 
   search_name:"douryou2",
   email:"douryou2@douryou2.com",
-  password:123456789,
-  password_confirmation:123456789
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user5.skip_confirmation!
 user5.save
@@ -62,8 +74,8 @@ user6 = User.new(
   name:"部長", 
   search_name:"butyou",
   email:"butyou@butyou.com",
-  password:123456789,
-  password_confirmation:123456789
+  password:Rails.application.credentials[:seed_user_password],
+  password_confirmation:Rails.application.credentials[:seed_user_password]
 )
 user6.skip_confirmation!
 user6.save
@@ -128,55 +140,99 @@ GroupUser.create!(
   role:20
 )
 
-group1.schedules.create(
-  title: "家族で旅行",
-  contents: "熱海に旅行",
-  start_at: "2022-02-12T06:00:00Z",
-  end_at: "2022-02-13T21:00:00Z"
+group4 = user4.groups.create!(
+  name:"登山仲間",
+  overview:"登山の友達",
+  personal:false,
 )
 
-group1.schedules.create(
-  title: "家族で外食",
-  contents: "夕食",
-  start_at: "2022-02-2T18:00:00Z",
-  end_at: "2022-02-2T20:00:00Z"
+GroupUser.find_by(group_id:group4.id, user_id:user4.id).update(activated:true, role:10)
+GroupUser.create!(
+  group_id: group4.id,
+  user_id: user1.id,
+  activated: true,
+  role:20
 )
 
-group1.schedules.create(
-  title: "家で食事",
-  contents: "夕食",
-  start_at: "2022-02-3T18:00:00Z",
-  end_at: "2022-02-3T20:00:00Z"
-)
+100.times do |i|
 
-group2.schedules.create(
-  title: "進捗会議",
-  contents: "プロジェクト会議",
-  start_at: "2022-02-2T16:00:00Z",
-  end_at: "2022-02-2T17:00:00Z"
-)
+  user1.groups.find_by(name:"private").schedules.create(
+    title: "資料作成",
+    contents: "会議に向けて資料を作成する。",
+    start_at: Time.zone.parse("2022-02-2 13:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-2 14:00:00Z")+(7*60*60*24)*i
+  ) 
 
-group2.schedules.create(
-  title: "進捗会議",
-  contents: "プロジェクト会議",
-  start_at: "2022-02-3T18:00:00Z",
-  end_at: "2022-02-3T19:00:00Z"
-)
+  user1.groups.find_by(name:"private").schedules.create(
+    title: "筋トレ",
+    contents: "ジムで筋肉トレーニング",
+    start_at: Time.zone.parse("2022-02-1 19:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-1 20:00:00Z")+(7*60*60*24)*i
+  ) 
 
-group2.schedules.create(
-  title: "飲み会",
-  contents: "打ち上げ飲み会",
-  start_at: "2022-02-4T19:00:00Z",
-  end_at: "2022-02-4T21:00:00Z"
-)
+  if i%2 == 0
+    group1.schedules.create(
+      title: "家族で"+["温泉","海","北海道"][i%3]+"に旅行",
+      contents: ["温泉","海","北海道"][i%3]+"に一泊二日旅行",
+      start_at: Time.zone.parse("2022-02-5 06:00:00Z")+(7*60*60*24)*i,
+      end_at: Time.zone.parse("2022-02-6 21:00:00Z")+(7*60*60*24)*i
+    )
+  else
+    group3.schedules.create(
+      title: "ゴルフ",
+      contents: "コンペ",
+      start_at: Time.zone.parse("2022-02-5T6:00:00Z")+(7*60*60*24)*i,
+      end_at: Time.zone.parse("2022-02-6T21:00:00Z")+(7*60*60*24)*i
+    )
+  end
 
-group3.schedules.create(
-  title: "ゴルフ",
-  contents: "コンペ",
-  start_at: "2022-02-19T6:00:00Z",
-  end_at: "2022-02-20T21:00:00Z"
-)
 
+  group1.schedules.create(
+    title: "家族で食事",
+    contents: "夕食",
+    start_at: Time.zone.parse("2022-02-2T18:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-2T20:00:00Z")+(7*60*60*24)*i
+  )
+
+  group1.schedules.create(
+    title: "家族で映画",
+    contents: "家で映画鑑賞",
+    start_at: Time.zone.parse("2022-02-3T18:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-3T20:00:00Z")+(7*60*60*24)*i
+  )
+
+  5.times do |j|
+    group2.schedules.create(
+      title: "朝ミーティング",
+      contents: "前日までの報告",
+      start_at: Time.zone.parse("2022-01-31T9:00:00Z")+(60*60*24)*j+(7*60*60*24)*i,
+      end_at: Time.zone.parse("2022-01-31T10:00:00Z")+(60*60*24)*j+(7*60*60*24)*i
+    )
+
+    group2.schedules.create(
+      title: "第"+(j+1+i*5).to_s+"回進捗会議",
+      contents: "プロジェクト会議",
+      start_at: Time.zone.parse("2022-01-31T16:00:00Z")+(60*60*24)*j+(7*60*60*24)*i,
+      end_at: Time.zone.parse("2022-01-31T17:00:00Z")+(60*60*24)*j+(7*60*60*24)*i
+    )
+  end
+
+  group2.schedules.create(
+    title: "飲み会",
+    contents: "打ち上げ飲み会",
+    start_at: Time.zone.parse("2022-02-2T19:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-2T21:00:00Z")+(7*60*60*24)*i
+  )
+
+  group2.schedules.create(
+    title: "飲み会",
+    contents: "打ち上げ飲み会",
+    start_at: Time.zone.parse("2022-02-4T19:00:00Z")+(7*60*60*24)*i,
+    end_at: Time.zone.parse("2022-02-4T21:00:00Z")+(7*60*60*24)*i
+  )
+
+
+end
 # 5.times do |n|
 #   group = user1.groups.create!(
 #     name:"group#{n}",
